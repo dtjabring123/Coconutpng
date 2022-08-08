@@ -12,4 +12,6 @@ Group Members:
 
 2302997 - Dylan Tjabring {dtjabring123} [SCRUM MASTER]
 
+[![Coconutjpg](https://circleci.com/gh/Coconutpng.svg?style=shield)](https://circleci.com/gh/Coconutpng)
+
 
