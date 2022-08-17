@@ -10,6 +10,6 @@ describe("Calculator tests", () => {
         var result = mathOperations.sum(1, 2)
 
         // assert
-        expect(result).toBe(3);
+        expect(result).toBe(4);
     });
 })
