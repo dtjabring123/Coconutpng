@@ -4,28 +4,61 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
   codecov: codecov/codecov@1.0.5
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+  
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  build:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: cimg/node:16.10
+    steps:
+      - build-and-test
+      - store-coverage-data
+      - upload-coverage
+commands:
+  store-coverage-data:
+    steps:
+      - store_artifacts:
+          path: coverage
+
+  upload-coverage:
+    steps:
+      - codecov/upload:
+          file: coverage/coverage-final.json
+          
+  build-and-test:
     steps:
       - checkout
+      - node/install-packages:
+          # If you are using yarn, change the line below from "npm" to "yarn"
+          pkg-manager: npm
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+          name: install-dependancies
+          command: npm ci
+          
+      - run:
+          name: install react testing library
+          command: npm install @testing-library/react
+      - run:
+          name: install jest-dom library for react testing
+          command: npm install @testing-library/jest-dom
+      - run:
+          name: install bcrypt
+          command: npm install bcryptjs
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - $HOME/.npm
+      - run:
+          name: Run tests
+          command: npm test
+          environment: 
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
 workflows:
-  upload-to-codecov:
+  version: 2
+  build_and_test:
     jobs:
-      - node/test:
-          post-steps:
-            - codecov/upload
+      - build
+
