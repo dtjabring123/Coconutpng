@@ -76,17 +76,32 @@ class validation{
         if(sNum == null){
             return false;
         }
+        sNum = sNum.replace(" ","");
+        sNum = sNum.replace("+","");
         if(!((sNum.length == 13) | (sNum.length == 10 ))){ //check length of phone number
             return false;
         }
-        
-        return true;
+
+        return this.onlyNums(sNum);
     }
     static validDob(sDob){
         if(sDob == null){
             return false;
         }
-        return true;
+        var current_date = new Date();
+        var user_date = new Date(sDob);
+        var age = current_date.getFullYear() - user_date.getFullYear();
+        //check if user's birthday has not occured yet
+        if(user_date.getMonth() < current_date.getMonth()){ 
+            if(user_date.getDate() < current_date.getDate()){
+                age = age -1;
+            }
+        }
+        if( (age >= 18) && (age <=70) ){ //user has to be 18-70 years old
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
