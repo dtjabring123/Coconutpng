@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Home (){
-	return <h1>Welcome to the world of Geeks!</h1>
+export default class Home extends Component{
+	render(){
+		return (
+		<React.Fragment>
+		<h1>Welcome to the world of Geeks!</h1>
+		</React.Fragment>);
+	}
 }
-
-export default Home;

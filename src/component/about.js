@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function About () {
-	return <div>
+export default class About extends Component{
+	render(){
+	return(
+		<React.Fragment>
+		<div>
 		<h2>GeeksforGeeks is a computer science portal for geeks!</h2>
 
 		Read more about us at :
 
-	</div>
+		</div>
+		</React.Fragment>);
+	}
 }
-export default About;
+

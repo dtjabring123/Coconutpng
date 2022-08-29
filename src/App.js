@@ -8,9 +8,8 @@ import './App.css';
 class App extends Component {
 render() {
 	return (
-	<Router>
 		<div className="App">
-			<ul className="App-header">
+	<Router>
 			<li>
 				<Link to="/">Home</Link>
 			</li>
@@ -20,14 +19,14 @@ render() {
 			<li>
 				<Link to="/contact">Contact Us</Link>
 			</li>
-			</ul>
 		<Routes>
-				<Route exact path='/' element={< Home />}></Route>
-				<Route exact path='/about' element={< About />}></Route>
-				<Route exact path='/contact' element={< Contact />}></Route>
+				<Route  path='/' element={<Home/>}></Route>
+				<Route  path='/about' element={<About/>}></Route>
+				<Route  path='/contact' element={<Contact/>}></Route>
 		</Routes>
-		</div>
+		
 	</Router>
+	</div>
 );
 }
 }
