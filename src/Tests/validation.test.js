@@ -28,7 +28,7 @@ describe("validEmail tests", () =>{
         expect(validation.validEmail("2302997students.wits.ac.za")).toBe(false);
     })
     test("no letter after .", () => {
-        expect(validation.validEmail("2302997@students.")).toBe(false);
+        expect(validation.validEmail("2302997@students..")).toBe(false);
     })
     test("valid email", () => {
         expect(validation.validEmail("2302997@students.wits.ac.za")).toBe(true);
@@ -47,6 +47,6 @@ describe("validID tests", () => {
         expect(validation.validID("12345678911111")).toBe(false);
     })
     test("valid ID", () => {
-        expect(validation.validID("12345678911111")).toBe(true);
+        expect(validation.validID("1234567891111")).toBe(true);
     })
 });
