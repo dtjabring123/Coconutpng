@@ -1,4 +1,4 @@
-import { validation } from '/validation.js'
+import { validation } from '../utils/validation.js'
 
 describe("test name", () => {
     test("test case", () => {
