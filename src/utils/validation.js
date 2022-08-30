@@ -10,7 +10,7 @@ export class validation{
     //                                                                  else age = year - dob_year
 
     static onlyNums(sString){
-        if(sString == null){
+        if((sString == null) | (sString.length == 0)){
             return false;
         }
        for (let i = 0; i < sString.length; i++) {
