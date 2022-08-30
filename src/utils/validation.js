@@ -1,6 +1,5 @@
-export class validation{
 
-class validation{
+export class validation{
     constructor(){}
     //valid email address - has at least 1 @ and .  There is a letter after each . 
     //valid ID num - does ID num match dob? is first couple of letters a valid dob? is dob 13 characters long?
@@ -107,4 +106,4 @@ class validation{
     }
 
 }
-}
+
