@@ -1,3 +1,5 @@
+export class validation{
+
 class validation{
     constructor(){}
     //valid email address - has at least 1 @ and .  There is a letter after each . 
@@ -104,4 +106,5 @@ class validation{
         }
     }
 
+}
 }
