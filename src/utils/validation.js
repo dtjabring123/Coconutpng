@@ -93,16 +93,50 @@ export class validation{
         var user_date = new Date(sDob);
         var age = current_date.getFullYear() - user_date.getFullYear();
         //check if user's birthday has not occured yet
-        if(user_date.getMonth() < current_date.getMonth()){ 
-            if(user_date.getDate() < current_date.getDate()){
+        if(current_date.getMonth() < user_date.getMonth()){ // birthday month not yet occcured
+            age = age -1;
+        }
+        else if(current_date.getMonth() == user_date.getMonth()){ //in birthday month
+            if(current_date.getDate() < user_date.getDate()){ //birthday not yet occured
                 age = age -1;
             }
         }
-        if( (age >= 18) && (age <=70) ){ //user has to be 18-70 years old
+        if( (age >= 18) && (age <=75) ){ //user has to be 18-75 years old inclusive
             return true;
         }else{
             return false;
         }
+    }
+    static validPassword(sString){
+        if(sString == null) 
+        {   
+            return false;
+        }
+        if((sString.length >= 6) && (sString.length<=15)){//password must be at least 6 characters long 
+                                                          //password cannot be longer than 15 characters
+            var flag_upper = false;
+            var flag_lower = false;
+            var flag_number = false;
+            for(let i = 0;i<sString.length;i++){
+
+                if((sString[i]>= "a") && (sString[i]<= "z")){ //has at least 1 lowercase character
+                    flag_lower = true;
+                }
+                if((sString[i] >= "A") && (sString[i]<="Z")){//has at least 1 capital character 
+                    flag_upper = true;
+                }
+                if((sString[i]>= "0") && (sString[i] <= "9")){ //has at least 1 number
+                    flag_number = true;
+                }
+                if((flag_lower && flag_number) && flag_upper){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
 }
