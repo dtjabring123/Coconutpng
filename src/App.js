@@ -12,7 +12,7 @@ class App extends Component {
 			<div className="App">
 		<Router>
 			<Routes>
-				<Route path="/" element={<WelcomePage/>}/>
+				<Route path="/mainscreen" element={<WelcomePage/>}/>
 				<Route path="/login" element={<LoginPage/>}/>
 				<Route path="/homepage" element={<HomePage/>}/>
 				<Route path="/register" element={<RegisterPage/>}/>

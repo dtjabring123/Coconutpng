@@ -111,9 +111,9 @@ export default class ProfilePage extends React.Component {
 							<label htmlFor="admin">Admin Code</label>
 							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
 						</div>
-                        <input type="submit" value="SAVE"/>
-						<Link to="/homepage">      
-                            <input type="submit" value="EXIT"/>
+                        <input type="button" value="SAVE"/>
+						<Link to="/HomePage">      
+                            <input type="submit" value="BACK"/>
    						</Link>
 					</div>
 				</form>
