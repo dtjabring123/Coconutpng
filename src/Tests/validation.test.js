@@ -105,7 +105,7 @@ describe("validDob tests", () => {
     })
     var current_date = new Date();
     test("current date", () => {
-        expect(validation.validDob(current_date)).toBe(true);
+        expect(validation.validDob(current_date)).toBe(false);
     })
 });
 
