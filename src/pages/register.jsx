@@ -96,7 +96,7 @@ export default class RegisterPage extends React.Component {
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>
 						<Link to="/homepage">      
-							 <input type="submit" id = "link_btn" value="MAINSCREEN" />
+							 <button type="submit" id = "link_btn" value="MAINSCREEN" />
    						</Link>
 					</div>
 				</form>

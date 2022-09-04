@@ -20,7 +20,7 @@ export default class LoginPage extends React.Component {
 	}
 	handleLogin = () =>{
 		var valid = validLogin(this.state);
-		if(true == true){
+		if(valid[0] == true){
 			//call db method
 			let succ = logIn(this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
@@ -64,7 +64,7 @@ export default class LoginPage extends React.Component {
 
 						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
 						<Link to="/homepage">      
-							<input type="submit" value="LOGIN" id = "home_button"/>
+							<button type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
 					</div>
 				</form>
