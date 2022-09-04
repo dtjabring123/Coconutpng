@@ -1,17 +1,13 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { updateUserDetails, getUserDetails} from '../database_functions';
+import { updateUserDetails, getUserDetails,changePassword} from '../database_functions';
 import { validation } from '../utils/validation';
 export default class ProfilePage extends React.Component {
 	state = {
-		fname : "",
-		lname : "",
-		dob : "",
-		phone_num : "",
-		password : "",
-		id : "",
-		admin : ""
-
+		firstname : null,
+		lastname : null,
+		phone : null,
+		password : null,
 	}
 	handleInput = (event) =>{
 		const target = event.target;
@@ -48,7 +44,7 @@ export default class ProfilePage extends React.Component {
 					email_lbl.value = user_details.emailAddress;
 		 		}
 		 		else{
-		 			alert("Log in credentials have expired. Please log in again");
+		 			this.output("Log in credentials have expired. Please log in again");
 		 		}
 		 	} )
 	}
@@ -60,21 +56,85 @@ export default class ProfilePage extends React.Component {
 		if(this.state.password != null && this.state.password.length > 0){
 			//validate password
 			if(validation.validPassword(this.state.password)){
-
+				let succ = changePassword(this.state.password);
+				Promise.resolve(succ).then((ret)=>{
+					if(ret[0] == "success"){
+						this.output("Password changed successfully");
+					}else{
+						this.output("Couldn't change password");
+					}
+				})
 			}else{
-				alert("Password invalid");
+				this.output("Password Password must be between 6 and 15 characters long inclusive.\n Password should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n");
 			}
 		}
-		//validate firstname & last name
 		
+		var flag = true;
+		var error = "";
+		var json = {
+			first_name : this.state.fname,
+			last_name : this.state.lastname,
+			phoneNumber : this.state.phone
+		}
+		
+		//validate firstname
+		if((json.first_name != null) && (json.first_name.length > 0)){
+			if(!validation.validName(json.first_name)){
+				json.first_name = null;
+				error = "Names should only contain alphabetical characters and not be empty \n";
+				flag = false;
+			}
+		}else{
+			json.first_name = null;
+		}
+		//validate lastname
+		if((json.last_name != null) && (json.last_name.length > 0)){
+			if(!validation.validName(json.last_name)){
+				json.last_name = null;
+				if(flag == false){
+					error = "Names should only contain alphabetical characters and not be empty \n";
+				}
+				
+			}
+		}else{
+			json.last_name = null;
+		}
 		//validate phoneNumber
-		
+		if((json.phoneNumber != null) && (json.phoneNumber.length > 0)){
+			if(!(validation.validPhoneNum(json.phoneNumber))){
+				json.phoneNumber = null;
+				error = error + "Phone numbers should be 10 or 13 characters long and only contain numbers or a single  '+' \n";
+			}
+		}else{
+			json.phoneNumber = null;
+		}
+		flag = true;
+		if(  ((json.first_name == null)  && (json.last_name == null)) && (json.phoneNumber == null) ){
+			flag = false;
+		}
+		if(flag){ //call db method to change details
+			let succ = updateUserDetails(json);
+			Promise.resolve(succ).then((ret)=>{
+					this.output("Details changed successfully");
+			 })
+		}else{
+			this.output(error);
+		}
+	}
+	output = (message) =>{
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 5000);
 	}
 	render(){
 		return (
 			<React.Fragment>
 				<form>
 					<div className="form-inner">
+					<div id = "snackbar"></div>
 						<h2>Profile</h2>
 						{/* ERRROR */}
 						<div className="form-group">
@@ -94,7 +154,7 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="phone">Phone</label>
-							<input id="phone" type="string" name="phone" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
+							<input id="phone" type="string" name="phone" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 
 						<div className="form-group">
@@ -104,14 +164,14 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input id="password" type="password" name="password"/>
+							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="admin">Admin Code</label>
 							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
 						</div>
-                        <input type="button" value="SAVE"/>
+                        <input type="button" value="SAVE" onClick={this.handleChanges}/>
 						<Link to="/HomePage">      
                             <input type="submit" value="BACK"/>
    						</Link>
