@@ -64,7 +64,7 @@ export default class LoginPage extends React.Component {
 						<Link to="/homepage">      
 							<button type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
-						<Link to="/mainscreen">      
+						<Link to="/">      
                             <input type="submit" value="BACK"/>
    						</Link>
 					</div>

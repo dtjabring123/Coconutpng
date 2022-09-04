@@ -98,7 +98,7 @@ export default class RegisterPage extends React.Component {
 						<Link to="/homepage">      
 							<button type="submit" id = "link_btn" value="MAINSCREEN" />
    						</Link>
-						<Link to="/mainscreen">      
+						<Link to="/">      
                             <input type="submit" value="BACK"/>
    						</Link>
 					</div>
