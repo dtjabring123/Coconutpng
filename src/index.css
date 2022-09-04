@@ -156,6 +156,10 @@ form .form-inner input[type="submit"]:hover {
     background-position : 100% 0%;
 }
 
+form .form-inner input[type="button"]:hover {
+    background-position : 100% 0%;
+}
+
 .buttonstyle:hover {
     background-position : 100% 0%;
 }
