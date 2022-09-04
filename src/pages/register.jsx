@@ -23,7 +23,12 @@ export default class RegisterPage extends React.Component {
 		})
 	}
 	output = (message) =>{
-		alert(message);
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 8000);
 	}
 	handleRegister = () =>{
 		var flag = validRegistration(this.state);

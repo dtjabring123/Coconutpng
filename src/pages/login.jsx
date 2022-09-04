@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { validLogin } from '../utils/login.js'
 import { logIn } from '../database_functions'
+import '../index.css';
 export default class LoginPage extends React.Component {
 	state = {
 		email : "",
@@ -16,7 +17,12 @@ export default class LoginPage extends React.Component {
 		})
 	}
 	output = (message) =>{
-		alert(message);
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 10000);
 	}
 	handleLogin = () =>{
 		var valid = validLogin(this.state);
@@ -47,6 +53,7 @@ export default class LoginPage extends React.Component {
 		return (
 			<React.Fragment>
 				<form>
+					<div id = "snackbar"></div>
 					<div className="form-inner">
 						<h2>Login</h2>
 						{/* ERRROR */}
