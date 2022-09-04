@@ -1,34 +1,28 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
-import Home from './component/home';
-import About from './component/about';
-import Contact from './component/contact';
-import './App.css';
+import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
+import WelcomePage from "./pages/mainscreen";
+import HomePage from './pages/homepage';
+import LoginPage from "./pages/login";
+import RegisterPage from './pages/register';
+import ProfilePage from './pages/profiles';
 
 class App extends Component {
-render() {
-	return (
-		<div className="App">
-	<Router>
-			<li>
-				<Link to="/">Home</Link>
-			</li>
-			<li>
-				<Link to="/about">About Us</Link>
-			</li>
-			<li>
-				<Link to="/contact">Contact Us</Link>
-			</li>
-		<Routes>
-				<Route  path='/' element={<Home/>}></Route>
-				<Route  path='/about' element={<About/>}></Route>
-				<Route  path='/contact' element={<Contact/>}></Route>
-		</Routes>
-		
-	</Router>
-	</div>
-);
-}
+	render() {
+		return (
+			<div className="App">
+		<Router>
+			<Routes>
+				<Route path="/mainscreen" element={<WelcomePage/>}/>
+				<Route path="/login" element={<LoginPage/>}/>
+				<Route path="/homepage" element={<HomePage/>}/>
+				<Route path="/register" element={<RegisterPage/>}/>
+				<Route path="/profiles" element={<ProfilePage/>}/>
+			</Routes>
+			
+		</Router>
+		</div>
+		);
+	}
 }
 
 export default App;
