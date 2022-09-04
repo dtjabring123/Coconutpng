@@ -17,7 +17,7 @@ render(){
     <div>
         <h1>Welcome User.....To the home page</h1>
         <div className="row">
-            <Link to="/">      
+            <Link to="/mainscreen">      
                 <button className='buttonstyle' onClick={this.handleLogout}
                     style={{marginTop:10, marginBottom:30}}>
                     Logout

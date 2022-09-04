@@ -109,6 +109,20 @@ form .form-inner input[type="submit"] {
     color:#FFF;
     font-weight: 700;
     cursor: pointer;
+    margin-left: 250px;
+}
+
+form .form-inner input[type="button"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
 
 }
 
