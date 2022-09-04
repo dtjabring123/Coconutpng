@@ -27,7 +27,7 @@ export default class LoginPage extends React.Component {
 		// 		if(ret[0]){
 		// 			this.output("Login Success");
 		// 			//go to main screen
-					
+		// 			document.getElementbyId("homepage_button").click();
 		// 		}
 		// 		else{
 		// 			this.output("Email or password are incorrect");
@@ -55,8 +55,9 @@ export default class LoginPage extends React.Component {
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
+						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
 						<Link to="/homepage">      
-							<input type="submit" value="LOGIN"/>
+							<input type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
 					</div>
 				</form>
