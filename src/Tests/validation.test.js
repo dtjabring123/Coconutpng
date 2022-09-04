@@ -7,7 +7,7 @@ describe("onlyNums tests", () => {
     })
     test("only digits", () => {
         expect(validation.onlyNums("123456789")).toBe(true);
-    })
+    }) 
     test("only letters", () => {
         expect(validation.onlyNums("asdfqwerty")).toBe(false);
     })
