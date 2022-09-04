@@ -1,18 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
+import WelcomePage from "./pages/mainscreen";
+import HomePage from './pages/homepage';
+import LoginPage from "./pages/login";
+import RegisterPage from './pages/register';
+import ProfilePage from './pages/profiles';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-        Hello World!
-        </p>
-
-      </header>
-    </div>
-  );
+class App extends Component {
+	render() {
+		return (
+			<div className="App">
+		<Router>
+			<Routes>
+				<Route path="/" element={<WelcomePage/>}/>
+				<Route path="/login" element={<LoginPage/>}/>
+				<Route path="/homepage" element={<HomePage/>}/>
+				<Route path="/register" element={<RegisterPage/>}/>
+				<Route path="/profiles" element={<ProfilePage/>}/>
+			</Routes>
+			
+		</Router>
+		</div>
+		);
+	}
 }
 
 export default App;
