@@ -20,47 +20,37 @@ export default class ProfilePage extends React.Component {
 		})
 	}
 
-	//DoB: 
-    //firstName:
-	//lastName: 
-	//phoneNumber: 
-	//emailAddress: 
-	//role: 
-	//titles: 
 	componentDidMount(){
 		//initialise text fields here
 		var user_details;
 		var flag = false;
-		//call db method
+		//call db method to get user details
 		let succ = getUserDetails();
 	 	Promise.resolve(succ).then((ret)=>{
 		 		if(ret[0] == "success"){
-		 			user_details = ret[1]
-					user_details.fname = ret[1].firstName;
-					user_details.lname = ret[1].lastname;
-					user_details.dob = ret[1].Dob;
-					user_details.phone_num = ret[1].phoneNumber;
+					user_details = ret[1];
+					//update fields
+					var name_lbl = document.getElementById("name");
+					name_lbl.value = user_details.firstName;
+					var lname_lbl = document.getElementById("lastname");
+					lname_lbl.value = user_details.lastName;
+					var dob_lbl = document.getElementById("dob_field");
+					dob_lbl.value = user_details.DoB;
+					var phonenum_lbl = document.getElementById("phone");
+					phonenum_lbl.value = user_details.phoneNumber;
+					if(user_details.role == 1){
+					   var admin_lbl = document.getElementById("admin");
+					   admin_lbl.value = "admin";
+					}
+					var email_lbl = document.getElementById("email");
+					email_lbl.value = user_details.emailAddress;
 
-					console.log("Success")
-					console.log(ret[1]);
-					flag = true;
+
 		 		}
 		 		else{
 		 			console.log(ret);
 		 		}
 		 	} )
-	//	console.log(user_details);
-		//change text fields
-		if(flag == false){
-			user_details = {firstName : "test", lastName : "test"};
-		}
-		// console.log(user_details);
-		// var name_lbl = document.getElementById("name");
-		// name_lbl.value = user_details.firstName;
-		// var lname_lbl = document.getElementById("lastname");
-		// lname_lbl.value = user_details.lastName;
-		// var dob_lbl = document.getElementById("dateofbirth");
-		// dob_lbl.value = "2000-07-13";
 
 	}
 
@@ -83,12 +73,12 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="dateofbirth">Date of Birth</label>
-							<input id="dateofbirth " type="date" name="dateofbirth" onChange={evt=>this.handleInput(evt)}/>
+							<input id="dob_field" type="date" name="dateofbirth" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="phone">Phone</label>
-							<input id="phone" type="string" name="password" onChange={evt=>this.handleInput(evt)}/>
+							<input id="phone" type="string" name="phone" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 
 						<div className="form-group">
@@ -98,7 +88,7 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input id="password" type="password" name="password" readOnly={true}/>
+							<input id="password" type="password" name="password"/>
 						</div>
 
 						<div className="form-group">
