@@ -34,8 +34,6 @@ export default class LoginPage extends React.Component {
 					this.output("Email or password are incorrect");
 				}
 			} )
-
-		
 		}else{
 			 this.output(valid[1]);
 		}

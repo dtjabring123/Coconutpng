@@ -40,7 +40,7 @@ export default class ProfilePage extends React.Component {
 					user_details.lname = ret[1].lastname;
 					user_details.dob = ret[1].Dob;
 					user_details.phone_num = ret[1].phoneNumber;
-					
+
 					console.log("Success")
 					console.log(ret[1]);
 					flag = true;
@@ -107,7 +107,7 @@ export default class ProfilePage extends React.Component {
 						</div>
                         <input type="submit" value="SAVE"/>
 						<Link to="/homepage">      
-                            <button type="submit" value="EXIT"/>
+                            <input type="submit" value="EXIT"/>
    						</Link>
 					</div>
 				</form>
