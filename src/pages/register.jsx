@@ -2,13 +2,13 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { validRegistration } from '../utils/registration'
 import "../index.css";
-//import { register } from '../utils/database_functions';
+import { register } from '../database_functions';
 export default class RegisterPage extends React.Component {
 	state = {
 		fname : "",
 		lname : "",
 		dob : "",
-		phone_num : "",
+		phonenum : "",
 		email : "",
 		password : "",
 		admin : "",
@@ -26,30 +26,27 @@ export default class RegisterPage extends React.Component {
 		alert(message);
 	}
 	handleRegister = () =>{
-		console.log(this.state);
 		var flag = validRegistration(this.state);
 		if(flag[0] === false){
 			this.output(flag[1]);
 		}else{
-			//call db method to register
 			var role = 0;
-			if(this.state.admin !== "admin"){
+			if(this.state.admin == "admin"){//banned = -1 , normal = 0 , admin = 1
 				role = 1;
-			}
-			// let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phone_num,role,this.state.email,this.state.password);
-			// Promise.resolve(succ).then((ret)=>{
-			// 	if(ret[0] == "success "){
-			// 		this.outpu("Register success");
-			// 	}
-			// 	else{
-			// 		this.output(ret[1]);
-			// 	}
-			// });
-			this.output("Register success");
-			document.getElementbyId("link_btn").click();
+			} 
+			//call db method to register
+			let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phonenum,role,this.state.email,this.state.password);
+			Promise.resolve(succ).then((ret)=>{
+				if(ret[0] == "success "){
+					this.output("Register success");
+					document.getElementbyId("link_btn").click();
+				}
+				else{
+					this.output(ret[1]);
+				}
+			});
 		}
 	}
-
 	render(){
 		return (
 			<React.Fragment>
@@ -74,7 +71,7 @@ export default class RegisterPage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="phone">Phone</label>
-							<input id="phone" type="string" name="phone_num" onChange={evt=>this.handleInput(evt)}/>
+							<input id="phone" type="string" name="phonenum" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 
 						<div className="form-group">

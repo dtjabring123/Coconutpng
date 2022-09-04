@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-//import { updateUserDetails, getUserDetails} from '../utils/database_functions';
+import { updateUserDetails, getUserDetails} from '../database_functions';
 export default class ProfilePage extends React.Component {
 	state = {
 		fname : "",
@@ -15,24 +15,17 @@ export default class ProfilePage extends React.Component {
 		//initialise text fields here
 		var user_details;
 		//call db method
-	//	let succ = getUserDetails();
-	// 	Promise.resolve(succ).then((ret)=>{
-		// 		if(ret[0] == "true"){
-		// 			user_details = ret[1]
-		// 		}
-		// 		else{
-		// 			alert("Error in connection to database");
-		// 		}
-		// 	} )
+		let succ = getUserDetails();
+	 	Promise.resolve(succ).then((ret)=>{
+		 		if(ret[0] == "true"){
+		 			user_details = ret[1]
+		 		}
+		 		else{
+		 			alert("Error in connection to database");
+		 		}
+		 	} )
+	//	console.log(user_details);
 		//change text fields
-		document.getElementById("name");
-		document.getElementById("lastname");
-		document.getElementById("dateofbirth");
-		document.getElementById("password");
-		document.getElementById("email");
-		document.getElementById("phone");
-		document.getElementById("admin");
-		document.getElementById("name");
 	}
 
 	render(){

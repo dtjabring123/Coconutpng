@@ -19,8 +19,7 @@ export default class LoginPage extends React.Component {
 		alert(message);
 	}
 	handleLogin = () =>{
-		// var valid = validLogin(this.state);
-		console.log(this.state);
+		var valid = validLogin(this.state);
 		if(true == true){
 			//call db method
 			let succ = logIn(this.state.email,this.state.password);
@@ -28,7 +27,7 @@ export default class LoginPage extends React.Component {
 				if(ret[0]){
 					this.output("Login Success");
 					//go to main screen
-					document.getElementById("linkbtn").click();
+					this.movepage();
 					
 				}
 				else{
@@ -38,8 +37,12 @@ export default class LoginPage extends React.Component {
 
 		
 		}else{
-			// this.output(valid[1]);
+			 this.output(valid[1]);
 		}
+	}
+
+	movepage = ()  =>{
+		document.getElementById("home_button").click();
 	}
 
 	render(){

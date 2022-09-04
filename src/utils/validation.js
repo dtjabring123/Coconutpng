@@ -118,7 +118,6 @@ export class validation{
             var flag_lower = false;
             var flag_number = false;
             for(let i = 0;i<sString.length;i++){
-
                 if((sString[i]>= "a") && (sString[i]<= "z")){ //has at least 1 lowercase character
                     flag_lower = true;
                 }
@@ -128,12 +127,12 @@ export class validation{
                 if((sString[i]>= "0") && (sString[i] <= "9")){ //has at least 1 number
                     flag_number = true;
                 }
-                if((flag_lower && flag_number) && flag_upper){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            }
+            if((flag_lower && flag_number) && flag_upper){
+                return true;
+            }
+            else{
+                return false;
             }
         }
         return false;
