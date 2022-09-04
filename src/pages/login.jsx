@@ -24,7 +24,7 @@ export default class LoginPage extends React.Component {
 			//call db method
 			let succ = logIn(this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
-				if(ret[0]){
+				if(ret[0] == "success"){
 					this.output("Login Success");
 					//go to main screen
 					this.movepage();
