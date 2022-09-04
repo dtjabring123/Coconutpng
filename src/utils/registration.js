@@ -29,7 +29,7 @@ export function validRegistration(user_details){
         error = error + "Password must be between 6 and 15 characters long inclusive.Password should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n";
     }
     //check admin code matches 
-    if((user_details.admin != null) | (user_details.admin != "" )){
+    if((user_details.admin != null) && (user_details.admin != "" )){
         if(user_details.admin != "admin"){
             flag = false;
             error = error + "Invalid admin code \n";

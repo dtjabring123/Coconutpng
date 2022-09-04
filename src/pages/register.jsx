@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { validRegistration } from '../utils/registration'
 import "../index.css";
-import { register } from '../utils/database_functions';
+//import { register } from '../utils/database_functions';
 export default class RegisterPage extends React.Component {
 	state = {
 		fname : "",
@@ -36,15 +36,15 @@ export default class RegisterPage extends React.Component {
 			if(this.state.admin != "admin"){
 				role = 1;
 			}
-			let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phone_num,role,this.state.email,this.state.password);
-			Promise.resolve(succ).then((ret)=>{
-				if(ret[0] == "success "){
-					this.outpu("Register success");
-				}
-				else{
-					this.output(ret[1]);
-				}
-			});
+			// let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phone_num,role,this.state.email,this.state.password);
+			// Promise.resolve(succ).then((ret)=>{
+			// 	if(ret[0] == "success "){
+			// 		this.outpu("Register success");
+			// 	}
+			// 	else{
+			// 		this.output(ret[1]);
+			// 	}
+			// });
 			this.output("Register success");
 		}
 	}
@@ -98,7 +98,7 @@ export default class RegisterPage extends React.Component {
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>
 						<Link to="/homepage">      
-							<input type="submit" value="MAINSCREEN" />
+							{/* <input type="submit" value="MAINSCREEN" /> */}
    						</Link>
 					</div>
 				</form>

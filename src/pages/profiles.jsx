@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { updateUserDetails, getUserDetails} from '../utils/database_functions';
+//import { updateUserDetails, getUserDetails} from '../utils/database_functions';
 export default class ProfilePage extends React.Component {
 	state = {
 		fname : "",
@@ -14,7 +14,8 @@ export default class ProfilePage extends React.Component {
 	componentDidMount(){
 		//initialise text fields here
 		//call db method
-
+	//	let succ = getUserDetails();
+		
 		//change text fields
 
 	}

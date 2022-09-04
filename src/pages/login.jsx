@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { validLogin } from '../utils/login'
-import { logIn } from '../utils/database_functions'
+import { validLogin } from '../utils/login.js'
+//import { logIn } from '../utils/database_functions'
 export default class LoginPage extends React.Component {
 	state = {
 		email : "",
@@ -19,23 +19,24 @@ export default class LoginPage extends React.Component {
 		alert(message);
 	}
 	handleLogin = () =>{
-		var valid = validLogin(this.state);
-		if(valid[0] == true){
-			//call db method
-			let succ = logIn(this.state);
-			Promise.resolve(succ).then((ret)=>{
-				if(ret[0]){
-					this.output("Login Success");
-					//go to main screen
-				}
-				else{
-					this.output("Email or password are incorrect");
-				}
-			} )
+		// var valid = validLogin(this.state);
+		// if(valid[0] == true){
+		// 	//call db method
+		// 	let succ = logIn(this.state);
+		// 	Promise.resolve(succ).then((ret)=>{
+		// 		if(ret[0]){
+		// 			this.output("Login Success");
+		// 			//go to main screen
+					
+		// 		}
+		// 		else{
+		// 			this.output("Email or password are incorrect");
+		// 		}
+		// 	} )
 		
-		}else{
-			this.output(valid[1]);
-		}
+		// }else{
+		// 	this.output(valid[1]);
+		// }
 	}
 
 	render(){
