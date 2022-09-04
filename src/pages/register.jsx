@@ -46,6 +46,7 @@ export default class RegisterPage extends React.Component {
 			// 	}
 			// });
 			this.output("Register success");
+			document.getElementbyId("link_btn").click();
 		}
 	}
 
@@ -98,7 +99,7 @@ export default class RegisterPage extends React.Component {
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>
 						<Link to="/homepage">      
-							{/* <input type="submit" value="MAINSCREEN" /> */}
+							 <input type="submit" id = "link_btn" value="MAINSCREEN" />
    						</Link>
 					</div>
 				</form>

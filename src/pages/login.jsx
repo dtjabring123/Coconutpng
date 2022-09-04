@@ -35,6 +35,7 @@ export default class LoginPage extends React.Component {
 					this.output("Email or password are incorrect");
 				}
 			} )
+
 		
 		}else{
 			// this.output(valid[1]);
@@ -57,13 +58,12 @@ export default class LoginPage extends React.Component {
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
-							  <Link to="/homepage">
-                            	<button id="linkbtn" style={{ marginTop: 0 }}>Home</button>
-                            </Link> 
-							<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
-							
-							
-						</div>
+
+						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
+						<Link to="/homepage">      
+							<input type="submit" value="LOGIN" id = "home_button"/>
+   						</Link>
+					</div>
 				</form>
 			</React.Fragment>);
 	}
