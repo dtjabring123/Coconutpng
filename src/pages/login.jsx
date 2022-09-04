@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import { validLogin } from '../utils/login.js'
-//import { logIn } from '../utils/database_functions'
+import { logIn } from '../database_functions'
 export default class LoginPage extends React.Component {
 	state = {
 		email : "",
@@ -20,23 +20,25 @@ export default class LoginPage extends React.Component {
 	}
 	handleLogin = () =>{
 		// var valid = validLogin(this.state);
-		// if(valid[0] == true){
-		// 	//call db method
-		// 	let succ = logIn(this.state);
-		// 	Promise.resolve(succ).then((ret)=>{
-		// 		if(ret[0]){
-		// 			this.output("Login Success");
-		// 			//go to main screen
+		console.log(this.state);
+		if(true == true){
+			//call db method
+			let succ = logIn(this.state.email,this.state.password);
+			Promise.resolve(succ).then((ret)=>{
+				if(ret[0]){
+					this.output("Login Success");
+					//go to main screen
+					document.getElementById("linkbtn").click();
 					
-		// 		}
-		// 		else{
-		// 			this.output("Email or password are incorrect");
-		// 		}
-		// 	} )
+				}
+				else{
+					this.output("Email or password are incorrect");
+				}
+			} )
 		
-		// }else{
-		// 	this.output(valid[1]);
-		// }
+		}else{
+			// this.output(valid[1]);
+		}
 	}
 
 	render(){
@@ -55,10 +57,13 @@ export default class LoginPage extends React.Component {
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
-						<Link to="/homepage">      
-							<input type="submit" value="LOGIN"/>
-   						</Link>
-					</div>
+							  <Link to="/homepage">
+                            	<button id="linkbtn" style={{ marginTop: 0 }}>Home</button>
+                            </Link> 
+							<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
+							
+							
+						</div>
 				</form>
 			</React.Fragment>);
 	}

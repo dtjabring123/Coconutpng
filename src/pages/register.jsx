@@ -28,12 +28,12 @@ export default class RegisterPage extends React.Component {
 	handleRegister = () =>{
 		console.log(this.state);
 		var flag = validRegistration(this.state);
-		if(flag[0] == false){
+		if(flag[0] === false){
 			this.output(flag[1]);
 		}else{
 			//call db method to register
 			var role = 0;
-			if(this.state.admin != "admin"){
+			if(this.state.admin !== "admin"){
 				role = 1;
 			}
 			// let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phone_num,role,this.state.email,this.state.password);
