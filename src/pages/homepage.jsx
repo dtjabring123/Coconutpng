@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import { logOut } from '../database_functions';
+import "../stylesheets/default.css";
 export default class HomePage extends React.Component {
     handleLogout = () =>{
         var succ = logOut(); //if pass = failed = error else move to other screen
         Promise.resolve(succ).then((ret) =>{
-            if(ret == "success"){
+            if(ret === "success"){
                 this.output("Logged out");
             }else{
                 this.output("Logout failed");
@@ -23,10 +24,23 @@ export default class HomePage extends React.Component {
 
 render(){
     return (
-    <div>
-        <h1>Welcome to the home page</h1>
+    <div class="area" >
+        <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+        </ul>
+    <div class="context">
+        <h1>Welcome To the Home Page</h1>
+        <div class="row">
         <div id = "snackbar"></div>
-        <div className="row">
             <Link to="/">      
                 <button className='buttonstyle' onClick={this.handleLogout}
                     style={{marginTop:10, marginBottom:30}}>
@@ -40,6 +54,7 @@ render(){
                 </button>
             </Link>
         </div>
+    </div>
     </div>);
 	}
 }
