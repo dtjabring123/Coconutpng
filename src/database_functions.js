@@ -114,6 +114,47 @@ function logOut(){
     return pass;
   }
 
+//Gets the user's details
+async function getUserDetails(){  
+  //Get a user reference
+  var pass = 'failed';
+  var JSONobj = null;
+  
+  try{
+    //Try catch to make sure that the user has logged in
+    const userRef = doc(db,"Users",auth.currentUser.email);
+
+    await getDoc(userRef)
+    .then((ret)=>{
+      //Check that the user document exists
+      if(ret.data()==null){
+        return [pass,JSONobj]
+
+      }
+      pass = 'success';
+      //create the json object
+      JSONobj = {
+        DoB: ret.data().user_DoB,
+        firstName: ret.data().user_first_name,
+        lastName: ret.data().user_last_name,
+        phoneNumber: ret.data().user_phone,
+        emailAddress: ret.data().user_email,
+        role: ret.data().user_role,
+        titles: ret.data().user_titles
+      }
+    })
+    .catch(err=>{
+      console.log(err.message)
+    })
+
+    return [pass,JSONobj];
+  }
+  catch(e){
+    //User has not logged in
+    return [pass,JSONobj];
+  }
+  
+}
 //Gets the usersID so that it can be used for password reset validation
 async function CompareUserID(email,id){
   var arr = [];
@@ -394,4 +435,4 @@ async function getQuestionInfo(question_id){
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
