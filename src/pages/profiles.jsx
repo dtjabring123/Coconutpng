@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import { updateUserDetails, getUserDetails} from '../database_functions';
+import { validation } from '../utils/validation';
 export default class ProfilePage extends React.Component {
 	state = {
 		fname : "",
 		lname : "",
 		dob : "",
 		phone_num : "",
+		password : "",
 		id : "",
 		admin : ""
 
@@ -44,16 +46,30 @@ export default class ProfilePage extends React.Component {
 					}
 					var email_lbl = document.getElementById("email");
 					email_lbl.value = user_details.emailAddress;
-
-
 		 		}
 		 		else{
-		 			console.log(ret);
+		 			alert("Log in credentials have expired. Please log in again");
 		 		}
 		 	} )
-
 	}
+	handleChanges=()=>{
+		//updateuserdetails(json) - json = {first_name = , last_name = ,phoneNumber = }
+		//changePassword(new_password)
+		//
+		//change password
+		if(this.state.password != null && this.state.password.length > 0){
+			//validate password
+			if(validation.validPassword(this.state.password)){
 
+			}else{
+				alert("Password invalid");
+			}
+		}
+		//validate firstname & last name
+		
+		//validate phoneNumber
+		
+	}
 	render(){
 		return (
 			<React.Fragment>
@@ -73,12 +89,12 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="dateofbirth">Date of Birth</label>
-							<input id="dob_field" type="date" name="dateofbirth" onChange={evt=>this.handleInput(evt)}/>
+							<input id="dob_field" type="date" name="dateofbirth" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="phone">Phone</label>
-							<input id="phone" type="string" name="phone" onChange={evt=>this.handleInput(evt)}/>
+							<input id="phone" type="string" name="phone" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
 						</div>
 
 						<div className="form-group">
@@ -93,7 +109,7 @@ export default class ProfilePage extends React.Component {
 
 						<div className="form-group">
 							<label htmlFor="admin">Admin Code</label>
-							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)}/>
+							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} readOnly={true}/>
 						</div>
                         <input type="submit" value="SAVE"/>
 						<Link to="/homepage">      
