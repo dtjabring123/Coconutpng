@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: montserrat, sans-serif;
 }
 
 input, button {
@@ -19,6 +18,7 @@ input, button {
     justify-content: center;
     background-color: #53565A;
 }
+
 /*Here is the stuff for the snackbar(toast message) */
 #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
