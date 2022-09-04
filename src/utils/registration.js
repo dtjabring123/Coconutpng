@@ -1,6 +1,6 @@
-import validation from './validation/js';
+import {validation} from './validation.js';
 
-export function validRegistration(user_details,output){
+export function validRegistration(user_details){
     var flag = true;
     var error = "";
     //validate both names
@@ -9,7 +9,7 @@ export function validRegistration(user_details,output){
         error = "Names should only contain alphabetical characters and not be empty \n";
     }
     //validate phonenum
-    if(!validation.validPhoneNum(user_details.phoneNum)){
+    if(!validation.validPhoneNum(user_details.phonenum)){
         flag = false;
         error = error + "Phone numbers should be 10 or 13 characters long and only contain numbers or a single  '+' \n";
     }
@@ -28,8 +28,13 @@ export function validRegistration(user_details,output){
         flag = false;
         error = error + "Password must be between 6 and 15 characters long inclusive.Password should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n";
     }
-    if(!flag){
-        output(error);
+    //check admin code matches 
+    if((user_details.admin != null) | (user_details.admin != "" )){
+        if(user_details.admin != "admin"){
+            flag = false;
+            error = error + "Invalid admin code \n";
+        }
     }
-    return flag;
+
+    return [flag,error];
 }

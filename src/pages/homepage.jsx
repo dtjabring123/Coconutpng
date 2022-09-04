@@ -7,7 +7,7 @@ render(){
     <div>
         <h1>Welcome User.....To the home page</h1>
         <div className="row">
-            <Link to="/mainscreen">      
+            <Link to="/">      
                 <button className='buttonstyle'
                     style={{marginTop:10, marginBottom:30}}>
                     Logout

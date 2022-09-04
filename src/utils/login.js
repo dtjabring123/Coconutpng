@@ -1,6 +1,6 @@
-import validation from './validation.js'
+import {validation} from './validation.js'
 
-export function validLogin(user_details,output){
+export function validLogin(user_details){
     var flag = true;
     var error = "";
     if(validation.validEmail(user_details.email) == false){
@@ -14,6 +14,6 @@ export function validLogin(user_details,output){
     if(!flag){
         output(error);
     }
-    return flag;
+    return [flag,error];
 }
 

@@ -1,7 +1,23 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-
+import { updateUserDetails, getUserDetails} from '../utils/database_functions';
 export default class ProfilePage extends React.Component {
+	state = {
+		fname : "",
+		lname : "",
+		dob : "",
+		phone_num : "",
+		id : "",
+		admin : ""
+	}
+
+	componentDidMount(){
+		//initialise text fields here
+		//call db method
+
+		//change text fields
+
+	}
 
 	render(){
 		return (
@@ -12,7 +28,7 @@ export default class ProfilePage extends React.Component {
 						{/* ERRROR */}
 						<div className="form-group">
 							<label htmlFor="name">Name</label>
-							<input id="name" type="string" name="name" readOnly={true}/>
+							<input id="name" type="string" name="fname" readOnly={true}/>
 						</div>
 
 						<div className="form-group">
