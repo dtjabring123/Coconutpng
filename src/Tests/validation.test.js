@@ -7,7 +7,7 @@ describe("onlyNums tests", () => {
     })
     test("only digits", () => {
         expect(validation.onlyNums("123456789")).toBe(true);
-    })
+    }) 
     test("only letters", () => {
         expect(validation.onlyNums("asdfqwerty")).toBe(false);
     })
@@ -102,5 +102,31 @@ describe("validDob tests", () => {
     })
     test("valid date", () => {
         expect(validation.validDob("2000-11-04")).toBe(true);
+    })
+    var current_date = new Date();
+    test("current date", () => {
+        expect(validation.validDob(current_date)).toBe(false);
+    })
+});
+
+//tests for validPassword
+describe("validPassword tests", () => {
+    test("too short", () => {
+        expect(validation.validPassword("123")).toBe(false);
+    })
+    test("too long", () => {
+        expect(validation.validPassword("that time i reincarnated as a compsci student")).toBe(false);
+    })
+    test("no lower case characters", () => {
+        expect(validation.validPassword("QWERTY1")).toBe(false);
+    })
+    test("no upper case characters", () => {
+        expect(validation.validPassword("qwerty1")).toBe(false);
+    })
+    test("no numbers", () => {
+        expect(validation.validPassword("qwErtyy")).toBe(false);
+    })
+    test("valid password", () => {
+        expect(validation.validPassword("Qeys2tdfs12")).toBe(true);
     })
 });
