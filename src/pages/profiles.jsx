@@ -163,6 +163,11 @@ export default class ProfilePage extends React.Component {
 						</div>
 
 						<div className="form-group">
+							<label htmlFor="id">ID Number</label>
+							<input id="idnum" type="string" name="id" onChange={evt=>this.handleInput(evt)}/>
+						</div>
+
+						<div className="form-group">
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
