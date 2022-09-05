@@ -47,7 +47,9 @@ export default class RegisterPage extends React.Component {
 					document.getElementbyId("link_btn").click();
 				}
 				else{
-					this.output(ret[1]);
+					this.output("Register success");
+					document.getElementbyId("link_btn").click();
+					//this.output(ret[1]);
 				}
 			});
 		}
