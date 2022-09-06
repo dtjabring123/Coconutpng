@@ -10,6 +10,7 @@ jobs:
   build:
     docker:
       - image: cimg/node:16.10
+      - image: circleci/node:10.0.0
     steps:
       - build-and-test
       - store-coverage-data
@@ -22,15 +23,16 @@ commands:
 
   upload-coverage:
     steps:
-      - coveralls/upload:
-          verbose: true
-          path_to_lcov: .circleci/coverage-final.json
+      - coveralls/upload
       - codecov/upload:
           file: .circleci/coverage-final.json
           
   build-and-test:
     steps:
       - checkout
+      - run:
+          name: Install and Make
+          command: 'npm install && make test-coverage'
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
