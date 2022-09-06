@@ -24,6 +24,7 @@ commands:
     steps:
       - coveralls/upload:
           verbose: true
+          path_to_lcov: .circleci/coverage-final.json
       - codecov/upload:
           file: .circleci/coverage-final.json
           
