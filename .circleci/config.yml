@@ -22,7 +22,8 @@ commands:
 
   upload-coverage:
     steps:
-      - coveralls/upload
+      - coveralls/upload:
+          verbose: true
       - codecov/upload:
           file: .circleci/coverage-final.json
           
