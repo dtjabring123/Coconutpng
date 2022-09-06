@@ -21,7 +21,8 @@ commands:
 
   upload-coverage:
     steps:
-      - codecov/upload
+      - codecov/upload:
+        file: './coverage/clover.xml'
           
   build-and-test:
     steps:
