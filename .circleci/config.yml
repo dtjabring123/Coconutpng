@@ -3,7 +3,7 @@
 version: 2.1
 orbs:
   node: circleci/node@4.7
-  codecov: codecov/codecov@1.0.5
+  coveralls: coveralls/coveralls@3.1.1
   
 jobs:
   build:
@@ -21,7 +21,7 @@ commands:
 
   upload-coverage:
     steps:
-      - codecov/upload:
+      - coveralls/upload
           file: .circleci/coverage-final.json
           
   build-and-test:
