@@ -3,7 +3,7 @@
 version: 2.1
 orbs:
   node: circleci/node@4.7
-  codecov: codecov/codecov@1.0.5
+  codecov: codecov/codecov@3.1.1
   
 jobs:
   build:
@@ -22,7 +22,7 @@ commands:
   upload-coverage:
     steps:
       - codecov/upload:
-          file: .circleci/coverage-final.json
+          file: coverage/coverage-final.json
           
   build-and-test:
     steps:
