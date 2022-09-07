@@ -3,13 +3,13 @@ import { Link } from "react-router-dom"
 import { updateUserDetails, getUserDetails,changePassword} from '../database_functions';
 import { validation } from '../utils/validation';
 export default class ProfilePage extends React.Component {
-	state = {
+	state = { // store values that can be edited by the user
 		firstname : null,
 		lastname : null,
 		phone : null,
 		password : null,
 	}
-	handleInput = (event) =>{
+	handleInput = (event) =>{ // updates state values to reflect user input
 		const target = event.target;
 		const name = target.name;
 		const value = target.value;
@@ -18,14 +18,14 @@ export default class ProfilePage extends React.Component {
 		})
 	}
 
-	componentDidMount(){
-		//initialise text fields here
+	componentDidMount(){ // executes once page is loaded
+		//change text fields to user info
 		var user_details;
 		var flag = false;
-		//call db method to get user details
+		//call database method to get user details
 		let succ = getUserDetails();
 	 	Promise.resolve(succ).then((ret)=>{
-		 		if(ret[0] == "success"){
+		 		if(ret[0] == "success"){ // user details received
 					user_details = ret[1];
 					//update fields
 					var name_lbl = document.getElementById("name");
@@ -36,7 +36,7 @@ export default class ProfilePage extends React.Component {
 					dob_lbl.value = user_details.DoB;
 					var phonenum_lbl = document.getElementById("phone");
 					phonenum_lbl.value = user_details.phoneNumber;
-					if(user_details.role == 1){
+					if(user_details.role == 1){ 
 					   var admin_lbl = document.getElementById("admin");
 					   admin_lbl.value = "admin";
 					}
@@ -48,19 +48,16 @@ export default class ProfilePage extends React.Component {
 		 		}
 		 	} )
 	}
-	handleChanges=()=>{
-		//updateuserdetails(json) - json = {first_name = , last_name = ,phoneNumber = }
-		//changePassword(new_password)
-		//
+	handleChanges=()=>{ // method updates user info given that the input is valid 
 		//change password
 		if(this.state.password != null && this.state.password.length > 0){
 			//validate password
-			if(validation.validPassword(this.state.password)){
+			if(validation.validPassword(this.state.password)){ //valid password so use database method to update password
 				let succ = changePassword(this.state.password);
 				Promise.resolve(succ).then((ret)=>{
 					if(ret[0] == "success"){
 						this.output("Password changed successfully");
-					}else{
+					}else{ //authentication token error
 						this.output("Couldn't change password");
 					}
 				})
@@ -68,10 +65,10 @@ export default class ProfilePage extends React.Component {
 				this.output("Password Password must be between 6 and 15 characters long inclusive.\n Password should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n");
 			}
 		}
-		
+		//update first name, last name, phone number
 		var flag = true;
 		var error = "";
-		var json = {
+		var json = { 
 			first_name : this.state.fname,
 			last_name : this.state.lastname,
 			phoneNumber : this.state.phone
@@ -112,7 +109,7 @@ export default class ProfilePage extends React.Component {
 		if(  ((json.first_name == null)  && (json.last_name == null)) && (json.phoneNumber == null) ){
 			flag = false;
 		}
-		if(flag){ //call db method to change details
+		if(flag){ //call database method to change details
 			let succ = updateUserDetails(json);
 			Promise.resolve(succ).then((ret)=>{
 					this.output("Details changed successfully");
@@ -121,7 +118,7 @@ export default class ProfilePage extends React.Component {
 			this.output(error);
 		}
 	}
-	output = (message) =>{
+	output = (message) =>{ // method is given a message , method displays a toast message containing the given message
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;
