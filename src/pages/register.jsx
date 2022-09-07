@@ -4,7 +4,7 @@ import { validRegistration } from '../utils/registration'
 import "../index.css";
 import { register } from '../database_functions';
 export default class RegisterPage extends React.Component {
-	state = {
+	state = { // values that user inputs to register
 		fname : "",
 		lname : "",
 		dob : "",
@@ -14,7 +14,7 @@ export default class RegisterPage extends React.Component {
 		admin : "",
 		id : ""
 	}
-	handleInput = (event) =>{
+	handleInput = (event) =>{ //update stored values to match user input
 		const target = event.target;
 		const name = target.name;
 		const value = target.value;
@@ -22,7 +22,7 @@ export default class RegisterPage extends React.Component {
 			[name] : value,
 		})
 	}
-	output = (message) =>{
+	output = (message) =>{ // method displays given message as a toast message
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;
@@ -30,16 +30,16 @@ export default class RegisterPage extends React.Component {
 			x.className = x.className.replace("show", "");
 		}, 8000);
 	}
-	handleRegister = () =>{
-		var flag = validRegistration(this.state);
-		if(flag[0] === false){
+	handleRegister = () =>{ 
+		var flag = validRegistration(this.state); //validate registration details
+		if(flag[0] === false){ // given input is not in the correct format
 			this.output(flag[1]);
 		}else{
-			var role = 0;
+			var role = 0; //database role is stored as integer, default  - user is normal
 			if(this.state.admin == "admin"){//banned = -1 , normal = 0 , admin = 1
 				role = 1;
 			} 
-			//call db method to register
+			//call database method to register
 			let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phonenum,role,this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
 				if(ret[0] == "success "){

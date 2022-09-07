@@ -4,11 +4,11 @@ import { validLogin } from '../utils/login.js'
 import { logIn } from '../database_functions'
 import '../index.css';
 export default class LoginPage extends React.Component {
-	state = {
+	state = { //store email and password to be used to login 
 		email : "",
 		password : ""
 	}
-	handleInput = (event) =>{
+	handleInput = (event) =>{ //updates email and password variables when user inputs
 		const target = event.target;
 		const name = target.name;
 		const value = target.value;
@@ -16,7 +16,7 @@ export default class LoginPage extends React.Component {
 			[name] : value,
 		})
 	}
-	output = (message) =>{
+	output = (message) =>{ //output is given a message and displays a toast message of the input
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;
@@ -24,10 +24,10 @@ export default class LoginPage extends React.Component {
 			x.className = x.className.replace("show", "");
 		}, 10000);
 	}
-	handleLogin = () =>{
+	handleLogin = () =>{  //validate login details first
 		var valid = validLogin(this.state);
 		if(valid[0] == true){
-			//call db method
+			//call database method
 			let succ = logIn(this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
 				if(ret[0] == "success"){
@@ -41,7 +41,7 @@ export default class LoginPage extends React.Component {
 				}
 			} )
 		}else{
-			 this.output(valid[1]);
+			 this.output(valid[1]); // database error
 		}
 	}
 

@@ -1,6 +1,6 @@
 import {validation} from './validation.js';
 
-export function validRegistration(user_details){
+export function validRegistration(user_details){ // validates user details for registration and returns [are details valid? , error message]
     var flag = true;
     var error = "";
     //validate both names
