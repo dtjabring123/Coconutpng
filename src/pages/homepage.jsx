@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 import { logOut } from '../database_functions';
 import "../stylesheets/default.css";
 export default class HomePage extends React.Component {
-    handleLogout = () =>{
-        var succ = logOut(); //if pass = failed = error else move to other screen
+    handleLogout = () =>{  // method handles user trying to log out
+        var succ = logOut(); //call database method to log out
         Promise.resolve(succ).then((ret) =>{
             if(ret === "success"){
                 this.output("Logged out");
@@ -13,7 +13,7 @@ export default class HomePage extends React.Component {
             }
         })
     }
-	output = (message) =>{
+	output = (message) =>{ // method displays given message as a toast message
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;
