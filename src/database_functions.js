@@ -255,6 +255,37 @@ async function updateUserDetails(JSONobj){
   return [pass];
 }
 
+//Function to get all the questions to display on the home page
+async function getAllQuestions(){
+  const colRef = collection(db,'Questions');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          //Create the JSON representing the question
+          var Question = {
+            "title": doc.data().question_title,
+            "likes": doc.data().question_likes,
+            "author": doc.data().question_user,
+            "question_id": doc.data().id
+          }
+          JSONarr.push(Question);
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
+}
+
 //Function to create a question
 async function askQuestion(title, desc){
   const questionsRef = collection(db,"Questions");
@@ -262,11 +293,12 @@ async function askQuestion(title, desc){
 
   //Creates a new question based on passed in parameters and predefined values
   await addDoc(questionsRef,{
-    "question_user":auth.currentUser.email,
+    "question_user":auth.currentUser.displayName,
     "question_title":title,
     "question_desc":desc,
     "question_date": serverTimestamp(),
-    "question_likes":0
+    "question_likes":0,
+    "question_reference":auth.currentUser.email
   })
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
@@ -429,10 +461,51 @@ async function getQuestionInfo(question_id){
   return [pass,JSON];
   
 }
+
+//Function that will create a response to a question
+async function giveResponse_or_Comment(check,id,desc){
+  //If check = 0 then we are making a response else we are giving a comment
+  var pass = "success";
+  if(check==0){
+    const responsesRef = collection(db,"Responses");
+    
+    //Creates a new question based on passed in parameters and predefined values
+    await addDoc(responsesRef,{
+      "response_user":auth.currentUser.displayName,
+      "response_reference":auth.currentUser.email,
+      "response_desc":desc,
+      "response_date": serverTimestamp(),
+      "response_likes":0,
+      "response_question":id,
+      "response_mark":0
+    })
+    .catch((e)=>{
+      pass = "failed"; //Used to symbolise that the creation of the response failed.
+    })
+    return pass;
+  }
+  else{
+      const commentsRef = collection(db,"Comments");
+
+      //Creates a new question based on passed in parameters and predefined values
+      await addDoc(commentsRef,{
+        "comment_user":auth.currentUser.displayName,
+        "comment_reference":auth.currentUser.email,
+        "comment_desc":desc,
+        "comment_date": serverTimestamp(),
+        "comment_response":id
+      })
+      .catch((e)=>{
+        pass = "failed"; //Used to symbolise that the creation of the comment failed.
+      })
+    return pass;
+  }
+  
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment}
