@@ -1,54 +1,14 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+
 orbs:
   node: circleci/node@4.7
   codecov: codecov/codecov@3.1.1
   
-jobs:
-  build:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - build-and-test
-      - upload-coverage
-commands:
-  upload-coverage:
-    steps:
-      - codecov/upload
-          
-  build-and-test:
-    steps:
-      - checkout
-      - node/install-packages:
-          # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: install-dependancies
-          command: npm ci
-          
-      - run:
-          name: install react testing library
-          command: npm install @testing-library/react
-      - run:
-          name: install jest-dom library for react testing
-          command: npm install @testing-library/jest-dom
-      - run:
-          name: install bcrypt
-          command: npm install bcryptjs
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - $HOME/.npm
-      - run:
-          name: Run tests
-          command: npm test
-
 workflows:
-  version: 2
-  build_and_test:
+  upload-to-codecov:
     jobs:
-      - build
-
+      - node/test:
+          post-steps:
+            - codecov/upload
