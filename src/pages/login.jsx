@@ -1,13 +1,14 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { validLogin } from '../utils/login'
-import { logIn } from '../utils/database_functions'
+import { validLogin } from '../utils/login.js'
+import { logIn } from '../database_functions'
+import '../index.css';
 export default class LoginPage extends React.Component {
-	state = {
+	state = { //store email and password to be used to login 
 		email : "",
 		password : ""
 	}
-	handleInput = (event) =>{
+	handleInput = (event) =>{ //updates email and password variables when user inputs
 		const target = event.target;
 		const name = target.name;
 		const value = target.value;
@@ -15,33 +16,44 @@ export default class LoginPage extends React.Component {
 			[name] : value,
 		})
 	}
-	output = (message) =>{
-		alert(message);
+	output = (message) =>{ //output is given a message and displays a toast message of the input
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 10000);
 	}
-	handleLogin = () =>{
+	handleLogin = () =>{  //validate login details first
 		var valid = validLogin(this.state);
 		if(valid[0] == true){
-			//call db method
-			let succ = logIn(this.state);
+			//call database method
+			let succ = logIn(this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
-				if(ret[0]){
+				if(ret[0] == "success"){
 					this.output("Login Success");
 					//go to main screen
+					this.movepage();
+					
 				}
 				else{
 					this.output("Email or password are incorrect");
 				}
 			} )
-		
 		}else{
-			this.output(valid[1]);
+			 this.output(valid[1]); // database error
 		}
+	}
+
+	movepage = ()  =>{
+		document.getElementById("home_button").click();
 	}
 
 	render(){
 		return (
 			<React.Fragment>
 				<form>
+					<div id = "snackbar"></div>
 					<div className="form-inner">
 						<h2>Login</h2>
 						{/* ERRROR */}
@@ -54,8 +66,13 @@ export default class LoginPage extends React.Component {
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
 						</div>
+
+						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
 						<Link to="/homepage">      
-							<input type="submit" value="LOGIN"/>
+							<button type="submit" value="LOGIN" id = "home_button"/>
+   						</Link>
+						<Link to="/">      
+                            <input type="submit" value="BACK"/>
    						</Link>
 					</div>
 				</form>

@@ -9,7 +9,7 @@ export class validation{
     // take into account month for determining final age to be compared, if month < dob_month then age = year-dob_year - 1
     //                                                                  else age = year - dob_year
 
-    static onlyNums(sString){
+    static onlyNums(sString){ // returns true or false if a string contains only numbers
         if((sString == null) | (sString.length == 0)){
             return false;
         }
@@ -27,7 +27,7 @@ export class validation{
         if(sEmail.length < 10){
             return false;
         }
-        var flag_1 = false; // flag for checking @ is in the email
+        var flag_1 = false; // flag for checking there is at least 1 '@' in the email
         var flag_2 = true; // flag for checking after every . there is a letter
         for(let i = 0;i<sEmail.length;i++){
             if(( flag_1 == false) && (sEmail[i] == "@")){
@@ -50,7 +50,7 @@ export class validation{
             return false;
         }
     }
-    static validID(sID){
+    static validID(sID){ // validate ID number
     if(sID == null){
         return false;
     }
@@ -59,7 +59,7 @@ export class validation{
     }
     return this.onlyNums(sID);
     }
-    static validName(sName){
+    static validName(sName){ // validate name - check every character in the name is an alphabetical letter
         if(sName == null){
             return false;
         }
@@ -118,7 +118,6 @@ export class validation{
             var flag_lower = false;
             var flag_number = false;
             for(let i = 0;i<sString.length;i++){
-
                 if((sString[i]>= "a") && (sString[i]<= "z")){ //has at least 1 lowercase character
                     flag_lower = true;
                 }
@@ -128,12 +127,12 @@ export class validation{
                 if((sString[i]>= "0") && (sString[i] <= "9")){ //has at least 1 number
                     flag_number = true;
                 }
-                if((flag_lower && flag_number) && flag_upper){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            }
+            if((flag_lower && flag_number) && flag_upper){//password must satisfy all 3 conditions
+                return true;
+            }
+            else{
+                return false;
             }
         }
         return false;
