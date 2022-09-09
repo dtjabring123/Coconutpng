@@ -423,7 +423,67 @@ async function likeQuestion(value,question_id){
   return [pass,failed_arr];
 }
 
-//function that will return all data that would be necessary to display the question
+//Function that will be used to get the comments related to a response
+async function getComments(response_id){
+  const colRef = collection(db,'Comments');
+  var pass = "failed";
+  let JSONarr = [];
+
+  //Make a query requesting for the correct comments
+  const q = query(colRef,where("comment_response","==",response_id));
+  const commentsDocsSnap = await getDocs(q)
+  .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+
+      if(doc.data()!=null){
+        pass = 'success'
+        var comment = {
+          "id": doc.id,
+          "date": doc.data().comment_date,
+          "description": doc.data().comment_desc,
+          "response": doc.data().comment_response,
+          "user": doc.data().comment_user
+        }
+        JSONarr.push(comment);
+      }
+    })
+  })
+  return [pass,JSONarr]
+}
+
+//Function that will get a questions responses and their comments
+async function getResponses(question_id){
+  const colRef = collection(db,'Responses');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Queries the data
+  const q = query(colRef,where("response_question","==",question_id));
+
+  const responsesDocsSnap = await getDocs(q)
+  .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+      if(doc.data()!=null){
+        pass = 'success'
+        var response = {
+          "id": doc.id,
+          "date": doc.data().response_date,
+          "description": doc.data().response_desc,
+          "likes": doc.data().response_likes,
+          "question": doc.data().response_question,
+          "mark": doc.data().response_mark,
+          "user": doc.data().response_user
+        }
+        JSONarr.push(response)
+      }
+    })
+  })
+
+return [pass,JSONarr];
+  
+}
+
+//Function that will return all data that would be necessary to display the question
 async function getQuestionInfo(question_id){
   //Will return if the request passed/failed and the JSON representing the question
   var pass = 'failed';
@@ -508,4 +568,4 @@ async function giveResponse_or_Comment(check,id,desc){
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments}
