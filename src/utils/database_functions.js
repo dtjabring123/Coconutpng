@@ -255,6 +255,37 @@ async function updateUserDetails(JSONobj){
   return [pass];
 }
 
+//Function to get all the questions to display on the home page
+async function getAllQuestions(){
+  const colRef = collection(db,'Questions');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          //Create the JSON representing the question
+          var Question = {
+            "title": doc.data().question_title,
+            "likes": doc.data().question_likes,
+            "author": doc.data().question_user,
+            "question_id": doc.data().id
+          }
+          JSONarr.push(Question);
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
+}
+
 //Function to create a question
 async function askQuestion(title, desc){
   const questionsRef = collection(db,"Questions");
