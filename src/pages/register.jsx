@@ -48,12 +48,12 @@ export default class RegisterPage extends React.Component {
 			let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phonenum,role,this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
 				if(ret[0] == "success"){
-					this.output("Register success");
+					this.output("You have been registerd successfully");
 					this.movePage();
 				}
 				else{
 					console.log(ret);
-					this.output("Register success");
+					this.output("You have been registerd successfully");
 					this.movePage();
 					//this.output(ret[1]);
 				}
