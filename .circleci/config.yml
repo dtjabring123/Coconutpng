@@ -11,14 +11,8 @@ jobs:
       - image: cimg/node:16.10
     steps:
       - build-and-test
-      - store-coverage-data
       - upload-coverage
 commands:
-  store-coverage-data:
-    steps:
-      - store_artifacts:
-          path: coverage
-
   upload-coverage:
     steps:
       - codecov/upload
