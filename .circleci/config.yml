@@ -11,18 +11,11 @@ jobs:
       - image: cimg/node:16.10
     steps:
       - build-and-test
-      - store-coverage-data
       - upload-coverage
 commands:
-  store-coverage-data:
-    steps:
-      - store_artifacts:
-          path: coverage
-
   upload-coverage:
     steps:
-      - codecov/upload:
-          file: coverage/coverage-final.json
+      - codecov/upload
           
   build-and-test:
     steps:
@@ -52,10 +45,7 @@ commands:
       - run:
           name: Run tests
           command: npm test
-          environment: 
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - store_test_results:
-          path: ./reports/junit/
+
 workflows:
   version: 2
   build_and_test:

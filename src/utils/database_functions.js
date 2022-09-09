@@ -293,12 +293,11 @@ async function askQuestion(title, desc){
 
   //Creates a new question based on passed in parameters and predefined values
   await addDoc(questionsRef,{
-    "question_user":auth.currentUser.displayName,
+    "question_user":auth.currentUser.email,
     "question_title":title,
     "question_desc":desc,
     "question_date": serverTimestamp(),
-    "question_likes":0,
-    "question_reference":auth.currentUser.email
+    "question_likes":0
   })
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
@@ -423,67 +422,7 @@ async function likeQuestion(value,question_id){
   return [pass,failed_arr];
 }
 
-//Function that will be used to get the comments related to a response
-async function getComments(response_id){
-  const colRef = collection(db,'Comments');
-  var pass = "failed";
-  let JSONarr = [];
-
-  //Make a query requesting for the correct comments
-  const q = query(colRef,where("comment_response","==",response_id));
-  const commentsDocsSnap = await getDocs(q)
-  .then((snapshot)=>{
-    snapshot.docs.forEach((doc)=>{
-
-      if(doc.data()!=null){
-        pass = 'success'
-        var comment = {
-          "id": doc.id,
-          "date": doc.data().comment_date,
-          "description": doc.data().comment_desc,
-          "response": doc.data().comment_response,
-          "user": doc.data().comment_user
-        }
-        JSONarr.push(comment);
-      }
-    })
-  })
-  return [pass,JSONarr]
-}
-
-//Function that will get a questions responses and their comments
-async function getResponses(question_id){
-  const colRef = collection(db,'Responses');
-  var pass = 'failed';
-  let JSONarr = [];
-  
-  //Queries the data
-  const q = query(colRef,where("response_question","==",question_id));
-
-  const responsesDocsSnap = await getDocs(q)
-  .then((snapshot)=>{
-    snapshot.docs.forEach((doc)=>{
-      if(doc.data()!=null){
-        pass = 'success'
-        var response = {
-          "id": doc.id,
-          "date": doc.data().response_date,
-          "description": doc.data().response_desc,
-          "likes": doc.data().response_likes,
-          "question": doc.data().response_question,
-          "mark": doc.data().response_mark,
-          "user": doc.data().response_user
-        }
-        JSONarr.push(response)
-      }
-    })
-  })
-
-return [pass,JSONarr];
-  
-}
-
-//Function that will return all data that would be necessary to display the question
+//function that will return all data that would be necessary to display the question
 async function getQuestionInfo(question_id){
   //Will return if the request passed/failed and the JSON representing the question
   var pass = 'failed';
@@ -521,51 +460,10 @@ async function getQuestionInfo(question_id){
   return [pass,JSON];
   
 }
-
-//Function that will create a response to a question
-async function giveResponse_or_Comment(check,id,desc){
-  //If check = 0 then we are making a response else we are giving a comment
-  var pass = "success";
-  if(check==0){
-    const responsesRef = collection(db,"Responses");
-    
-    //Creates a new question based on passed in parameters and predefined values
-    await addDoc(responsesRef,{
-      "response_user":auth.currentUser.displayName,
-      "response_reference":auth.currentUser.email,
-      "response_desc":desc,
-      "response_date": serverTimestamp(),
-      "response_likes":0,
-      "response_question":id,
-      "response_mark":0
-    })
-    .catch((e)=>{
-      pass = "failed"; //Used to symbolise that the creation of the response failed.
-    })
-    return pass;
-  }
-  else{
-      const commentsRef = collection(db,"Comments");
-
-      //Creates a new question based on passed in parameters and predefined values
-      await addDoc(commentsRef,{
-        "comment_user":auth.currentUser.displayName,
-        "comment_reference":auth.currentUser.email,
-        "comment_desc":desc,
-        "comment_date": serverTimestamp(),
-        "comment_response":id
-      })
-      .catch((e)=>{
-        pass = "failed"; //Used to symbolise that the creation of the comment failed.
-      })
-    return pass;
-  }
-  
-}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
