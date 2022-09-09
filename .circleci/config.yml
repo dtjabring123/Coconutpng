@@ -21,9 +21,8 @@ commands:
 
   upload-coverage:
     jobs:
-      - node/test:
-          post-steps:
-            - codecov/upload
+      -checkout
+      - codecov/upload
           
   build-and-test:
     steps:
