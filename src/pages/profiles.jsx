@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { updateUserDetails, getUserDetails,changePassword} from '../database_functions';
+import { updateUserDetails, getUserDetails,changePassword} from '../utils/database_functions';
 import { validation } from '../utils/validation';
 export default class ProfilePage extends React.Component {
 	state = { // store values that can be edited by the user

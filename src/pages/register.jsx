@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { validRegistration } from '../utils/registration'
 import "../index.css";
-import { register } from '../database_functions';
+import { register } from '../utils/database_functions';
 export default class RegisterPage extends React.Component {
 	state = { // values that user inputs to register
 		fname : "",
@@ -28,7 +28,12 @@ export default class RegisterPage extends React.Component {
 		x.innerHTML = message;
 		setTimeout(function () {
 			x.className = x.className.replace("show", "");
-		}, 8000);
+		}, 3000);
+	}
+	movePage=()=>{//moves page from registration to main screen - user is automatically logged in
+		setTimeout(function () {
+			document.getElementById("link_btn").click();
+		}, 3000);
 	}
 	handleRegister = () =>{ 
 		var flag = validRegistration(this.state); //validate registration details
@@ -42,13 +47,14 @@ export default class RegisterPage extends React.Component {
 			//call database method to register
 			let succ = register(this.state.fname,this.state.lname,this.state.dob,this.state.id,this.state.phonenum,role,this.state.email,this.state.password);
 			Promise.resolve(succ).then((ret)=>{
-				if(ret[0] == "success "){
+				if(ret[0] == "success"){
 					this.output("Register success");
-					document.getElementbyId("link_btn").click();
+					this.movePage();
 				}
 				else{
+					console.log(ret);
 					this.output("Register success");
-					document.getElementbyId("link_btn").click();
+					this.movePage();
 					//this.output(ret[1]);
 				}
 			});
@@ -103,7 +109,7 @@ export default class RegisterPage extends React.Component {
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>
 						<Link to="/homepage">      
-							<button type="button" value="REGISTER" id = "home_button"/>
+							<button type="submit" value="REGISTER" id = "link_btn"/>
    						</Link>
 						<Link to="/">      
                             <input type="submit" value="BACK"/>
