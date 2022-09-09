@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { logOut } from '../database_functions';
+import { logOut } from '../utils/database_functions';
 import "../stylesheets/default.css";
 export default class HomePage extends React.Component {
     handleLogout = () =>{  // method handles user trying to log out

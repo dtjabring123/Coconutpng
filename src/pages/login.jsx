@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import { validLogin } from '../utils/login.js'
-import { logIn } from '../database_functions'
+import { logIn } from '../utils/database_functions'
 import '../index.css';
 export default class LoginPage extends React.Component {
 	state = { //store email and password to be used to login 
@@ -22,7 +22,7 @@ export default class LoginPage extends React.Component {
 		x.innerHTML = message;
 		setTimeout(function () {
 			x.className = x.className.replace("show", "");
-		}, 10000);
+		}, 3000);
 	}
 	handleLogin = () =>{  //validate login details first
 		var valid = validLogin(this.state);
@@ -45,8 +45,10 @@ export default class LoginPage extends React.Component {
 		}
 	}
 
-	movepage = ()  =>{
-		document.getElementById("home_button").click();
+	movepage = ()  =>{ //transition page after toast is displayed
+		setTimeout(function () {
+			document.getElementById("home_button").click();
+		}, 3000);
 	}
 
 	render(){
