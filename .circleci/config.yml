@@ -15,11 +15,11 @@ jobs:
 commands:
   upload-coverage:
     steps:
+      - checkout
       - codecov/upload
           
   build-and-test:
     steps:
-      - checkout
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
