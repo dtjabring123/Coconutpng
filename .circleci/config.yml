@@ -20,8 +20,10 @@ commands:
           path: coverage
 
   upload-coverage:
-    steps:
-      - codecov/upload
+    jobs:
+      - node/test:
+          post-steps:
+            - codecov/upload
           
   build-and-test:
     steps:
