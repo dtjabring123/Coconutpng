@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: montserrat, sans-serif;
 }
 
 input, button {
@@ -19,6 +18,7 @@ input, button {
     justify-content: center;
     background-color: #53565A;
 }
+
 /*Here is the stuff for the snackbar(toast message) */
 #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
@@ -33,6 +33,14 @@ input, button {
     z-index: 1; /* Add a z-index if needed */
     left: 50%; /* Center the snackbar */
     bottom: 30px; /* 30px from the bottom */
+  }
+  /*animations for the snackbar*/
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }
 form {
     display: block;
@@ -109,6 +117,20 @@ form .form-inner input[type="submit"] {
     color:#FFF;
     font-weight: 700;
     cursor: pointer;
+    margin-left: 250px;
+}
+
+form .form-inner input[type="button"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
 
 }
 
@@ -131,6 +153,10 @@ form .form-inner input[type="submit"] {
 }
 
 form .form-inner input[type="submit"]:hover {
+    background-position : 100% 0%;
+}
+
+form .form-inner input[type="button"]:hover {
     background-position : 100% 0%;
 }
 

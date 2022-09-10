@@ -114,6 +114,47 @@ function logOut(){
     return pass;
   }
 
+//Gets the user's details
+async function getUserDetails(){  
+  //Get a user reference
+  var pass = 'failed';
+  var JSONobj = null;
+  
+  try{
+    //Try catch to make sure that the user has logged in
+    const userRef = doc(db,"Users",auth.currentUser.email);
+
+    await getDoc(userRef)
+    .then((ret)=>{
+      //Check that the user document exists
+      if(ret.data()==null){
+        return [pass,JSONobj]
+
+      }
+      pass = 'success';
+      //create the json object
+      JSONobj = {
+        DoB: ret.data().user_DoB,
+        firstName: ret.data().user_first_name,
+        lastName: ret.data().user_last_name,
+        phoneNumber: ret.data().user_phone,
+        emailAddress: ret.data().user_email,
+        role: ret.data().user_role,
+        titles: ret.data().user_titles
+      }
+    })
+    .catch(err=>{
+      console.log(err.message)
+    })
+
+    return [pass,JSONobj];
+  }
+  catch(e){
+    //User has not logged in
+    return [pass,JSONobj];
+  }
+  
+}
 //Gets the usersID so that it can be used for password reset validation
 async function CompareUserID(email,id){
   var arr = [];
@@ -212,6 +253,37 @@ async function updateUserDetails(JSONobj){
     return ["failed",failed_arr]
   }
   return [pass];
+}
+
+//Function to get all the questions to display on the home page
+async function getAllQuestions(){
+  const colRef = collection(db,'Questions');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          //Create the JSON representing the question
+          var Question = {
+            "title": doc.data().question_title,
+            "likes": doc.data().question_likes,
+            "author": doc.data().question_user,
+            "question_id": doc.data().id
+          }
+          JSONarr.push(Question);
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
 }
 
 //Function to create a question
@@ -394,4 +466,4 @@ async function getQuestionInfo(question_id){
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}

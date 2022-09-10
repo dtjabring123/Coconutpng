@@ -1,6 +1,6 @@
 import {validation} from './validation.js';
 
-export function validRegistration(user_details){
+export function validRegistration(user_details){ // validates user details for registration and returns [are details valid? , error message]
     var flag = true;
     var error = "";
     //validate both names
@@ -26,10 +26,10 @@ export function validRegistration(user_details){
     //validate password
     if(!validation.validPassword(user_details.password)){
         flag = false;
-        error = error + "Password must be between 6 and 15 characters long inclusive.Password should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n";
+        error = error + "Password must be between 6 and 15 characters long inclusive.\nPassword should contain at least 1 uppercase letter, 1 lowercase letter and 1 number \n";
     }
     //check admin code matches 
-    if((user_details.admin != null) | (user_details.admin != "" )){
+    if((user_details.admin != null) && (user_details.admin != "" )){
         if(user_details.admin != "admin"){
             flag = false;
             error = error + "Invalid admin code \n";
