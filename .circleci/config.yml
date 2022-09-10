@@ -51,9 +51,9 @@ commands:
           name: Run tests
           command: npm test
           environment: 
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_OUTPUT_DIR: coverage/coverage.json
       - store_test_results:
-          path: ./reports/junit/
+          path: coverage
 workflows:
   version: 2
   build_and_test:
