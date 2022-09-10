@@ -20,7 +20,7 @@ commands:
   upload-coverage:
     steps:
       - codecov/upload:
-          file: coverage/coverage-final.json
+          file: coverage/coverage.json
           
   build-and-test:
     steps:
