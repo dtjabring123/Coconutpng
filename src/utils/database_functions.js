@@ -64,9 +64,9 @@ const firebaseConfig = {
         "displayName": first_name,
         "firstName": first_name,
         "lastName": last_name,
-        "DoB": dob,
         "emailAddress": email,
-        "phoneNumber": mobile_number
+        "role":role,
+        "titles":[]
       }
       arr.push(loggedIn);
     })
@@ -80,25 +80,46 @@ const firebaseConfig = {
   //Logs the user in
 async function logIn(email,password){
     //Will use to return if the the logging in is a success/failure and if it is a success then returns the user as a JSON object
-    let arr = [];
+    var pass = "failed";
+    var JSONobj;
   
     const signIn = await signInWithEmailAndPassword(auth,email,password)
     .then((cred)=>{
-      arr.push("success");
-      
-      //Passes necessary info for what will be displayed or necessary when logged in
-      var loggedIn = {
-        "displayName":cred.user.displayName,
-        "emailAddress":cred.user.email,
-      }
-      arr.push(loggedIn);
+      pass = "success";
       console.log('user logged in: ',cred.user.displayName)
     })
     .catch((err)=>{
       console.log(err.message);
-      arr.push("failed");
     })
-    return arr;
+
+    if(pass==="success"){
+      //Get the user object to pass through so that we know what view to use
+      const userRef = doc(db,"Users",auth.currentUser.email);
+      
+      await getDoc(userRef)
+      .then((ret)=>{
+        //Check that the user document exists
+        if(ret.data()==null){
+          console.log("User not logged in");
+          return ["failed",null];
+        }
+        //create the json object
+        JSONobj = {
+          firstName: ret.data().user_first_name,
+          lastName: ret.data().user_last_name,
+          emailAddress: ret.data().user_email,
+          role: ret.data().user_role,
+          titles: ret.data().user_titles
+        }
+      })
+      .catch(err=>{
+        console.log(err.message);
+        pass = "failed";
+      })
+  
+      
+    }
+    return [pass,JSONobj];
   }
 
   //logging out
@@ -249,6 +270,18 @@ async function updateUserDetails(JSONobj){
     pass = "success"
   }
 
+  if(JSONobj.role!=null){
+    //User wants a role change
+    updateDoc(userRef,{
+      user_role: JSONobj.role
+    })
+    .catch((error)=>{
+      console.log(error.message);
+      failed_arr.push("role_change")
+    })
+    pass = "success"
+  }
+
   if(failed_arr.length>0){
     return ["failed",failed_arr]
   }
@@ -293,11 +326,12 @@ async function askQuestion(title, desc){
 
   //Creates a new question based on passed in parameters and predefined values
   await addDoc(questionsRef,{
-    "question_user":auth.currentUser.email,
+    "question_user":auth.currentUser.displayName,
     "question_title":title,
     "question_desc":desc,
     "question_date": serverTimestamp(),
-    "question_likes":0
+    "question_likes":0,
+    "question_reference":auth.currentUser.email
   })
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
@@ -422,7 +456,67 @@ async function likeQuestion(value,question_id){
   return [pass,failed_arr];
 }
 
-//function that will return all data that would be necessary to display the question
+//Function that will be used to get the comments related to a response
+async function getComments(response_id){
+  const colRef = collection(db,'Comments');
+  var pass = "failed";
+  let JSONarr = [];
+
+  //Make a query requesting for the correct comments
+  const q = query(colRef,where("comment_response","==",response_id));
+  const commentsDocsSnap = await getDocs(q)
+  .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+
+      if(doc.data()!=null){
+        pass = 'success'
+        var comment = {
+          "id": doc.id,
+          "date": doc.data().comment_date,
+          "description": doc.data().comment_desc,
+          "response": doc.data().comment_response,
+          "user": doc.data().comment_user
+        }
+        JSONarr.push(comment);
+      }
+    })
+  })
+  return [pass,JSONarr]
+}
+
+//Function that will get a questions responses and their comments
+async function getResponses(question_id){
+  const colRef = collection(db,'Responses');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Queries the data
+  const q = query(colRef,where("response_question","==",question_id));
+
+  const responsesDocsSnap = await getDocs(q)
+  .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+      if(doc.data()!=null){
+        pass = 'success'
+        var response = {
+          "id": doc.id,
+          "date": doc.data().response_date,
+          "description": doc.data().response_desc,
+          "likes": doc.data().response_likes,
+          "question": doc.data().response_question,
+          "mark": doc.data().response_mark,
+          "user": doc.data().response_user
+        }
+        JSONarr.push(response)
+      }
+    })
+  })
+
+return [pass,JSONarr];
+  
+}
+
+//Function that will return all data that would be necessary to display the question
 async function getQuestionInfo(question_id){
   //Will return if the request passed/failed and the JSON representing the question
   var pass = 'failed';
@@ -437,6 +531,7 @@ async function getQuestionInfo(question_id){
       "desc": ret.data().question_desc,
       "likes": ret.data().question_title,
       "user_id":ret.data().question_user,
+      "isQuestioner": ret.data().question_reference==auth.currentUser.email, //returns if they asked the question
       "liked":0 //default value means that the user did not like
       }
     })
@@ -460,10 +555,69 @@ async function getQuestionInfo(question_id){
   return [pass,JSON];
   
 }
+
+//Function that will create a response to a question
+async function giveResponse_or_Comment(check,id,desc){
+  //If check = 0 then we are making a response else we are giving a comment
+  var pass = "success";
+  if(check==0){
+    const responsesRef = collection(db,"Responses");
+    
+    //Creates a new question based on passed in parameters and predefined values
+    await addDoc(responsesRef,{
+      "response_user":auth.currentUser.displayName,
+      "response_reference":auth.currentUser.email,
+      "response_desc":desc,
+      "response_date": serverTimestamp(),
+      "response_likes":0,
+      "response_question":id,
+      "response_mark":0
+    })
+    .catch((e)=>{
+      pass = "failed"; //Used to symbolise that the creation of the response failed.
+    })
+    return pass;
+  }
+  else{
+      const commentsRef = collection(db,"Comments");
+
+      //Creates a new question based on passed in parameters and predefined values
+      await addDoc(commentsRef,{
+        "comment_user":auth.currentUser.displayName,
+        "comment_reference":auth.currentUser.email,
+        "comment_desc":desc,
+        "comment_date": serverTimestamp(),
+        "comment_response":id
+      })
+      .catch((e)=>{
+        pass = "failed"; //Used to symbolise that the creation of the comment failed.
+      })
+    return pass;
+  }
+  
+}
+
+//Function that will change the state of correct or incorrect based on user input
+async function changeMark(mark,response_id,JSONuser){
+  
+  if(JSONuser.role == 1 || JSONuser.isQuestioner == true){
+    //Then they are the admin ar the question and thus can mark the question as true or false
+      //Removing the like from the user's list
+      const respRef = doc(db,"Responses",response_id);
+      updateDoc(respRef,{
+        response_mark: mark
+      })
+      .catch(e=>{
+        return "failed"; //Update not done successfully
+        })
+    return "success";
+  }
+  return 'failed'; //User doesnt have permission to change the marking
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails, askQuestion, likeQuestion,getQuestionInfo}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments,changeMark}
