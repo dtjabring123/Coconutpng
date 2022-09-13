@@ -3,11 +3,14 @@ import { validation } from '../utils/validation.js'
 //tests for onlyNums, tests for valid and invalid cases
 describe("onlyNums tests", () => {
     test("null string", () => {
+        expect(validation.onlyNums()).toBe(false);
+    })
+    test("empty string", () => {
         expect(validation.onlyNums("")).toBe(false);
     })
     test("only digits", () => {
         expect(validation.onlyNums("123456789")).toBe(true);
-    }) 
+    })
     test("only letters", () => {
         expect(validation.onlyNums("asdfqwerty")).toBe(false);
     })
@@ -17,11 +20,11 @@ describe("onlyNums tests", () => {
 });
 
 //tests for validEmail, tests for valid and invalid cases
-describe("validEmail tests", () =>{
-    test("null email", () =>{
+describe("validEmail tests", () => {
+    test("null email", () => {
         expect(validation.validEmail()).toBe(false);
     })
-    test("null email", () =>{
+    test("empty email", () => {
         expect(validation.validEmail("")).toBe(false);
     })
     test("short email", () => {
@@ -41,6 +44,9 @@ describe("validEmail tests", () =>{
 //tests for validID, tests for valid and invalid cases
 describe("validID tests", () => {
     test("null ID", () => {
+        expect(validation.validID()).toBe(false);
+    })
+    test("empty ID", () => {
         expect(validation.validID("")).toBe(false);
     })
     test("short ID", () => {
@@ -60,6 +66,9 @@ describe("validID tests", () => {
 //tests for validName, tests for valid and invalid cases
 describe("validName tests", () => {
     test("null name", () => {
+        expect(validation.validName()).toBe(false);
+    })
+    test("empty name", () => {
         expect(validation.validName("")).toBe(false);
     })
     test("numeric name", () => {
@@ -73,6 +82,9 @@ describe("validName tests", () => {
 //tests for validPhoneNum, tests for valid and invalid cases
 describe("validPhoneNum tests", () => {
     test("null number", () => {
+        expect(validation.validPhoneNum()).toBe(false);
+    })
+    test("empty number", () => {
         expect(validation.validPhoneNum("")).toBe(false);
     })
     test("number too long", () => {
@@ -92,6 +104,9 @@ describe("validPhoneNum tests", () => {
 //tests for validDob, tests for valid and invalid cases
 describe("validDob tests", () => {
     test("null date", () => {
+        expect(validation.validDob()).toBe(false);
+    })
+    test("empty date", () => {
         expect(validation.validDob("")).toBe(false);
     })
     test("not a date", () => {
@@ -114,6 +129,9 @@ describe("validDob tests", () => {
 
 //tests for validPassword
 describe("validPassword tests", () => {
+    test("null password",()=>{
+        expect(validation.validPassword()).toBe(false);
+    })
     test("too short", () => {
         expect(validation.validPassword("123")).toBe(false);
     })
