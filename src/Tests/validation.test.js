@@ -2,9 +2,6 @@ import { validation } from '../utils/validation.js'
 
 //tests for onlyNums, tests for valid and invalid cases
 describe("onlyNums tests", () => {
-    test("null string", () => {
-        expect(validation.onlyNums()).toBe(false);
-    })
     test("empty string", () => {
         expect(validation.onlyNums("")).toBe(false);
     })
