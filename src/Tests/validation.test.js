@@ -19,6 +19,9 @@ describe("onlyNums tests", () => {
 //tests for validEmail, tests for valid and invalid cases
 describe("validEmail tests", () =>{
     test("null email", () =>{
+        expect(validation.validEmail()).toBe(false);
+    })
+    test("null email", () =>{
         expect(validation.validEmail("")).toBe(false);
     })
     test("short email", () => {
