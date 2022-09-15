@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { logOut } from '../utils/database_functions';
+import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
 export default class HomePage extends React.Component {
     handleLogout = () =>{  // method handles user trying to log out
@@ -11,8 +11,26 @@ export default class HomePage extends React.Component {
             }else{
                 this.output("Logout failed");
             }
-        })
+        });
     }
+    //commented out since doesn't work right now
+    // componentDidMount(){ //executes on page load to display posts
+    //     // get posts
+    //     var succ = getAllQuestions();
+    //     Promise.resolve(succ).then((ret)=>{
+    //         if(ret[0] == 'success'){
+    //             this.processPosts(ret[1]);
+    //         }else{
+    //             this.output("Unable to get posts from database");
+    //         }
+    //     });
+    // }
+    processPosts = (data) =>{//handles dynamically creating a post component
+                            // is given array of posts to display
+        console.log(data);
+
+    }
+
 	output = (message) =>{ // method displays given message as a toast message
 		var x = document.getElementById("snackbar");
 		x.className = "show";

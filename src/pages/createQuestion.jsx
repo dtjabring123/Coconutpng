@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
+import {validQuestion} from '../utils/createQuestion.js';
+import {askQuestion} from '../utils/database_functions.js';
 export default class createQuestion extends React.Component{
 
 	state = { //store question title and question description for creating a question 
@@ -17,7 +19,22 @@ export default class createQuestion extends React.Component{
 	}
 
     handleQuestion = ()=>{
-
+		if(validQuestion(this.state) == true){
+			//call database method
+			let succ = askQuestion(this.state.title,this.state.description);
+			Promise.resolve(succ).then((ret)=>{
+				if(ret== "success"){
+					this.output("Question Posted");
+					//go back to main screen
+					this.movepage();
+				}
+				else{ // database error
+					this.output("Error in posting question");
+				}
+			} )
+		}else{
+			this.output("Title cannot be empty");
+		}
     }
 
     handleEnter = (event)=>{  // do nothing if enter key is pressed
@@ -25,6 +42,19 @@ export default class createQuestion extends React.Component{
             event.preventDefault();
         }
     }
+	output = (message) =>{ //output is given a message and displays a toast message of the input
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 3000);
+	}
+	movepage = () =>{
+		setTimeout(function () {
+			document.getElementById("home_button").click();
+		}, 3000);
+	}
 
     render(){
         return (
