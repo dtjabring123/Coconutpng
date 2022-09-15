@@ -22,6 +22,12 @@ export default class RegisterPage extends React.Component {
 			[name] : value,
 		})
 	}
+	handleEnter = (event)=>{  // do nothing if enter key is pressed
+        if(event.key == "Enter"){
+            event.preventDefault();
+        }
+    }
+
 	output = (message) =>{ // method displays given message as a toast message
 		var x = document.getElementById("snackbar");
 		x.className = "show";
@@ -69,42 +75,42 @@ export default class RegisterPage extends React.Component {
 						{/* ERRROR */}
                         <div className="form-group">
 							<label htmlFor="name">Name</label>
-							<input id="name" type="string" name="fname" onChange={evt=>this.handleInput(evt)}/>
+							<input id="name" type="string" name="fname" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 						<div id = "snackbar"></div>
 						<div className="form-group">
 							<label htmlFor="lastname">Last Name</label>
-							<input id="lastname" type="string" name="lname"  onChange={evt=>this.handleInput(evt)}/>
+							<input id="lastname" type="string" name="lname"  onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="dateofbirth">Date of Birth</label>
-							<input id="dateofbirth " type="date" name="dob" onChange={evt=>this.handleInput(evt)}/>
+							<input id="dateofbirth " type="date" name="dob" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="phone">Phone</label>
-							<input id="phone" type="string" name="phonenum" onChange={evt=>this.handleInput(evt)}/>
+							<input id="phone" type="string" name="phonenum" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input id="email" type="email" name="email" onChange={evt=>this.handleInput(evt)}/>
+							<input id="email" type="email" name="email" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
+							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="id">ID Number</label>
-							<input id="idnum" type="string" name="id" onChange={evt=>this.handleInput(evt)}/>
+							<input id="idnum" type="string" name="id" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="admin">Admin Code</label>
-							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)}/>
+							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>

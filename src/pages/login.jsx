@@ -44,6 +44,12 @@ export default class LoginPage extends React.Component {
 			 this.output(valid[1]); // database error
 		}
 	}
+	
+	handleEnter = (event)=>{  // do nothing if enter key is pressed
+        if(event.key == "Enter"){
+            event.preventDefault();
+        }
+    }
 
 	movepage = ()  =>{ //transition page after toast is displayed
 		setTimeout(function () {
@@ -61,12 +67,12 @@ export default class LoginPage extends React.Component {
 						{/* ERRROR */}
 						<div className="form-group">
 							<label htmlFor="email">Email</label>
-							<input id="email" type="email" name="email" onChange={evt=>this.handleInput(evt)}/>
+							<input id="email" type="email" name="email" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
-							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}/>
+							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}/>
 						</div>
 
 						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>

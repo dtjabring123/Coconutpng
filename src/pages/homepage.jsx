@@ -53,6 +53,12 @@ render(){
                     Change Profile
                 </button>
             </Link>
+            <Link to="/createQuestion">
+                <button className='buttonstyle'
+                    style={{marginTop:10,marginBottom:30}}>
+                        Ask a Question
+                    </button>
+            </Link>
         </div>
     </div>
     </div>);

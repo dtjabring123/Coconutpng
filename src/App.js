@@ -5,6 +5,7 @@ import HomePage from './pages/homepage';
 import LoginPage from "./pages/login";
 import RegisterPage from './pages/register';
 import ProfilePage from './pages/profiles';
+import CreateQuestion from './pages/createQuestion';
 
 class App extends Component {
 	render() {
@@ -17,6 +18,7 @@ class App extends Component {
 				<Route path="/homepage" element={<HomePage/>}/>
 				<Route path="/register" element={<RegisterPage/>}/>
 				<Route path="/profiles" element={<ProfilePage/>}/>
+				<Route path = "/createQuestion" element={<CreateQuestion/>}/>
 			</Routes>
 			
 		</Router>
