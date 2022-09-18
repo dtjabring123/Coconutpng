@@ -306,7 +306,7 @@ async function getAllQuestions(){
             "title": doc.data().question_title,
             "likes": doc.data().question_likes,
             "author": doc.data().question_user,
-            "question_id": doc.data().id
+            "question_id": doc.id
           }
           JSONarr.push(Question);
         }
