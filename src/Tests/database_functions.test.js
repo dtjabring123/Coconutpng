@@ -2,11 +2,24 @@
  * @jest-environment node
  */
 import {
-    logIn, logOut, getUserDetails, CompareUserID, changePassword,
+    register, logIn, logOut, getUserDetails, CompareUserID, changePassword,
     updateUserDetails, getAllQuestions, getComments, getResponses, 
     getQuestionInfo,
 }
     from '../utils/database_functions.js'
+
+//test for register, test for valid
+describe("register tests",()=>{
+    test("valid details", async () => {
+        try {
+            details = await register("the", "tester", "1998-02-12","0000000000008","0784039821","0","tester@gmail.com","nunYaBussiness")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe('success')
+            })
+        } catch (e) {
+        }
+    })
+});
 
 //tests for logIn, tests for valid and invalid cases
 describe("logIn tests", () => {
@@ -100,3 +113,26 @@ describe("changePassword tests",()=>{
         }
     })
 })
+
+//test for updateUserDetails, test for valid
+describe("updateUserDetails tests", () => {
+    test("valid details", async () => {
+        const validDetail = { // valid details
+            first_name: "the",
+            last_name: "tester",
+            dob: "1998-02-12",
+            phoneNumber: "0784039821",
+            email: "tester@gmail.com",
+            password: "nunYaBussiness",
+            role: "0",
+            id: "0000000000008"
+        }
+        try {
+            details = await updateUserDetails(validDetail)
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe('success')
+            })
+        } catch (e) {
+        }
+    })
+});
