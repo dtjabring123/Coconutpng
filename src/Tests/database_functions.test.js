@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import {
+/*import {
     register, logIn, logOut, getUserDetails, CompareUserID, changePassword,
     updateUserDetails, getAllQuestions, getComments, getResponses, 
     getQuestionInfo,
@@ -135,4 +135,4 @@ describe("updateUserDetails tests", () => {
         } catch (e) {
         }
     })
-});
+});*/
