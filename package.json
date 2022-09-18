@@ -37,4 +37,9 @@
       "last 1 safari version"
     ]
   }
+  "jest": {
+    "testPathIgnorePatterns" : [
+      "Cocnutpng/src/pages/" 
+    ]
+  }
 }
