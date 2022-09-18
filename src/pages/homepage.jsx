@@ -2,7 +2,11 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
+import Question_Block from '../components/question_block';
 export default class HomePage extends React.Component {
+    state = {
+        questions : []
+    }
     handleLogout = () =>{  // method handles user trying to log out
         var succ = logOut(); //call database method to log out
         Promise.resolve(succ).then((ret) =>{
@@ -13,22 +17,23 @@ export default class HomePage extends React.Component {
             }
         });
     }
-    //commented out since doesn't work right now
-    // componentDidMount(){ //executes on page load to display posts
-    //     // get posts
-    //     var succ = getAllQuestions();
-    //     Promise.resolve(succ).then((ret)=>{
-    //         if(ret[0] == 'success'){
-    //             this.processPosts(ret[1]);
-    //         }else{
-    //             this.output("Unable to get posts from database");
-    //         }
-    //     });
-    // }
+    //commented out since doesn't work right nows
+    componentDidMount(){ //executes on page load to display posts
+        // get posts
+        var succ = getAllQuestions();
+        Promise.resolve(succ).then((ret)=>{
+            if(ret[0] == 'success'){
+                this.processPosts(ret[1]);
+            }else{
+                this.output("Unable to get posts from database");
+            }
+        });
+    }
     processPosts = (data) =>{//handles dynamically creating a post component
                             // is given array of posts to display
         console.log(data);
-
+        this.state.questions = data;
+        this.render();
     }
 
 	output = (message) =>{ // method displays given message as a toast message
@@ -77,6 +82,19 @@ render(){
                         Ask a Question
                     </button>
             </Link>
+        </div>
+        {/*displaying questions here*/}
+        <div class = "coloumn">
+            {console.log(this.state)}
+            {
+             this.state.questions.map((question) =>{
+                console.log(question);
+                    if((question.title != null) && (question.title != "")){
+                        console.log("generated question");
+                        return(<Question_Block props = {question} key = {question.question_id}/>)
+                    }
+                })   
+            }
         </div>
     </div>
     </div>);
