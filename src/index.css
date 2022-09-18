@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+.naVbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
 input, button {
     appearance: none;
     background: none;
@@ -17,6 +24,13 @@ input, button {
     align-items: center;
     justify-content: center;
     background-color: #53565A;
+}
+
+.helo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 92vh;
 }
 
 /*Here is the stuff for the snackbar(toast message) */
