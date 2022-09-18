@@ -1,3 +1,9 @@
 codecov: 
  token: 4aeccddf-5b91-499f-ba46-e30d0870fbbc
  max_report_age: off 
+ ignore:
+  -"pages"
+  -"stylesheets"
+  -"App.js"
+  -"index.css"
+  -"index.js"
