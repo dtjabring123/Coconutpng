@@ -31,7 +31,8 @@ export default class HomePage extends React.Component {
     }
     processPosts = (data) =>{//handles dynamically creating a post component
                             // is given array of posts to display
-        console.log(data);
+     //   console.log(data);
+        console.log("Got questions from db successfully");
         this.state.questions = data;
         this.render();
     }
@@ -82,20 +83,20 @@ render(){
                         Ask a Question
                     </button>
             </Link>
-        </div>
-        {/*displaying questions here*/}
-        <div class = "coloumn">
-            {console.log(this.state)}
+                  {/*displaying questions here*/}
+
+            {/*console.log(this.state)*/}
             {
              this.state.questions.map((question) =>{
-                console.log(question);
+               // console.log(question);
                     if((question.title != null) && (question.title != "")){
-                        console.log("generated question");
+                        //console.log("generated question");
                         return(<Question_Block props = {question} key = {question.question_id}/>)
                     }
                 })   
             }
         </div>
+ 
     </div>
     </div>);
 	}
