@@ -100,11 +100,14 @@ export default function QuestionInfo(){
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
             </div>
+            <div className="container1">
             {
                 response_list.map((response)=>{
                         return(<ResponseBlock props = {response} key = {response.id}/>)   
                 })
             } 
+            </div>
+
             <Link to="/homepage">      
                 <input type="submit" value="BACK"/>
                </Link>
