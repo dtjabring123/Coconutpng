@@ -19,8 +19,7 @@ commands:
 
   upload-coverage:
     steps:
-      - codecov/upload:
-          file: coverage/clover.xml
+      - codecov/upload
           
   build-and-test:
     steps:
