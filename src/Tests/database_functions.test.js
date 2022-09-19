@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-/*import {
+import {
     register, logIn, logOut, getUserDetails, CompareUserID, changePassword,
     updateUserDetails, getAllQuestions, getComments, getResponses, 
     getQuestionInfo,
@@ -63,7 +63,7 @@ describe("logIn tests", () => {
 
 //tests for logOut, test for valid
 describe("logOut test", () => {
-    test('valid log out', async () => {
+    test.only('valid log out', async () => {
         try {
             outcome = await logOut()
             Promise.resolve(outcome).then((arr) => {
@@ -135,4 +135,4 @@ describe("updateUserDetails tests", () => {
         } catch (e) {
         }
     })
-});*/
+});
