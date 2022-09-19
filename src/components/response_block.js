@@ -1,5 +1,8 @@
 import React from "react";
 import "../stylesheets/comments.css";
+import { tokens, components } from 'react-ui/themes/base'
+import { ThemeProvider, Switch } from 'react-ui'
+
 export default function ResponseBlock(props){
     //let date = props.props.date; //show
     let id = props.props.id;
@@ -8,6 +11,13 @@ export default function ResponseBlock(props){
     let description = props.props.description; //show description
     let marked = props.props.marked;
     let question = props.props.question; //
+
+    components.Switch = {
+        colors: {
+          backgroundOn: '#00f',
+          backgroundOff: '#000'
+        }
+      }
 
     return(
             <div class="response_container">
@@ -19,6 +29,9 @@ export default function ResponseBlock(props){
                     <div className='response_card-footer'>
                         <div> Answered on:  </div>
                         <div> {likes} Likes</div>
+                        <ThemeProvider tokens={tokens} components={components}>
+                            <Switch />
+                        </ThemeProvider>
                     </div>
                 </div>
 

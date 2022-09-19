@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
+import { tokens, components } from 'react-ui/themes/base';
+import { ThemeProvider, Switch } from 'react-ui'
 import { getQuestionInfo,getResponses,giveResponse_or_Comment } from "../utils/database_functions";
 import ResponseBlock from "../components/response_block";
+
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState(""); //stores user input for a response
@@ -81,11 +84,24 @@ export default function QuestionInfo(){
 			x.className = x.className.replace("show", "");
 		}, 3000);
 	}
+
+    components.Switch = {
+        colors: {
+          backgroundOn: '#00f',
+          backgroundOff: '#000'
+        }
+      }
+
     return(
         <form>
         <div id = "snackbar"></div>
         <div className="q-inner">
+            <div>
             <label htmlFor="title" id = "title">Title</label>
+            <ThemeProvider tokens={tokens} components={components}>
+                    <Switch />
+                </ThemeProvider>
+            </div>
 
             <div className="q-group">
                 <label htmlFor="description">Description</label>
