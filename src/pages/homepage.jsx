@@ -92,8 +92,10 @@ render(){
                     console.log(this);
                 })  
             }
-        <Link to={{pathname :"/questionDetails",
-                       state :{id : 1,name : 'somename'} }}>      
+        <Link to={{
+            pathname :"/questionDetails",
+            state :{stateParam:true} 
+            }}>      
             <button className='buttonstyle'
                 style={{marginTop:10, marginBottom:30}}>
                 Question details
