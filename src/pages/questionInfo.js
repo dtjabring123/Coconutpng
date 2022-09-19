@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
-import { getQuestionInfo } from "../utils/database_functions";
+import { getQuestionInfo,getResponses,giveResponse_or_Comment } from "../utils/database_functions";
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState("");
-    //displayDetails(location.state.name);
+    //displayDetails(location.state.name); //start loading details about the question
 
     //get data from db about particular question
     function initialiseValues(question_id){

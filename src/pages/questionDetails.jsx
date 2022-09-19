@@ -35,7 +35,7 @@ export default class QuestionDetails extends React.Component{
         //received date,desc,title,likes,liked,isQuestioner
         //comment block - from response list - response_id,date,description,likes,mark,user,isLiked
         //getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num)
-        //giveResponse_or_Comment(0,id,desc) for adding a responsefvvfvvvbgvgbb
+        //giveResponse_or_Comment(0,id,desc) for adding a response
     }
     displayResponses=()=>{ //will display responses received from database
         //fetch responses from the database
