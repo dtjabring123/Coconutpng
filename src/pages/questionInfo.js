@@ -45,18 +45,29 @@ export default function QuestionInfo(){
       }
 
     return(
-        <div>
-        <div>Stuff here</div>
-        <input id="response_data" type="text" name="response_data" onChange={evt=>handleChange(evt)}/>
-        
-        <Link to="/homepage">      
-        <button className='buttonstyle'
-            style={{marginTop:10, marginBottom:30}}>
-            Back
-        </button>
-        </Link>
+        <form>
+        <div id = "snackbar"></div>
+        <div className="q-inner">
+            <h2>TITLE</h2>
 
-        </div>
+            <div className="q-group">
+                <label htmlFor="description">Description</label>
+                <textarea className="textab" readOnly/>
+            </div>
 
+            <div className="q-group">
+                <label htmlFor="description">Post Answer</label>
+                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+                <input id = "answer" type = "button" value = "Submit" onClick={this.handleQuestion}/>
+                <Link to="/homepage">      
+                    <button type="submit" value="Submit" id = "home_button"/>
+               </Link>
+            </div>
+
+            <Link to="/homepage">      
+                <input type="submit" value="BACK"/>
+               </Link>
+            </div>
+    </form>
     )
 }
