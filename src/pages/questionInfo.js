@@ -13,13 +13,9 @@ export default function QuestionInfo(){
     initialiseValues(location.state.name); //start loading details about the question
     displayResponses(location.state.name);
     //get data from db about particular question
-<<<<<<< HEAD
-    function initialiseValues(question_id){ 
-=======
     function initialiseValues(question_id){
         console.log(changeQuestionDetails)
         if(changeQuestionDetails == false){ // don't fetch information from database about the question everytime page is rendered
->>>>>>> 3c5573920bfa7c9178e12340faa1caafdb5feb1b
         let succ = getQuestionInfo(question_id);
         Promise.resolve(succ).then((ret=>{
                 //show received details
@@ -103,14 +99,6 @@ export default function QuestionInfo(){
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
             </div>
-<<<<<<< HEAD
-            <ResponseBlock props = {{data : ""}} key = "key1"/>
-            
-            <Link to="/homepage">      
-                <input type="submit" value="BACK"/>
-               </Link>
-        </div>
-=======
             {
                 response_list.map((response)=>{
                     if((response.description != null) && (response.description.length > 0)){
@@ -123,7 +111,6 @@ export default function QuestionInfo(){
                </Link>
             </div>
 
->>>>>>> 3c5573920bfa7c9178e12340faa1caafdb5feb1b
     </form>
     )
 }
