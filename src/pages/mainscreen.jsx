@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import "../stylesheets/default.css";
-
 export default class WelcomePage extends React.Component {
+
   render(){
 		return (
     <div class="area" >
@@ -32,7 +32,7 @@ export default class WelcomePage extends React.Component {
                 style={{marginTop:10, marginBottom:30}}>
                 Register
             </button>
-            </Link>
+            </Link>       
       </div>
       </div>
     </div>);

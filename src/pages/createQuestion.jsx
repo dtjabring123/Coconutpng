@@ -70,7 +70,7 @@ export default class createQuestion extends React.Component{
 
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
-							<input id="description" aria-multiline type="text" name="description" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
 
 						<input id = "question" type = "button" value = "Submit" onClick={this.handleQuestion}/>

@@ -1,0 +1,127 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 16px;
+    min-height: 100%;
+}
+
+.questions {
+    text-align: center;
+    color: #fff;
+    font-size: 50px;
+}
+
+.row_questions {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+}
+
+body{
+    min-height: 50vh;
+
+}
+
+.homestyle {
+    width: 100%;
+    position: absolute;
+}
+
+.container{
+    width: min(90%, 1140px);
+    margin: 2.5rem auto;
+}
+
+.container1 {
+    height : 60vh;
+    width: 100%;
+    background: #53565A;  
+    background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+    padding: 10px;
+    overflow-y: scroll;
+}
+.container2 {
+    height : 20vh;
+    width: min(80%, 800px);
+    padding: 10px;
+    overflow-y: scroll;
+    margin-left: 3rem auto;
+    border-radius: 10px;
+}
+
+.comment_container {
+    position: relative;
+}
+
+.comment_container::before {
+    content: "";
+    background-color: rgb(173, 172, 172);
+    position: absolute;
+    min-height: 100%;
+    width:1px;
+    left: -10px;
+}
+
+.comment_card {
+    padding: 20px;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    min-width: 100%;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+}
+
+.head, .par {
+    margin-bottom: 0.4rem;
+    font-size: 11px;
+    display: inline-block;
+}
+
+.comment_card-footer {
+    display: flex;
+    font-size: .85rem;
+    opacity: 0.6;
+    gap: 30px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.response_card-footer {
+    display: flex;
+    font-size: .85rem;
+    opacity: 0.6;
+    gap: 30px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.head2 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.response_container {
+    position: relative;
+}
+
+.response_container::before {
+    content: "";
+    background-color: rgb(173, 172, 172);
+    position: absolute;
+    min-height: 100%;
+    width:1px;
+    left: -10px;
+}
+
+.response_card {
+    padding: 20px;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    min-width: 100%;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    width: 100px;
+}

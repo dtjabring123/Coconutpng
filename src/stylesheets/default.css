@@ -9,12 +9,10 @@ body{
     font-family: 'Exo', sans-serif;
 }
 
-
 .context {
     width: 100%;
     position: absolute;
     top:35vh;
-    
 }
 
 .context h1{
@@ -29,8 +27,6 @@ body{
     background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);  
     width: 100%;
     height:100vh;
-    
-   
 }
 
 .circles{
@@ -51,7 +47,6 @@ body{
     background: rgba(255, 255, 255, 0.2);
     animation: animate 25s linear infinite;
     bottom: -150px;
-    
 }
 
 .circles li:nth-child(1){

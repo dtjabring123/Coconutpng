@@ -306,7 +306,7 @@ async function getAllQuestions(){
             "title": doc.data().question_title,
             "likes": doc.data().question_likes,
             "author": doc.data().question_user,
-            "question_id": doc.data().id
+            "question_id": doc.id
           }
           JSONarr.push(Question);
         }
@@ -529,7 +529,8 @@ async function getQuestionInfo(question_id){
     JSON = {
       "date": ret.data().question_date,
       "desc": ret.data().question_desc,
-      "likes": ret.data().question_title,
+      "likes": ret.data().question_likes,
+      "title": ret.data().question_title,
       "user_id":ret.data().question_user,
       "isQuestioner": ret.data().question_reference==auth.currentUser.email, //returns if they asked the question
       "liked":0 //default value means that the user did not like
