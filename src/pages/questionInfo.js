@@ -31,6 +31,7 @@ export default function QuestionInfo(){
         //set statevalue of list to recieved responses
         //create responseblocks for each response
     }
+    
     //handle userinput
     const handleChange = e => { //updates response_data to match user input
         setResponse_data(e.target.value)
@@ -57,8 +58,8 @@ export default function QuestionInfo(){
 
             <div className="q-group">
                 <label htmlFor="description">Post Answer</label>
-                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
-                <input id = "answer" type = "button" value = "Submit" onClick={this.handleQuestion}/>
+                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>handleChange(evt)} />
+                <input id = "answer" type = "button" value = "Submit" onClick={handleResponseAdd()}/>
                 <Link to="/homepage">      
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>

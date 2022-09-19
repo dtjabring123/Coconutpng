@@ -65,7 +65,7 @@ export default class QuestionDetails extends React.Component{
 
             <div className="q-group">
                 <label htmlFor="description">Post Answer</label>
-                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)}/>
                 <input id = "answer" type = "button" value = "Submit" onClick={this.handleQuestion}/>
                 <Link to="/homepage">      
                     <button type="submit" value="Submit" id = "home_button"/>
