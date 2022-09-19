@@ -28,13 +28,24 @@ export default function QuestionInfo(){
         var description_lbl = document.getElementById("description");
         description_lbl.value = details.desc;
         //received date,desc,title,likes,liked,isQuestioner
-        //comment block - from response list - response_id,date,description,likes,mark,user,isLiked
+        // from response list - response_id,date,description,likes,mark,user,isLiked
         //getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num)
         //giveResponse_or_Comment(0,id,desc) for adding a responsefvvfvvvbgvgbb
     }
 
-    function  displayResponses(){ //will display responses received from database
+    function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
+        let succ = getResponses(question_id);
+        Promise.resolve(succ).then((ret=>{
+            if(ret[0] == 'success'){
+                //show received details
+                console.log("got responses");
+                console.log(ret[1]);
+                displayDetails(ret[1]);
+            }else{
+                console.log("Couldn't get info from database");
+            }
+        }))   
         //set statevalue of list to recieved responses
         //create responseblocks for each response
     }
@@ -72,7 +83,7 @@ export default function QuestionInfo(){
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
             </div>
-<ResponseBlock props = {{data : ""}} key = "key1"/>
+            <ResponseBlock props = {{data : ""}} key = "key1"/>
             <Link to="/homepage">      
                 <input type="submit" value="BACK"/>
                </Link>
