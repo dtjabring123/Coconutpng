@@ -163,3 +163,11 @@ form .form-inner input[type="button"]:hover {
 .buttonstyle:hover {
     background-position : 100% 0%;
 }
+
+.texta {
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    width: 47vh;
+    min-height: 10vh;
+    padding: 10px;
+}
