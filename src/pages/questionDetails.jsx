@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { getQuestionInfo } from "../utils/database_functions";
 export default class QuestionDetails extends React.Component{
     state = {response_data : ""}
+
+    //    this.setState({question_id : "asd"});
+    
 	handleInput = (event) =>{ //captures data user enters for a response
 		const target = event.target;
 		const name = target.name;
@@ -27,15 +30,23 @@ export default class QuestionDetails extends React.Component{
     
     }
 
+
     displayDetails=(details)=>{
         //received date,desc,title,likes,liked,isQuestioner
-        //comment block - from response list
+        //comment block - from response list - response_id,date,description,likes,mark,user,isLiked
         //getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num)
-        //giveResponse_or_Comment(0,id,desc) for adding a response
+        //giveResponse_or_Comment(0,id,desc) for adding a responsefvvfvvvbgvgbb
+    }
+    displayResponses=()=>{ //will display responses received from database
+        //fetch responses from the database
+        //set statevalue of list to recieved responses
+        //create responseblocks for each response
+    }
+    handleResponse=()=>{   //handle user giving a response
+
     }
 
-
-    //needs a handle input for user to comment
+ 
     //
     render(){
       //  const {state} = this.props.location;

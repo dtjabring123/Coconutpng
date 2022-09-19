@@ -7,7 +7,7 @@ import RegisterPage from './pages/register';
 import ProfilePage from './pages/profiles';
 import CreateQuestion from './pages/createQuestion';
 import QuestionDetails from './pages/questionDetails.jsx';
-
+import QuestionInfo from './pages/questionInfo';
 class App extends Component {
 	render() {
 		return (
@@ -21,6 +21,7 @@ class App extends Component {
 				<Route path="/profiles" element={<ProfilePage/>}/>
 				<Route path = "/createQuestion" element={<CreateQuestion/>}/>
 				<Route path = "/questionDetails" element={<QuestionDetails/>}/>
+				<Route path = "questionInfo" element={<QuestionInfo/>}/>
 			</Routes>
 			
 		</Router>

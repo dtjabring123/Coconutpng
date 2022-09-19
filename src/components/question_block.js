@@ -1,15 +1,18 @@
 import React from "react";
 import "../stylesheets/comments.css";
-
-export default function question_block(props){
+import{Link,useNavigate} from 'react-router-dom';
+export default function QuestionBlock(props){
     let title = props.props.title;
     let id = props.props.question_id;
     let likes = props.props.likes;
     let author = props.props.author;
+    const navigate = useNavigate();
 
   function handleClick(){} //create initial local onclick handler
     return(
         <div className="container" onClick={handleClick=()=>{ //onClick for transfering page
+            navigate('/questionInfo',{state:{id:1,name:id}});
+            
             console.log(props.props.title);
         }}>
             <div class="comment_container">
