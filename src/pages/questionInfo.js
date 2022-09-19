@@ -36,6 +36,7 @@ export default function QuestionInfo(){
 
     function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
+        console.log(response_list);
         if(changeResponseList == false){
         let succ = getResponses(question_id);
         Promise.resolve(succ).then((ret=>{
@@ -101,9 +102,7 @@ export default function QuestionInfo(){
             </div>
             {
                 response_list.map((response)=>{
-                    if((response.description != null) && (response.description.length > 0)){
-                        return(<ResponseBlock props = {response} key = {response.id}/>)
-                    }
+                        return(<ResponseBlock props = {response} key = {response.id}/>)   
                 })
             } 
             <Link to="/homepage">      
