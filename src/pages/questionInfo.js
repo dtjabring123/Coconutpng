@@ -8,7 +8,7 @@ export default function QuestionInfo(){
     initialiseValues(location.state.name); //start loading details about the question
 
     //get data from db about particular question
-    function initialiseValues(question_id){
+    function initialiseValues(question_id){ 
         let succ = getQuestionInfo(question_id);
         Promise.resolve(succ).then((ret=>{
             if(ret[0] == 'success'){
@@ -84,10 +84,11 @@ export default function QuestionInfo(){
                </Link>
             </div>
             <ResponseBlock props = {{data : ""}} key = "key1"/>
+            
             <Link to="/homepage">      
                 <input type="submit" value="BACK"/>
                </Link>
-            </div>
+        </div>
     </form>
     )
 }

@@ -18,9 +18,6 @@ export default function QuestionBlock(props){
             <div class="comment_container">
                 <div className='comment_card'>
                     <h3>Title : {title}</h3>
-                    <p>
-                    
-                    </p>
                     <div className='comment_card-footer'>
                         <div> Written by: {author}</div>
                         <div> Likes = {likes}</div>

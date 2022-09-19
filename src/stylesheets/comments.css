@@ -44,6 +44,14 @@ body{
     padding: 10px;
     overflow-y: scroll;
 }
+.container2 {
+    height : 20vh;
+    width: min(80%, 800px);
+    padding: 10px;
+    overflow-y: scroll;
+    margin-left: 3rem auto;
+    border-radius: 10px;
+}
 
 .comment_container {
     position: relative;
@@ -67,6 +75,12 @@ body{
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
 }
 
+.head, .par {
+    margin-bottom: 0.4rem;
+    font-size: 11px;
+    display: inline-block;
+}
+
 .comment_card-footer {
     display: flex;
     font-size: .85rem;
@@ -74,4 +88,40 @@ body{
     gap: 30px;
     justify-content: flex-start;
     align-items: center;
+}
+.response_card-footer {
+    display: flex;
+    font-size: .85rem;
+    opacity: 0.6;
+    gap: 30px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.head2 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.response_container {
+    position: relative;
+}
+
+.response_container::before {
+    content: "";
+    background-color: rgb(173, 172, 172);
+    position: absolute;
+    min-height: 100%;
+    width:1px;
+    left: -10px;
+}
+
+.response_card {
+    padding: 20px;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    min-width: 100%;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    width: 100px;
 }

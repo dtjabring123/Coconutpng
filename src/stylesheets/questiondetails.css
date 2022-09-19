@@ -47,7 +47,8 @@ form .q-inner input[type="submit"] {
     color:#FFF;
     font-weight: 700;
     cursor: pointer;
-    margin-left: 250px;
+    margin-top: 2rem;
+    margin-left: 780px;
 }
 
 form .q-inner input[type="button"] {

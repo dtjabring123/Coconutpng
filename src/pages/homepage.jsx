@@ -3,6 +3,7 @@ import { Link,useNa } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
 import Question_Block from '../components/question_block';
+
 export default class HomePage extends React.Component {
     state = {
         questions : []
@@ -79,13 +80,7 @@ render(){
                                 Ask a Question
                             </button>
                     </Link>
-                    <Link to={{pathname :"/questionDetails",
-                            state :{id : 1,name : 'somename'} }}>      
-                    <button className='buttonstyle'
-                        style={{marginTop:10, marginBottom:30}}>
-                        Question details
-                    </button>
-                    </Link>
+                
                 </div>
                 <div className='container1'>
                     {/*displaying questions here*/}
@@ -96,7 +91,7 @@ render(){
                             }
                             console.log(this);
                         })  
-                    }
+                    } 
                 </div>
             </div>
     </div>);
