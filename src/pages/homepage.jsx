@@ -17,9 +17,9 @@ export default class HomePage extends React.Component {
             }
         });
     }
-    //commented out since doesn't work right nows
+
     componentDidMount(){ //executes on page load to display posts
-        // get posts
+        // get posts from database to display
         var succ = getAllQuestions();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
@@ -29,12 +29,8 @@ export default class HomePage extends React.Component {
             }
         });
     }
-    processPosts = (data) =>{//handles dynamically creating a post component
-                            // is given array of posts to display
-     //   console.log(data);
-        console.log("Got questions from db successfully");
-        this.state.questions = data;
-        this.render();
+    processPosts = (data) =>{//updates list of questions to display
+        this.setState({questions:data});
     }
 
 	output = (message) =>{ // method displays given message as a toast message
@@ -83,18 +79,26 @@ render(){
                         Ask a Question
                     </button>
             </Link>
-                  {/*displaying questions here*/}
-
-            {/*console.log(this.state)*/}
+        </div>
+        <div className='coloumn'>
+            {/*displaying questions here*/}
             {
              this.state.questions.map((question) =>{
-               // console.log(question);
+                console.log(question);
                     if((question.title != null) && (question.title != "")){
-                        //console.log("generated question");
-                        return(<Question_Block props = {question} key = {question.question_id}/>)
+                        console.log("generated question");
+                        return(<Question_Block props = {question} key = {question.question_id} />)
                     }
-                })   
+                    console.log(this);
+                })  
             }
+        <Link to={{pathname :"/questionDetails",
+                       state :{id : 1,name : 'somename'} }}>      
+            <button className='buttonstyle'
+                style={{marginTop:10, marginBottom:30}}>
+                Question details
+            </button>
+            </Link>
         </div>
  
     </div>

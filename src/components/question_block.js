@@ -6,12 +6,14 @@ export default function question_block(props){
     let id = props.props.question_id;
     let likes = props.props.likes;
     let author = props.props.author;
+    console.log(title);
+    console.log(author);
   function handleClick(){} //create initial local onclick handler
     return(
-        <div className="coloumn">
-        <label onClick={ handleClick = () =>{ //onclick for moving page to another page with more info on question
-            console.log("clicked");
+        <div className="coloumn" onClick={handleClick=()=>{ //onClick for transfering page
+            console.log(props.props.title);
         }}>
+        <label>
         Title : {title}
         </label>
         <div className="row">
