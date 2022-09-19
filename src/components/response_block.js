@@ -10,7 +10,6 @@ export default function ResponseBlock(props){
     let question = props.props.question; //
 
     return(
-        <div className="container2">
             <div class="response_container">
                 <div className='response_card'>
                     <h3 className="head2">Response by: {author}</h3>
@@ -24,7 +23,5 @@ export default function ResponseBlock(props){
                 </div>
 
             </div>
-
-        </div>
     )
 }
