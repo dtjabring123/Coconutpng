@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import { getQuestionInfo,getResponses,giveResponse_or_Comment } from "../utils/database_functions";
+import ResponseBlock from "../components/response_block";
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState("");
@@ -48,7 +49,7 @@ export default function QuestionInfo(){
         if((response_data != null) && (response_data.length > 0)){
             //call db method to add response
             //output if successful or not
-            
+
         }
       }
 
@@ -71,7 +72,7 @@ export default function QuestionInfo(){
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
             </div>
-
+<ResponseBlock props = {{data : ""}} key = "key1"/>
             <Link to="/homepage">      
                 <input type="submit" value="BACK"/>
                </Link>

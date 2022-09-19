@@ -1,6 +1,6 @@
 import React from "react";
 import "../stylesheets/comments.css";
-export default function QuestionBlock(props){
+export default function ResponseBlock(props){
     let date = props.props.title;
     let id = props.props.question_id;
     let likes = props.props.likes;
