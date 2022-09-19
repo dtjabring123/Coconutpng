@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import { tokens, components } from 'react-ui/themes/base';
 import { ThemeProvider, Switch } from 'react-ui'
-import { getQuestionInfo,getResponses,giveResponse_or_Comment } from "../utils/database_functions";
+import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion } from "../utils/database_functions";
 import ResponseBlock from "../components/response_block";
 
 export default function QuestionInfo(){
@@ -12,12 +12,10 @@ export default function QuestionInfo(){
     const [response_list,setResponse_list] = useState([]); //stores list of responses to be displayed
     const [changeResponseList,setChangeResponseList] = useState(false);//used to indicate if database should be queried for response list 
 
-
     initialiseValues(location.state.name); //start loading details about the question
     displayResponses(location.state.name);
     //get data from db about particular question
     function initialiseValues(question_id){
-        console.log(changeQuestionDetails)
         if(changeQuestionDetails == false){ // don't fetch information from database about the question everytime page is rendered
         let succ = getQuestionInfo(question_id);
         Promise.resolve(succ).then((ret=>{
@@ -33,13 +31,14 @@ export default function QuestionInfo(){
         title_lbl.textContent = details.title;
         var description_lbl = document.getElementById("description");
         description_lbl.value = details.desc;
-        //received date,desc,title,likes,liked,isQuestioner
-        // from response list - response_id,date,description,likes,mark,user,isLiked
+        var liked_lbl = document.getElementById("liked_btn");
+        if((details.liked != 3.1415) && (details.liked != 0) ){
+            liked_lbl.checked = true;
+        }
     }
 
     function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
-        console.log(response_list);
         if(changeResponseList == false){
         let succ = getResponses(question_id);
         Promise.resolve(succ).then((ret=>{
@@ -49,8 +48,6 @@ export default function QuestionInfo(){
                 setChangeResponseList(true);
         }))   
     }
-       
-        //create responseblocks for each response
     }
     
     //handle userinput
@@ -84,7 +81,16 @@ export default function QuestionInfo(){
 			x.className = x.className.replace("show", "");
 		}, 3000);
 	}
-
+        function handleLike(){
+            var liked_lbl = document.getElementById("liked_btn");
+            let succ = likeQuestion(liked_lbl.value,location.state.name);
+            Promise.resolve(succ).then((ret)=>{
+                if(ret[0] == "success"){
+                    //call method again to change like value
+                    console.log("updated like");
+                }
+            })
+        }
     components.Switch = {
         colors: {
           backgroundOn: '#00f',
@@ -99,7 +105,7 @@ export default function QuestionInfo(){
             <div>
             <label htmlFor="title" id = "title">Title</label>
             <ThemeProvider tokens={tokens} components={components}>
-                    <Switch />
+                    <Switch id= "liked_btn" onChange={()=>handleLike()} />
                 </ThemeProvider>
             </div>
 
@@ -117,6 +123,7 @@ export default function QuestionInfo(){
                </Link>
             </div>
             <div className="container2">
+            {/*create responseblocks for each response */}
             {
                 response_list.map((response)=>{
                         return(<ResponseBlock props = {response} key = {response.id}/>)   

@@ -2,6 +2,7 @@ import React from "react";
 import "../stylesheets/comments.css";
 import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
+import { likeResponse } from "../database_functions";
 
 export default function ResponseBlock(props){
     //let date = props.props.date; //show
@@ -18,6 +19,14 @@ export default function ResponseBlock(props){
           backgroundOff: '#000'
         }
       }
+    function handleLike(){
+        let succ = likeResponse(1,props.props.id);
+        Promise.resolve(succ).then((ret) =>{
+            if(ret[0] == "success"){
+                console.log("updated like");
+            }
+        })
+    }
 
     return(
             <div class="response_container">
@@ -30,7 +39,7 @@ export default function ResponseBlock(props){
                         <div> Answered on:  </div>
                         <div> {likes} Likes</div>
                         <ThemeProvider tokens={tokens} components={components}>
-                            <Switch />
+                            <Switch  onChange={()=>handleLike()}/>
                         </ThemeProvider>
                     </div>
                 </div>
