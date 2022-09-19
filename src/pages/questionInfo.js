@@ -18,15 +18,9 @@ export default function QuestionInfo(){
         if(changeQuestionDetails == false){ // don't fetch information from database about the question everytime page is rendered
         let succ = getQuestionInfo(question_id);
         Promise.resolve(succ).then((ret=>{
-            if(ret[0] == 'success'){
                 //show received details
-                console.log("got question details");
-                console.log(ret[1]);
                 setChangeQuestionDetails(true);
                 displayDetails(ret[1]);
-            }else{
-                console.log("Couldn't get question info from database");
-            }
         }))   
     }
     }
@@ -45,18 +39,10 @@ export default function QuestionInfo(){
         if(changeResponseList == false){
         let succ = getResponses(question_id);
         Promise.resolve(succ).then((ret=>{
-            if(ret[0] == 'success'){
-                //show received details
-                console.log("got responses");
-                console.log(ret[1]);
                  //save response array
                 setResponse_list(ret[1]);
                 //change flag for fetching response list 
                 setChangeResponseList(true);
-                console.log(response_list);
-            }else{
-                console.log("Couldn't get responses from database");
-            }
         }))   
     }
        
