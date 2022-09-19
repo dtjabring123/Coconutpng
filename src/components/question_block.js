@@ -1,4 +1,5 @@
 import React from "react";
+import "../stylesheets/comments.css";
 
 export default function question_block(props){
     console.log(props);
@@ -10,25 +11,22 @@ export default function question_block(props){
     console.log(author);
   function handleClick(){} //create initial local onclick handler
     return(
-        <div className="coloumn" onClick={handleClick=()=>{ //onClick for transfering page
+        <div className="container" onClick={handleClick=()=>{ //onClick for transfering page
             console.log(props.props.title);
         }}>
-        <label>
-        Title : {title}
-        </label>
-        <div className="row">
-            <div>
-             <label>
-            by {author};
-                </label>
+            <div class="comment_container">
+                <div className='comment_card'>
+                    <h3>Title : {title}</h3>
+                    <p>
+                    
+                    </p>
+                    <div className='comment_card-footer'>
+                        <div> Written by: {author}</div>
+                        <div> Likes = {likes}</div>
+                    </div>
+                </div>
+
             </div>
-            <div>
-                 <label>
-                    Num likes = {likes}
-                 </label>
-            </div>
-       
-        </div>
 
         </div>
 

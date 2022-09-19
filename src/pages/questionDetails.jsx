@@ -26,7 +26,7 @@ export default class QuestionDetails extends React.Component{
         return(
             <div>
                 <label>Some title</label>
-                <Link to="/">      
+                <Link to="/HomePage">      
             <button className='buttonstyle'
                 style={{marginTop:10, marginBottom:30}}>
                 Back

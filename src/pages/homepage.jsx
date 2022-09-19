@@ -57,51 +57,50 @@ render(){
                 <li></li>
                 <li></li>
         </ul>
-    <div class="context">
-        <h1>Welcome To the Home Page</h1>
-        <div class="row">
-        <div id = "snackbar"></div>
-            <Link to="/">      
-                <button className='buttonstyle' onClick={this.handleLogout}
-                    style={{marginTop:10, marginBottom:30}}>
-                    Logout
-                </button>
-            </Link>
-            <Link to="/profiles">      
-                <button className='buttonstyle'
-                    style={{marginTop:10, marginBottom:30}}>
-                    Change Profile
-                </button>
-            </Link>
-            <Link to="/createQuestion">
-                <button className='buttonstyle'
-                    style={{marginTop:10,marginBottom:30}}>
-                        Ask a Question
+            <div className='homestyle'>
+                <h1 className='questions'>Questions</h1>
+                <div class="row_questions">
+                    <div id = "snackbar"></div>
+                    <Link to="/">      
+                        <button className='buttonstyle' onClick={this.handleLogout}
+                            style={{marginTop:10, marginBottom:30}}>
+                            Logout
+                        </button>
+                    </Link>
+                    <Link to="/profiles">      
+                        <button className='buttonstyle'
+                            style={{marginTop:10, marginBottom:30}}>
+                            Change Profile
+                        </button>
+                    </Link>
+                    <Link to="/createQuestion">
+                        <button className='buttonstyle'
+                            style={{marginTop:10,marginBottom:30}}>
+                                Ask a Question
+                            </button>
+                    </Link>
+                    <Link to={{pathname :"/questionDetails",
+                            state :{id : 1,name : 'somename'} }}>      
+                    <button className='buttonstyle'
+                        style={{marginTop:10, marginBottom:30}}>
+                        Question details
                     </button>
-            </Link>
-        </div>
-        <div className='coloumn'>
-            {/*displaying questions here*/}
-            {
-             this.state.questions.map((question) =>{
-                console.log(question);
-                    if((question.title != null) && (question.title != "")){
-                        console.log("generated question");
-                        return(<Question_Block props = {question} key = {question.question_id} />)
+                    </Link>
+                </div>
+                <div className='container1'>
+                    {/*displaying questions here*/}
+                    {
+                    this.state.questions.map((question) =>{
+                        console.log(question);
+                            if((question.title != null) && (question.title != "")){
+                                console.log("generated question");
+                                return(<Question_Block props = {question} key = {question.question_id} />)
+                            }
+                            console.log(this);
+                        })  
                     }
-                    console.log(this);
-                })  
-            }
-        <Link to={{pathname :"/questionDetails",
-                       state :{id : 1,name : 'somename'} }}>      
-            <button className='buttonstyle'
-                style={{marginTop:10, marginBottom:30}}>
-                Question details
-            </button>
-            </Link>
-        </div>
- 
-    </div>
+                </div>
+            </div>
     </div>);
 	}
 }
