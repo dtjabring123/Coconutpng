@@ -91,9 +91,7 @@ render(){
                     {/*displaying questions here*/}
                     {
                     this.state.questions.map((question) =>{
-                        console.log(question);
                             if((question.title != null) && (question.title != "")){
-                                console.log("generated question");
                                 return(<Question_Block props = {question} key = {question.question_id} />)
                             }
                             console.log(this);

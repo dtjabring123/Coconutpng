@@ -4,7 +4,7 @@ import { getQuestionInfo,getResponses,giveResponse_or_Comment } from "../utils/d
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState("");
-    //displayDetails(location.state.name); //start loading details about the question
+    initialiseValues(location.state.name); //start loading details about the question
 
     //get data from db about particular question
     function initialiseValues(question_id){
@@ -12,6 +12,8 @@ export default function QuestionInfo(){
         Promise.resolve(succ).then((ret=>{
             if(ret[0] == 'success'){
                 //show received details
+                console.log("got question details");
+                console.log(ret[1]);
                 displayDetails(ret[1]);
             }else{
                 console.log("Couldn't get info from database");
@@ -20,6 +22,10 @@ export default function QuestionInfo(){
     }
     //set values to match data
     function displayDetails(details){
+        var title_lbl = document.getElementById("title");
+        title_lbl.textContent = details.title;
+        var description_lbl = document.getElementById("description");
+        description_lbl.value = details.desc;
         //received date,desc,title,likes,liked,isQuestioner
         //comment block - from response list - response_id,date,description,likes,mark,user,isLiked
         //getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num)
@@ -49,11 +55,11 @@ export default function QuestionInfo(){
         <form>
         <div id = "snackbar"></div>
         <div className="q-inner">
-            <h2>TITLE</h2>
+            <label htmlFor="title" id = "title">Title</label>
 
             <div className="q-group">
                 <label htmlFor="description">Description</label>
-                <textarea className="textab" readOnly/>
+                <textarea className="textab" id = "description" readOnly/>
             </div>
 
             <div className="q-group">
