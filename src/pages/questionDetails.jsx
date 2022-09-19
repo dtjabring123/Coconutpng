@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { getQuestionInfo } from "../utils/database_functions";
+import "../stylesheets/questiondetails.css";
+
 export default class QuestionDetails extends React.Component{
     state = {response_data : ""}
 
@@ -50,15 +52,31 @@ export default class QuestionDetails extends React.Component{
     //
     render(){
       //  const {state} = this.props.location;
-       return(     <div>
-                <label>Some title</label>
-                <Link to="/homepage">      
-            <button className='buttonstyle'
-                style={{marginTop:10, marginBottom:30}}>
-                Back
-            </button>
-            </Link>
+       return(     
+        <form>
+        <div id = "snackbar"></div>
+        <div className="q-inner">
+            <h2>TITLE</h2>
+
+            <div className="q-group">
+                <label htmlFor="description">Description</label>
+                <textarea className="textab" readOnly/>
             </div>
+
+            <div className="q-group">
+                <label htmlFor="description">Post Answer</label>
+                <textarea className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+                <input id = "answer" type = "button" value = "Submit" onClick={this.handleQuestion}/>
+                <Link to="/homepage">      
+                    <button type="submit" value="Submit" id = "home_button"/>
+               </Link>
+            </div>
+
+            <Link to="/homepage">      
+                <input type="submit" value="BACK"/>
+               </Link>
+            </div>
+    </form>
        );
     }
 }
