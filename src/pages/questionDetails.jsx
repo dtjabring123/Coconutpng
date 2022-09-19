@@ -1,39 +1,53 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { getQuestionInfo } from "../utils/database_functions";
 export default class QuestionDetails extends React.Component{
-    state = {id : "stuff",name : "name"}
-    // constructor(props){
-    //     super(props);
-    //     this.state={
-    //         value : this.props.location.state,
-    //     }
-    // }
+    state = {response_data : ""}
+	handleInput = (event) =>{ //captures data user enters for a response
+		const target = event.target;
+		const name = target.name;
+		const value = target.value;
+		this.setState({
+			[name] : value,
+		})
+	}
 
     componentDidMount(){ // executes on page load
     // get more info about question from database
-
-
-    //show received details
-
-
+    const question_id = "tCjreYG3SayYCHwbcPLK"
+    let succ = getQuestionInfo(question_id);
+    Promise.resolve(succ).then((ret=>{
+        if(ret[0] == 'success'){
+            //show received details
+            this.displayDetails(ret[1]);
+        }else{
+            console.log("Couldn't get info from database");
+        }
+    }))
+    
     }
+
+    displayDetails=(details)=>{
+        //received date,desc,title,likes,liked,isQuestioner
+        //comment block - from response list
+        //getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num)
+        //giveResponse_or_Comment(0,id,desc) for adding a response
+    }
+
+
     //needs a handle input for user to comment
     //
     render(){
       //  const {state} = this.props.location;
-      console.log(this.state);
-        return(
-            <div>
+       return(     <div>
                 <label>Some title</label>
-                <Link to="/HomePage">      
+                <Link to="/homepage">      
             <button className='buttonstyle'
                 style={{marginTop:10, marginBottom:30}}>
                 Back
             </button>
             </Link>
             </div>
-            
-        )
+       );
     }
 }
