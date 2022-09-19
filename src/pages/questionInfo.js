@@ -48,6 +48,7 @@ export default function QuestionInfo(){
         if((response_data != null) && (response_data.length > 0)){
             //call db method to add response
             //output if successful or not
+            
         }
       }
 
