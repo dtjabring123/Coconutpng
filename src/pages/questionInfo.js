@@ -40,7 +40,7 @@ export default function QuestionInfo(){
     function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
         if(changeResponseList == false){
-        let succ = getResponses(question_id);
+        let succ = getResponses(question_id,'like','desc',0,50);
         Promise.resolve(succ).then((ret=>{
                  //save response array
                 setResponse_list(ret[1]);

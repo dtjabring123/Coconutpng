@@ -485,19 +485,37 @@ async function getComments(response_id){
 }
 
 //Function that will get a questions responses and their comments
-async function getResponses(question_id){
+async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
   const colRef = collection(db,'Responses');
   var pass = 'failed';
   let JSONarr = [];
-  
+  //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
+  //limit_num represents how many of the values are returned
+
+  var q;
   //Queries the data
-  const q = query(colRef,where("response_question","==",question_id));
+  if(startingValue==null){
+    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
+  }
+  else{
+    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
+  }
+  
+  //Will use the following to see if the user liked the response
+  var user_likes;
+  const userRef = doc(db,"Users",auth.currentUser.email);
+  await getDoc(userRef).then(ret=>{
+    user_likes = ret.data().user_likes_responses;
+    })
+  
+
 
   const responsesDocsSnap = await getDocs(q)
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        pass = 'success'
+        pass = 'success';
+        
         var response = {
           "id": doc.id,
           "date": doc.data().response_date,
@@ -507,10 +525,24 @@ async function getResponses(question_id){
           "mark": doc.data().response_mark,
           "user": doc.data().response_user
         }
-        JSONarr.push(response)
+        response.liked = hasLiked(doc.id,user_likes);
+        if(doc.data().response_mark!=0){
+          //Then this is the correct answer and thus display it first
+          JSONarr.unshift(response);
+        }
+        else{
+          //Not the correct answer
+          JSONarr.push(response)
+        }
+        
       }
     })
   })
+  .catch(e=>{
+    console.log(e);
+  })
+
+
 
 return [pass,JSONarr];
   
@@ -597,6 +629,108 @@ async function giveResponse_or_Comment(check,id,desc){
   }
   
 }
+//Function that will allow the user to like the response
+async function likeResponse(value, response_id){
+  const responseRef = doc(db,"Responses",response_id);
+  var pass = "failed";
+  var failed_arr = [];
+  var new_likes = 0;
+
+  //In the case that the user has not logged in then they cant vote on a response
+  try{
+    const userRef = doc(db,"Users",auth.currentUser.email);
+
+    var liked=-3.1415; //arbitrary value that will be used for comparison
+    await getDoc(userRef).then(ret=>{
+      liked=ret.data().user_likes_responses;
+      liked=hasLiked(response_id,liked);
+   })
+   .catch(e=>{
+      return [pass,[e]];
+   })
+
+   if(liked==value){
+    //Then the value should not change
+    return ["success",failed_arr];
+   }
+   else{
+    //Then the value is different from what they want to change their vote to
+    
+    //Fetching the number of likes the question currently has
+    var prior_likes = -1;
+    await getDoc(responseRef).then((ret)=>{
+      prior_likes = ret.data().response_likes;
+      pass = "success";
+      new_likes = prior_likes;
+    })
+    .catch(e=>{
+      console.log(e);
+      failed_arr.push(e);
+    })
+   }
+
+   //Removing the extra dis/like due to the the user's previous decision
+   if(pass==='success'){
+
+    if(value==0 || value<=-1*liked){
+      //There vote is getting changed or deleted
+      var concated = (response_id.concat(",",liked)).toString();
+      new_likes += (-liked);
+      
+      //Removing the like from the user's list
+      updateDoc(userRef,{
+        user_likes_responses: arrayRemove(concated)
+      })
+      .catch(e=>{
+        pass = "failed";
+        failed_arr.push(e);
+      })
+
+      //Updating the likes value
+      updateDoc(responseRef,{
+      response_likes : new_likes
+      })
+      .catch(e=>{
+        pass = "failed";
+        failed_arr.push(e);
+        console.log(e);
+      })
+
+    }
+   }
+
+   //Adding the actual entries to the likes after taking the necessary ones away
+   if(pass==='success'){
+    //Changing the questions liked value
+    updateDoc(responseRef,{
+      response_likes : new_likes+value
+    })
+    .catch(e=>{
+      pass = 'failed';
+      failed_arr.push(e);
+    })
+
+    if(pass==="success" && value!=0){ //Dont include when the value is 0 as we dont want to add it to the user's likes as they removed their like
+      //Updating the user's likes
+      var concated = (response_id.concat(",",value)).toString();
+      updateDoc(userRef,{
+        user_likes_responses: arrayUnion(concated)
+      })
+      .catch(e=>{
+        console.log(e);
+        failed_arr.push(e);
+      })
+    }
+  }
+   
+  }
+  catch(e){ 
+    failed_arr.push(e);
+  }
+
+  return [pass,failed_arr];
+}
+
 
 //Function that will change the state of correct or incorrect based on user input
 async function changeMark(mark,response_id,JSONuser){
@@ -621,4 +755,4 @@ async function changeMark(mark,response_id,JSONuser){
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments,changeMark}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse}

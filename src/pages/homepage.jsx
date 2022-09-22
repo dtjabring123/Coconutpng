@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
-import Question_Block from '../components/question_block';
+import Question_Block from '../components/question_block.js';
 
 export default class HomePage extends React.Component {
     state = {

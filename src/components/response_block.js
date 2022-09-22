@@ -2,7 +2,7 @@ import React from "react";
 import "../stylesheets/comments.css";
 import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
-import { likeResponse } from "../database_functions";
+import { likeResponse } from "../utils/database_functions";
 
 export default function ResponseBlock(props){
     //let date = props.props.date; //show
