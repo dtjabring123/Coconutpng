@@ -1,6 +1,7 @@
 //Set up imports
 //Imports
 import { initializeApp }from 'firebase/app'
+
 import {
     getFirestore,collection,getDocs,doc,query,where,onSnapshot,addDoc, getDoc,startAt,startAfter,endAt,endBefore, orderBy,limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
     deleteDoc,sendPasswordResetEmail
@@ -9,6 +10,12 @@ import {
 import{
     getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged, updateProfile, updatePassword, updateEmail
 }from 'firebase/auth'
+
+import {getStorage,ref, uploadBytes, listAll, getDownloadURL} from 'firebase/storage'
+
+import {v4} from 'uuid'
+
+
 //Firebase object connection
 const firebaseConfig = {
     apiKey: "AIzaSyA-6DSz8cM6NtY7gu-uonAu0LgFHzCfTWg",
@@ -21,9 +28,10 @@ const firebaseConfig = {
   };
 
   //Initialiseing firebase connection
-  initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore();
   const auth = getAuth();
+  const storage = getStorage(app); //Make a reference to storage part of the database
 
   //Creates the user
   async function register(first_name,last_name,dob,id_number,mobile_number,role,email,password){   
@@ -320,7 +328,7 @@ async function getAllQuestions(){
 }
 
 //Function to create a question
-async function askQuestion(title, desc){
+async function askQuestion(title, desc, image){
   const questionsRef = collection(db,"Questions");
   var pass = "success";
 
@@ -331,11 +339,39 @@ async function askQuestion(title, desc){
     "question_desc":desc,
     "question_date": serverTimestamp(),
     "question_likes":0,
-    "question_reference":auth.currentUser.email
+    "question_reference":auth.currentUser.email,
+    "question_images":[]
+  })
+  .then((docRef)=>{
+    
+    if(image!=null){
+      //Then the user uploaded an image
+      var imageRef = ref(storage,`question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
+      var images = []; //array that will store the image urls
+      uploadBytes(imageRef,image) //upload the file
+      .then(()=>{
+        var imageListRef = ref(storage,`question_images/${docRef.id}/`);
+        listAll(imageListRef).then((response)=>{ //Get all the images uploaded for that question
+          response.items.forEach((item)=>{
+            getDownloadURL(item).then((url)=>{ //Get the urls for all those images
+              images.push(url);
+            })
+          })
+        })
+        updateDoc(docRef,{
+          question_images : images //add those urls to the document
+        })
+        .catch((e)=>{
+          pass = "failed";
+        })
+      })
+    }
+    // console.log("Document id = ",docRef.id); Doc id testing
   })
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
   })
+  
   return pass;
 }
 
@@ -573,7 +609,8 @@ async function getQuestionInfo(question_id){
       "title": ret.data().question_title,
       "user_id":ret.data().question_user,
       "isQuestioner": ret.data().question_reference==auth.currentUser.email, //returns if they asked the question
-      "liked":0 //default value means that the user did not like
+      "liked":0, //default value means that the user did not like.
+      "images":ret.data().question_images
       }
     })
 
@@ -582,7 +619,7 @@ async function getQuestionInfo(question_id){
     const userRef = doc(db,"Users",auth.currentUser.email);
     if(pass==='success'){
       await getDoc(userRef).then(ret=>{
-        var likes = ret.data().user_likes;
+        var likes = ret.data().user_likes_questions;
         JSON.liked = hasLiked(question_id,likes);
       })
     }
