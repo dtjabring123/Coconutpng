@@ -2,9 +2,10 @@
  * @jest-environment node
  */
 import {
-    register, logIn, logOut, getUserDetails, CompareUserID, changePassword,
-    updateUserDetails, getAllQuestions, getComments, getResponses, 
-    getQuestionInfo,
+    register, logIn, logOut, getUserDetails, CompareUserID, changePassword, 
+    updateUserDetails, getAllQuestions, askQuestion, likeQuestion, 
+    getQuestionInfo, giveResponse_or_Comment, getResponses, getComments, 
+    changeMark
 }
     from '../utils/database_functions.js'
 
@@ -131,6 +132,110 @@ describe("updateUserDetails tests", () => {
             details = await updateUserDetails(validDetail)
             Promise.resolve(details).then((arr) => {
                 expect(arr[0]).toBe('success')
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for getAllQuestions, test for valid
+describe("getAllQuestions tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await getAllQuestions()
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for askQuestion, test for valid
+describe("askQuestion tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await askQuestion("is this a test","like fr fr")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for likeQuestion, test for valid
+describe("likeQuestion tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await likeQuestion(1, "0lLGjuQmBvPVnrMnxQEx")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for getQuestionInfo, test for valid
+describe("getQuestionInfo tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await getQuestionInfo("0lLGjuQmBvPVnrMnxQEx")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for giveResponse_or_Comment, test for valid
+describe("giveResponse_or_Comment tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await giveResponse_or_Comment(0,"0lLGjuQmBvPVnrMnxQEx","no cap")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for getResponses, test for valid
+describe("getResponses tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await getResponses("0lLGjuQmBvPVnrMnxQEx")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for getComments, test for valid
+describe("getComments tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await getComments("uIve2uGNWaGx5tIDZhj")
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
+            })
+        } catch (e) {
+        }
+    })
+});
+
+//test for changeMark, test for valid
+describe("changeMark tests", () => {
+    test("valid test", async () => {
+        try {
+            details = await changeMark(1,"uIve2uGNWaGx5tIDZhj",{role: 1, isQuestioner: true})
+            Promise.resolve(details).then((arr) => {
+                expect(arr[0]).toBe("success")
             })
         } catch (e) {
         }

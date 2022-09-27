@@ -1,6 +1,7 @@
 //Set up imports
 //Imports
 import { initializeApp }from 'firebase/app'
+
 import {
     getFirestore,collection,getDocs,doc,query,where,onSnapshot,addDoc, getDoc,startAt,startAfter,endAt,endBefore, orderBy,limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
     deleteDoc,sendPasswordResetEmail
@@ -9,6 +10,12 @@ import {
 import{
     getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged, updateProfile, updatePassword, updateEmail
 }from 'firebase/auth'
+
+import {getStorage,ref, uploadBytes, listAll, getDownloadURL} from 'firebase/storage'
+
+import {v4} from 'uuid'
+
+
 //Firebase object connection
 const firebaseConfig = {
     apiKey: "AIzaSyA-6DSz8cM6NtY7gu-uonAu0LgFHzCfTWg",
@@ -21,9 +28,10 @@ const firebaseConfig = {
   };
 
   //Initialiseing firebase connection
-  initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore();
   const auth = getAuth();
+  const storage = getStorage(app); //Make a reference to storage part of the database
 
   //Creates the user
   async function register(first_name,last_name,dob,id_number,mobile_number,role,email,password){   
@@ -320,7 +328,7 @@ async function getAllQuestions(){
 }
 
 //Function to create a question
-async function askQuestion(title, desc){
+async function askQuestion(title, desc, image){
   const questionsRef = collection(db,"Questions");
   var pass = "success";
 
@@ -331,11 +339,39 @@ async function askQuestion(title, desc){
     "question_desc":desc,
     "question_date": serverTimestamp(),
     "question_likes":0,
-    "question_reference":auth.currentUser.email
+    "question_reference":auth.currentUser.email,
+    "question_images":[]
+  })
+  .then((docRef)=>{
+    
+    if(image!=null){
+      //Then the user uploaded an image
+      var imageRef = ref(storage,`question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
+      var images = []; //array that will store the image urls
+      uploadBytes(imageRef,image) //upload the file
+      .then(()=>{
+        var imageListRef = ref(storage,`question_images/${docRef.id}/`);
+        listAll(imageListRef).then((response)=>{ //Get all the images uploaded for that question
+          response.items.forEach((item)=>{
+            getDownloadURL(item).then((url)=>{ //Get the urls for all those images
+              images.push(url);
+            })
+          })
+        })
+        updateDoc(docRef,{
+          question_images : images //add those urls to the document
+        })
+        .catch((e)=>{
+          pass = "failed";
+        })
+      })
+    }
+    // console.log("Document id = ",docRef.id); Doc id testing
   })
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
   })
+  
   return pass;
 }
 
@@ -470,7 +506,9 @@ async function getComments(response_id){
 
       if(doc.data()!=null){
         pass = 'success'
-        var comment = {
+        if(doc.data().comment_reported==0){
+          //Then the comment was not reported and thus should be seen
+          var comment = {
           "id": doc.id,
           "date": doc.data().comment_date,
           "description": doc.data().comment_desc,
@@ -478,6 +516,7 @@ async function getComments(response_id){
           "user": doc.data().comment_user
         }
         JSONarr.push(comment);
+        }
       }
     })
   })
@@ -485,95 +524,74 @@ async function getComments(response_id){
 }
 
 //Function that will get a questions responses and their comments
-// async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
-//   const colRef = collection(db,'Responses');
-//   var pass = 'failed';
-//   let JSONarr = [];
-//   //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
-//   //limit_num represents how many of the values are returned
-
-//   var q;
-//   //Queries the data
-//   if(startingValue==null){
-//     q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
-//   }
-//   else{
-//     q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
-//   }
-  
-//   //Will use the following to see if the user liked the response
-//   var user_likes;
-//   const userRef = doc(db,"Users",auth.currentUser.email);
-//   await getDoc(userRef).then(ret=>{
-//     user_likes = ret.data().user_likes_responses;
-//     })
-  
-
-
-//   const responsesDocsSnap = await getDocs(q)
-//   .then((snapshot)=>{
-//     snapshot.docs.forEach((doc)=>{
-//       if(doc.data()!=null){
-//         pass = 'success';
-        
-//         var response = {
-//           "id": doc.id,
-//           "date": doc.data().response_date,
-//           "description": doc.data().response_desc,
-//           "likes": doc.data().response_likes,
-//           "question": doc.data().response_question,
-//           "mark": doc.data().response_mark,
-//           "user": doc.data().response_user
-//         }
-//         response.liked = hasLiked(doc.id,user_likes);
-//         if(doc.data().response_mark!=0){
-//           //Then this is the correct answer and thus display it first
-//           JSONarr.unshift(response);
-//         }
-//         else{
-//           //Not the correct answer
-//           JSONarr.push(response)
-//         }
-        
-//       }
-//     })
-//   })
-//   .catch(e=>{
-//     console.log(e);
-//   })
-
-
-
-// return [pass,JSONarr];
-  
-// }
-//Old Function that will get a questions responses and their comments
-async function getResponses(question_id){
+async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
   const colRef = collection(db,'Responses');
   var pass = 'failed';
   let JSONarr = [];
-  
+  //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
+  //limit_num represents how many of the values are returned
+
+  var q;
   //Queries the data
-  const q = query(colRef,where("response_question","==",question_id));
+  if(startingValue==null){
+    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
+  }
+  else{
+    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
+  }
+  
+  //Will use the following to see if the user liked the response
+  var user_likes;
+
+  
+  try{
+    const userRef = doc(db,"Users",auth.currentUser.email);
+    await getDoc(userRef).then(ret=>{
+      user_likes = ret.data().user_likes_responses;
+    })
+  }
+  catch(e){
+    return ["failed","Auth token expired"]
+  }
+  
+  
+
 
   const responsesDocsSnap = await getDocs(q)
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        pass = 'success'
-        var response = {
-          "id": doc.id,
-          "date": doc.data().response_date,
-          "description": doc.data().response_desc,
-          "likes": doc.data().response_likes,
-          "question": doc.data().response_question,
-          "mark": doc.data().response_mark,
-          "user": doc.data().response_user
+        pass = 'success';
+
+        if(doc.data().response_reported==0){
+          //Then the response was not reported and should be displayed
+          var response = {
+            "id": doc.id,
+            "date": doc.data().response_date,
+            "description": doc.data().response_desc,
+            "likes": doc.data().response_likes,
+            "question": doc.data().response_question,
+            "mark": doc.data().response_mark,
+            "user": doc.data().response_user
+          }
+          response.liked = hasLiked(doc.id,user_likes);
+          if(doc.data().response_mark!=0){
+            //Then this is the correct answer and thus display it first
+            JSONarr.unshift(response);
+          }
+          else{
+            //Not the correct answer
+            JSONarr.push(response)
+          }
         }
-        JSONarr.push(response)
       }
     })
   })
+  .catch(e=>{
+    console.log(e);
+  })
+
+
 
 return [pass,JSONarr];
   
@@ -596,7 +614,8 @@ async function getQuestionInfo(question_id){
       "title": ret.data().question_title,
       "user_id":ret.data().question_user,
       "isQuestioner": ret.data().question_reference==auth.currentUser.email, //returns if they asked the question
-      "liked":0 //default value means that the user did not like
+      "liked":0, //default value means that the user did not like.
+      "images":ret.data().question_images
       }
     })
 
@@ -605,7 +624,7 @@ async function getQuestionInfo(question_id){
     const userRef = doc(db,"Users",auth.currentUser.email);
     if(pass==='success'){
       await getDoc(userRef).then(ret=>{
-        var likes = ret.data().user_likes;
+        var likes = ret.data().user_likes_questions;
         JSON.liked = hasLiked(question_id,likes);
       })
     }
@@ -635,7 +654,8 @@ async function giveResponse_or_Comment(check,id,desc){
       "response_date": serverTimestamp(),
       "response_likes":0,
       "response_question":id,
-      "response_mark":0
+      "response_mark":0,
+      "response_reported":0
     })
     .catch((e)=>{
       pass = "failed"; //Used to symbolise that the creation of the response failed.
@@ -651,7 +671,8 @@ async function giveResponse_or_Comment(check,id,desc){
         "comment_reference":auth.currentUser.email,
         "comment_desc":desc,
         "comment_date": serverTimestamp(),
-        "comment_response":id
+        "comment_response":id,
+        "comment_reported":0
       })
       .catch((e)=>{
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
