@@ -23,7 +23,7 @@ export default class createQuestion extends React.Component{
 		console.log(this.state.file);
 		if(validQuestion(this.state) == true){
 			//call database method
-			let succ = askQuestion(this.state.title,this.state.description);
+			let succ = askQuestion(this.state.title,this.state.description,this.state.file);
 			Promise.resolve(succ).then((ret)=>{
 				if(ret== "success"){
 					this.output("Question Posted");
@@ -71,7 +71,7 @@ export default class createQuestion extends React.Component{
 						</div>
 						<div className="form-group">
 							<label htmlFor="images">Add an image</label>
-							<input type = "file" accept="image/*" onChange={evt=>this.handleInput(evt)}/>
+							<input id = "file" name = "file" type = "file" accept="image/*" onChange={evt=>this.handleInput(evt)}/>
 						</div>
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
