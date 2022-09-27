@@ -309,14 +309,18 @@ async function getAllQuestions(){
       snapshot.docs.forEach((doc)=>{
         if(doc.data()!=null){
           pass = 'success'
-          //Create the JSON representing the question
-          var Question = {
-            "title": doc.data().question_title,
-            "likes": doc.data().question_likes,
-            "author": doc.data().question_user,
-            "question_id": doc.id
+          if(doc.data().question_reported==0){
+            //Then the question has not been 'removed' and should be visible
+            //Create the JSON representing the question
+            var Question = {
+              "title": doc.data().question_title,
+              "likes": doc.data().question_likes,
+              "author": doc.data().question_user,
+              "question_id": doc.id
+            }
+            JSONarr.push(Question);
           }
-          JSONarr.push(Question);
+          
         }
         else{
           return ['failed',[]];
@@ -339,6 +343,7 @@ async function askQuestion(title, desc, image){
     "question_desc":desc,
     "question_date": serverTimestamp(),
     "question_likes":0,
+    "question_reported":0,
     "question_reference":auth.currentUser.email,
     "question_images":[]
   })
@@ -506,7 +511,9 @@ async function getComments(response_id){
 
       if(doc.data()!=null){
         pass = 'success'
-        var comment = {
+        if(doc.data().comment_reported==0){
+          //Then the comment was not reported and thus should be seen
+          var comment = {
           "id": doc.id,
           "date": doc.data().comment_date,
           "description": doc.data().comment_desc,
@@ -514,6 +521,7 @@ async function getComments(response_id){
           "user": doc.data().comment_user
         }
         JSONarr.push(comment);
+        }
       }
     })
   })
@@ -559,26 +567,28 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
         pass = 'success';
-        
-        var response = {
-          "id": doc.id,
-          "date": doc.data().response_date,
-          "description": doc.data().response_desc,
-          "likes": doc.data().response_likes,
-          "question": doc.data().response_question,
-          "mark": doc.data().response_mark,
-          "user": doc.data().response_user
+
+        if(doc.data().response_reported==0){
+          //Then the response was not reported and should be displayed
+          var response = {
+            "id": doc.id,
+            "date": doc.data().response_date,
+            "description": doc.data().response_desc,
+            "likes": doc.data().response_likes,
+            "question": doc.data().response_question,
+            "mark": doc.data().response_mark,
+            "user": doc.data().response_user
+          }
+          response.liked = hasLiked(doc.id,user_likes);
+          if(doc.data().response_mark!=0){
+            //Then this is the correct answer and thus display it first
+            JSONarr.unshift(response);
+          }
+          else{
+            //Not the correct answer
+            JSONarr.push(response)
+          }
         }
-        response.liked = hasLiked(doc.id,user_likes);
-        if(doc.data().response_mark!=0){
-          //Then this is the correct answer and thus display it first
-          JSONarr.unshift(response);
-        }
-        else{
-          //Not the correct answer
-          JSONarr.push(response)
-        }
-        
       }
     })
   })
@@ -649,7 +659,8 @@ async function giveResponse_or_Comment(check,id,desc){
       "response_date": serverTimestamp(),
       "response_likes":0,
       "response_question":id,
-      "response_mark":0
+      "response_mark":0,
+      "response_reported":0
     })
     .catch((e)=>{
       pass = "failed"; //Used to symbolise that the creation of the response failed.
@@ -665,7 +676,8 @@ async function giveResponse_or_Comment(check,id,desc){
         "comment_reference":auth.currentUser.email,
         "comment_desc":desc,
         "comment_date": serverTimestamp(),
-        "comment_response":id
+        "comment_response":id,
+        "comment_reported":0
       })
       .catch((e)=>{
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
@@ -794,10 +806,65 @@ async function changeMark(mark,response_id,JSONuser){
   }
   return 'failed'; //User doesnt have permission to change the marking
 }
+
+async function changePostReportValue(table,post,value,JSONuser){
+  var pass = "failed";
+  if(JSONuser.role<1){
+    //Then they are not an admin thus they dont have permissions to change this variable
+    return pass;
+  }
+  
+  if(table==0){
+    //Then the post_id is for a question
+    const questRef = doc(db,"Questions",post);
+    pass = "success";
+
+    //Updating the report value
+    updateDoc(questRef,{
+        question_reported: value
+    })
+    .catch(e=>{
+      pass = "failed";
+    })
+
+  }
+  else if(table==1){
+    //Then the post_id is for a response
+    const respRef = doc(db,"Responses",post);
+    pass = "success";
+
+    //Updating the report value
+    updateDoc(respRef,{
+          response_reported: value
+    })
+    .catch(e=>{
+      pass = "failed";
+    })
+
+  }
+  else if(table==2){
+    //Then the post_id is for a comment
+    const commRef = doc(db,"Comments",post);
+    pass = "success";
+
+    //Updating the report value
+    updateDoc(commRef,{
+      comment_reported: value
+    })
+    .catch(e=>{
+      pass = "failed";
+    })
+  }
+
+  return pass;
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
   })
 
   //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse}
+  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
+        getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
+        giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
+        changePostReportValue}
