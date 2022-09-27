@@ -309,14 +309,18 @@ async function getAllQuestions(){
       snapshot.docs.forEach((doc)=>{
         if(doc.data()!=null){
           pass = 'success'
-          //Create the JSON representing the question
-          var Question = {
-            "title": doc.data().question_title,
-            "likes": doc.data().question_likes,
-            "author": doc.data().question_user,
-            "question_id": doc.id
+          if(doc.data().question_reported==0){
+            //Then the question has not been 'removed' and should be visible
+            //Create the JSON representing the question
+            var Question = {
+              "title": doc.data().question_title,
+              "likes": doc.data().question_likes,
+              "author": doc.data().question_user,
+              "question_id": doc.id
+            }
+            JSONarr.push(Question);
           }
-          JSONarr.push(Question);
+          
         }
         else{
           return ['failed',[]];
@@ -339,6 +343,7 @@ async function askQuestion(title, desc, image){
     "question_desc":desc,
     "question_date": serverTimestamp(),
     "question_likes":0,
+    "question_reported":0,
     "question_reference":auth.currentUser.email,
     "question_images":[]
   })
@@ -841,7 +846,7 @@ async function changePostReportValue(table,post,value,JSONuser){
     //Then the post_id is for a comment
     const commRef = doc(db,"Comments",post);
     pass = "success";
-    
+
     //Updating the report value
     updateDoc(commRef,{
       comment_reported: value
