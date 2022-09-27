@@ -40,14 +40,14 @@ export default function QuestionInfo(){
     function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
         if(changeResponseList == false){
-        let succ = getResponses(question_id);
-        Promise.resolve(succ).then((ret=>{
-                 //save response array
-                setResponse_list(ret[1]);
-                //change flag for fetching response list 
-                console.log(ret);
-                setChangeResponseList(true);
-        }))   
+        // let succ = getResponses(question_id);
+        // Promise.resolve(succ).then((ret=>{
+        //          //save response array
+        //         setResponse_list(ret[1]);
+        //         //change flag for fetching response list 
+        //         console.log(ret);
+        //         setChangeResponseList(true);
+        // }))   
     }
     }
     

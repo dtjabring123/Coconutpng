@@ -8,7 +8,7 @@ export default class createQuestion extends React.Component{
 	state = { //store question title and question description for creating a question 
 		title : "",
 		description : "",
-		file : ""
+		file : null
 	}
 	handleInput = (event) =>{ //updates email and password variables when user inputs
 		const target = event.target;
@@ -17,6 +17,9 @@ export default class createQuestion extends React.Component{
 		this.setState({
 			[name] : value,
 		})
+	}
+	handleFileChange = (event) =>{
+		this.setState({file:event.target.files[0]});
 	}
 
     handleQuestion = ()=>{
@@ -71,7 +74,7 @@ export default class createQuestion extends React.Component{
 						</div>
 						<div className="form-group">
 							<label htmlFor="images">Add an image</label>
-							<input id = "file" name = "file" type = "file" accept="image/*" onChange={evt=>this.handleInput(evt)}/>
+							<input id = "file" name = "file" type = "file" accept="image/*" onChange={evt=>this.handleFileChange(evt)}/>
 						</div>
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
