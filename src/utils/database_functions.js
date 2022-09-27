@@ -4,7 +4,7 @@ import { initializeApp }from 'firebase/app'
 
 import {
     getFirestore,collection,getDocs,doc,query,where,onSnapshot,addDoc, getDoc,startAt,startAfter,endAt,endBefore, orderBy,limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-    deleteDoc,sendPasswordResetEmail
+    deleteDoc,sendPasswordResetEmail,toDate
 }from 'firebase/firestore'
 
 import{
@@ -60,6 +60,7 @@ const firebaseConfig = {
         user_likes: [],
         user_titles: [],
         user_questions: [],
+        user_strikes:0,
         user_responses:[]
       })
       .catch((err)=>{
@@ -352,23 +353,26 @@ async function askQuestion(title, desc, image){
     if(image!=null){
       //Then the user uploaded an image
       var imageRef = ref(storage,`question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
-      var images = []; //array that will store the image urls
+      
       uploadBytes(imageRef,image) //upload the file
       .then(()=>{
         var imageListRef = ref(storage,`question_images/${docRef.id}/`);
+        const questRef = doc(db,"Questions",docRef.id)
         listAll(imageListRef).then((response)=>{ //Get all the images uploaded for that question
           response.items.forEach((item)=>{
             getDownloadURL(item).then((url)=>{ //Get the urls for all those images
-              images.push(url);
+              updateDoc(questRef,{
+                question_images: arrayUnion(url)
+              })
+              .catch(e=>{
+                pass = "failed";
+              })
             })
           })
         })
-        updateDoc(docRef,{
-          question_images : images //add those urls to the document
-        })
-        .catch((e)=>{
-          pass = "failed";
-        })
+        
+        
+
       })
     }
     // console.log("Document id = ",docRef.id); Doc id testing
@@ -376,7 +380,7 @@ async function askQuestion(title, desc, image){
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
   })
-  
+
   return pass;
 }
 
@@ -515,7 +519,7 @@ async function getComments(response_id){
           //Then the comment was not reported and thus should be seen
           var comment = {
           "id": doc.id,
-          "date": doc.data().comment_date,
+          "date": doc.data().comment_date.toDate(),
           "description": doc.data().comment_desc,
           "response": doc.data().comment_response,
           "user": doc.data().comment_user
@@ -566,13 +570,12 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        pass = 'success';
-
+        
         if(doc.data().response_reported==0){
           //Then the response was not reported and should be displayed
           var response = {
             "id": doc.id,
-            "date": doc.data().response_date,
+            "date": doc.data().response_date.toDate(),
             "description": doc.data().response_desc,
             "likes": doc.data().response_likes,
             "question": doc.data().response_question,
@@ -613,7 +616,7 @@ async function getQuestionInfo(question_id){
     pass = 'success'
     //Set the JSON for the question
     JSON = {
-      "date": ret.data().question_date,
+      "date": ret.data().question_date.toDate(),
       "desc": ret.data().question_desc,
       "likes": ret.data().question_likes,
       "title": ret.data().question_title,
@@ -623,6 +626,7 @@ async function getQuestionInfo(question_id){
       "images":ret.data().question_images
       }
     })
+    
 
   //Function will return if the user has liked it or not, thus the try catch will be for if the user is not logged in
   try{
@@ -809,6 +813,7 @@ async function changeMark(mark,response_id,JSONuser){
 
 async function changePostReportValue(table,post,value,JSONuser){
   var pass = "failed";
+  var user;
   if(JSONuser.role<1){
     //Then they are not an admin thus they dont have permissions to change this variable
     return pass;
@@ -818,6 +823,12 @@ async function changePostReportValue(table,post,value,JSONuser){
     //Then the post_id is for a question
     const questRef = doc(db,"Questions",post);
     pass = "success";
+
+    //Get the user whose strikes we are going to change
+    await getDoc(questRef).then(ret=>{
+      user = ret.data().question_reference;
+    })
+
 
     //Updating the report value
     updateDoc(questRef,{
@@ -833,6 +844,11 @@ async function changePostReportValue(table,post,value,JSONuser){
     const respRef = doc(db,"Responses",post);
     pass = "success";
 
+    //Get the user whose strikes we are going to change
+    await getDoc(respRef).then(ret=>{
+      user = ret.data().response_reference;
+    })
+
     //Updating the report value
     updateDoc(respRef,{
           response_reported: value
@@ -847,12 +863,38 @@ async function changePostReportValue(table,post,value,JSONuser){
     const commRef = doc(db,"Comments",post);
     pass = "success";
 
+    //Get the user whose strikes we are going to change
+    await getDoc(commRef).then(ret=>{
+      user = ret.data().comment_reference;
+    })
+
     //Updating the report value
     updateDoc(commRef,{
       comment_reported: value
     })
     .catch(e=>{
       pass = "failed";
+    })
+  }
+
+  if(pass==="success"){
+    //So the post was reported, now we need to change the user's strikes value
+    const userRef = doc(db,"Users",user);
+    var strikes;
+
+    //Get the user whose strikes we are going to change
+    await getDoc(userRef).then(ret=>{
+      strikes = ret.data().user_strikes;
+    })
+
+    //Changing value so that we can just add it
+    if(value==0){
+      value=-1;
+    }
+
+    //Updating the strikes value
+    updateDoc(userRef,{
+      user_strikes: strikes+value
     })
   }
 
