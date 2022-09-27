@@ -353,23 +353,26 @@ async function askQuestion(title, desc, image){
     if(image!=null){
       //Then the user uploaded an image
       var imageRef = ref(storage,`question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
-      var images = []; //array that will store the image urls
+      
       uploadBytes(imageRef,image) //upload the file
       .then(()=>{
         var imageListRef = ref(storage,`question_images/${docRef.id}/`);
+        const questRef = doc(db,"Questions",docRef.id)
         listAll(imageListRef).then((response)=>{ //Get all the images uploaded for that question
           response.items.forEach((item)=>{
             getDownloadURL(item).then((url)=>{ //Get the urls for all those images
-              images.push(url);
+              updateDoc(questRef,{
+                question_images: arrayUnion(url)
+              })
+              .catch(e=>{
+                pass = "failed";
+              })
             })
           })
         })
-        updateDoc(docRef,{
-          question_images : images //add those urls to the document
-        })
-        .catch((e)=>{
-          pass = "failed";
-        })
+        
+        
+
       })
     }
     // console.log("Document id = ",docRef.id); Doc id testing
@@ -377,7 +380,7 @@ async function askQuestion(title, desc, image){
   .catch((e)=>{
     pass = "failed"; //Used to symbolise that the creation of the question failed.
   })
-  
+
   return pass;
 }
 
