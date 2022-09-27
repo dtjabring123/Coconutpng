@@ -7,7 +7,8 @@ export default class createQuestion extends React.Component{
 
 	state = { //store question title and question description for creating a question 
 		title : "",
-		description : ""
+		description : "",
+		file : ""
 	}
 	handleInput = (event) =>{ //updates email and password variables when user inputs
 		const target = event.target;
@@ -19,6 +20,7 @@ export default class createQuestion extends React.Component{
 	}
 
     handleQuestion = ()=>{
+		console.log(this.state.file);
 		if(validQuestion(this.state) == true){
 			//call database method
 			let succ = askQuestion(this.state.title,this.state.description);
@@ -67,7 +69,10 @@ export default class createQuestion extends React.Component{
 							<label htmlFor="title">Title</label>
 							<input id="title" type="text" name="title" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter} />
 						</div>
-
+						<div className="form-group">
+							<label htmlFor="images">Add an image</label>
+							<input type = "file" accept="image/*" onChange={evt=>this.handleInput(evt)}/>
+						</div>
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
 							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>

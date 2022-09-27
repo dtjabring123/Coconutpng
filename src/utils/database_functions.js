@@ -485,37 +485,82 @@ async function getComments(response_id){
 }
 
 //Function that will get a questions responses and their comments
-async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
+// async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
+//   const colRef = collection(db,'Responses');
+//   var pass = 'failed';
+//   let JSONarr = [];
+//   //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
+//   //limit_num represents how many of the values are returned
+
+//   var q;
+//   //Queries the data
+//   if(startingValue==null){
+//     q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
+//   }
+//   else{
+//     q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
+//   }
+  
+//   //Will use the following to see if the user liked the response
+//   var user_likes;
+//   const userRef = doc(db,"Users",auth.currentUser.email);
+//   await getDoc(userRef).then(ret=>{
+//     user_likes = ret.data().user_likes_responses;
+//     })
+  
+
+
+//   const responsesDocsSnap = await getDocs(q)
+//   .then((snapshot)=>{
+//     snapshot.docs.forEach((doc)=>{
+//       if(doc.data()!=null){
+//         pass = 'success';
+        
+//         var response = {
+//           "id": doc.id,
+//           "date": doc.data().response_date,
+//           "description": doc.data().response_desc,
+//           "likes": doc.data().response_likes,
+//           "question": doc.data().response_question,
+//           "mark": doc.data().response_mark,
+//           "user": doc.data().response_user
+//         }
+//         response.liked = hasLiked(doc.id,user_likes);
+//         if(doc.data().response_mark!=0){
+//           //Then this is the correct answer and thus display it first
+//           JSONarr.unshift(response);
+//         }
+//         else{
+//           //Not the correct answer
+//           JSONarr.push(response)
+//         }
+        
+//       }
+//     })
+//   })
+//   .catch(e=>{
+//     console.log(e);
+//   })
+
+
+
+// return [pass,JSONarr];
+  
+// }
+//Old Function that will get a questions responses and their comments
+async function getResponses(question_id){
   const colRef = collection(db,'Responses');
   var pass = 'failed';
   let JSONarr = [];
-  //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
-  //limit_num represents how many of the values are returned
-
-  var q;
+  
   //Queries the data
-  if(startingValue==null){
-    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
-  }
-  else{
-    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
-  }
-  
-  //Will use the following to see if the user liked the response
-  var user_likes;
-  const userRef = doc(db,"Users",auth.currentUser.email);
-  await getDoc(userRef).then(ret=>{
-    user_likes = ret.data().user_likes_responses;
-    })
-  
-
+  const q = query(colRef,where("response_question","==",question_id));
 
   const responsesDocsSnap = await getDocs(q)
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        pass = 'success';
-        
+        pass = 'success'
         var response = {
           "id": doc.id,
           "date": doc.data().response_date,
@@ -525,24 +570,10 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
           "mark": doc.data().response_mark,
           "user": doc.data().response_user
         }
-        response.liked = hasLiked(doc.id,user_likes);
-        if(doc.data().response_mark!=0){
-          //Then this is the correct answer and thus display it first
-          JSONarr.unshift(response);
-        }
-        else{
-          //Not the correct answer
-          JSONarr.push(response)
-        }
-        
+        JSONarr.push(response)
       }
     })
   })
-  .catch(e=>{
-    console.log(e);
-  })
-
-
 
 return [pass,JSONarr];
   

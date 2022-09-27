@@ -21,6 +21,7 @@ export default class HomePage extends React.Component {
 
     componentDidMount(){ //executes on page load to display posts
         // get posts from database to display
+        console.log(this.props);
         var succ = getAllQuestions();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){

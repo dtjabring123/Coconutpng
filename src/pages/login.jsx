@@ -76,7 +76,7 @@ export default class LoginPage extends React.Component {
 						</div>
 
 						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
-						<Link to="/homepage">      
+						<Link to="/homepage" props = {{something : "here"}}>      
 							<button type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
 						<Link to="/">      
