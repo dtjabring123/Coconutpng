@@ -4,7 +4,7 @@ import { initializeApp }from 'firebase/app'
 
 import {
     getFirestore,collection,getDocs,doc,query,where,onSnapshot,addDoc, getDoc,startAt,startAfter,endAt,endBefore, orderBy,limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-    deleteDoc,sendPasswordResetEmail
+    deleteDoc,sendPasswordResetEmail,toDate
 }from 'firebase/firestore'
 
 import{
@@ -515,7 +515,7 @@ async function getComments(response_id){
           //Then the comment was not reported and thus should be seen
           var comment = {
           "id": doc.id,
-          "date": doc.data().comment_date,
+          "date": doc.data().comment_date.toDate(),
           "description": doc.data().comment_desc,
           "response": doc.data().comment_response,
           "user": doc.data().comment_user
@@ -572,7 +572,7 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
           //Then the response was not reported and should be displayed
           var response = {
             "id": doc.id,
-            "date": doc.data().response_date,
+            "date": doc.data().response_date.toDate(),
             "description": doc.data().response_desc,
             "likes": doc.data().response_likes,
             "question": doc.data().response_question,
@@ -613,7 +613,7 @@ async function getQuestionInfo(question_id){
     pass = 'success'
     //Set the JSON for the question
     JSON = {
-      "date": ret.data().question_date,
+      "date": ret.data().question_date.toDate(),
       "desc": ret.data().question_desc,
       "likes": ret.data().question_likes,
       "title": ret.data().question_title,
@@ -623,6 +623,7 @@ async function getQuestionInfo(question_id){
       "images":ret.data().question_images
       }
     })
+    
 
   //Function will return if the user has liked it or not, thus the try catch will be for if the user is not logged in
   try{
