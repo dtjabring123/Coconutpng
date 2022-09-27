@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
-import Question_Block from '../components/question_block';
+import Question_Block from '../components/question_block.js';
 
 export default class HomePage extends React.Component {
     state = {
@@ -21,6 +21,7 @@ export default class HomePage extends React.Component {
 
     componentDidMount(){ //executes on page load to display posts
         // get posts from database to display
+        console.log(this.props);
         var succ = getAllQuestions();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
