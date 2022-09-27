@@ -506,7 +506,9 @@ async function getComments(response_id){
 
       if(doc.data()!=null){
         pass = 'success'
-        var comment = {
+        if(doc.data().comment_reported==0){
+          //Then the comment was not reported and thus should be seen
+          var comment = {
           "id": doc.id,
           "date": doc.data().comment_date,
           "description": doc.data().comment_desc,
@@ -514,6 +516,7 @@ async function getComments(response_id){
           "user": doc.data().comment_user
         }
         JSONarr.push(comment);
+        }
       }
     })
   })
@@ -559,26 +562,28 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
         pass = 'success';
-        
-        var response = {
-          "id": doc.id,
-          "date": doc.data().response_date,
-          "description": doc.data().response_desc,
-          "likes": doc.data().response_likes,
-          "question": doc.data().response_question,
-          "mark": doc.data().response_mark,
-          "user": doc.data().response_user
+
+        if(doc.data().response_reported==0){
+          //Then the response was not reported and should be displayed
+          var response = {
+            "id": doc.id,
+            "date": doc.data().response_date,
+            "description": doc.data().response_desc,
+            "likes": doc.data().response_likes,
+            "question": doc.data().response_question,
+            "mark": doc.data().response_mark,
+            "user": doc.data().response_user
+          }
+          response.liked = hasLiked(doc.id,user_likes);
+          if(doc.data().response_mark!=0){
+            //Then this is the correct answer and thus display it first
+            JSONarr.unshift(response);
+          }
+          else{
+            //Not the correct answer
+            JSONarr.push(response)
+          }
         }
-        response.liked = hasLiked(doc.id,user_likes);
-        if(doc.data().response_mark!=0){
-          //Then this is the correct answer and thus display it first
-          JSONarr.unshift(response);
-        }
-        else{
-          //Not the correct answer
-          JSONarr.push(response)
-        }
-        
       }
     })
   })
@@ -649,7 +654,8 @@ async function giveResponse_or_Comment(check,id,desc){
       "response_date": serverTimestamp(),
       "response_likes":0,
       "response_question":id,
-      "response_mark":0
+      "response_mark":0,
+      "response_reported":0
     })
     .catch((e)=>{
       pass = "failed"; //Used to symbolise that the creation of the response failed.
@@ -665,7 +671,8 @@ async function giveResponse_or_Comment(check,id,desc){
         "comment_reference":auth.currentUser.email,
         "comment_desc":desc,
         "comment_date": serverTimestamp(),
-        "comment_response":id
+        "comment_response":id,
+        "comment_reported":0
       })
       .catch((e)=>{
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
