@@ -2,48 +2,82 @@ import React from "react";
 import "../stylesheets/comments.css";
 import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
-import { likeResponse } from "../database_functions";
+import { likeResponse } from "../utils/database_functions";
 
-export default function ResponseBlock(props){
-    //let date = props.props.date; //show
-    let id = props.props.id;
-    let likes = props.props.likes; //show likes
-    let author = props.props.user; //show author
-    let description = props.props.description; //show description
-    let marked = props.props.marked;
-    let question = props.props.question; //
+export default class ResponseBlock extends React.Component{
 
+    state = {
+        id : "",
+        likes : 0,
+        author : "",
+        description : "",
+        marked : false,
+        question : "",
+        date : ""
+    }
+    componentDidMount(){
+         this.setState({description : this.props.props.description,
+            author : this.props.props.user,
+            likes : this.props.props.likes,
+            id : this.props.props.id,
+            marked : this.props.props.mark,
+            question : this.props.props.question
+           });
+    //update like button to reflect database value
     components.Switch = {
         colors: {
           backgroundOn: '#00f',
           backgroundOff: '#000'
         }
       }
-    function handleLike(){
-        let succ = likeResponse(1,props.props.id);
+    }
+    handleLike = () =>{
+        var like_lbl = document.getElementById("like_btn");
+        console.log(like_lbl.checked);
+        var option = like_lbl.checked;
+        var vote;
+        if(option == false){
+            vote = 0;
+        }else{
+            vote = 1;
+        }
+        console.log(vote);
+        let succ = likeResponse(vote,this.state.id);
         Promise.resolve(succ).then((ret) =>{
             if(ret[0] == "success"){
                 console.log("updated like");
+                var num_likes = this.state.likes;
+                
+                console.log(num_likes);
+                if(vote == 0){
+                    num_likes = num_likes - 1;
+                }else{
+                    num_likes = num_likes + 1;
+                }
+                
+                this.setState({likes : num_likes});
             }
         })
     }
 
+render(){
     return(
-            <div class="response_container">
+               <div class="response_container">
                 <div className='response_card'>
-                    <h3 className="head2">Response by: {author}</h3>
+                    <h3 className="head2">Response by: {this.state.author}</h3>
                     <p className="par">
-                        {description}
+                        {this.state.description}
                     </p>
                     <div className='response_card-footer'>
                         <div> Answered on:  </div>
-                        <div> {likes} Likes</div>
+                        <div> {this.state.likes} Likes</div>
                         <ThemeProvider tokens={tokens} components={components}>
-                            <Switch  onChange={()=>handleLike()}/>
+                            <Switch id="like_btn" onChange={()=>this.handleLike()}/>
                         </ThemeProvider>
                     </div>
                 </div>
 
             </div>
     )
+}
 }

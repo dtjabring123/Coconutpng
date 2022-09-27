@@ -40,13 +40,14 @@ export default function QuestionInfo(){
     function  displayResponses(question_id){ //will display responses received from database
         //fetch responses from the database
         if(changeResponseList == false){
-        let succ = getResponses(question_id);
-        Promise.resolve(succ).then((ret=>{
-                 //save response array
-                setResponse_list(ret[1]);
-                //change flag for fetching response list 
-                setChangeResponseList(true);
-        }))   
+        // let succ = getResponses(question_id);
+        // Promise.resolve(succ).then((ret=>{
+        //          //save response array
+        //         setResponse_list(ret[1]);
+        //         //change flag for fetching response list 
+        //         console.log(ret);
+        //         setChangeResponseList(true);
+        // }))   
     }
     }
     
@@ -82,8 +83,18 @@ export default function QuestionInfo(){
 		}, 3000);
 	}
         function handleLike(){
+            //get like status
             var liked_lbl = document.getElementById("liked_btn");
-            let succ = likeQuestion(liked_lbl.value,location.state.name);
+            var option = liked_lbl.checked;
+            //convert true/false like value to int value
+            var vote;
+            if(option == false){
+                vote = 0;
+            }else{
+                vote = 1;
+            }
+            //use database method  
+            let succ = likeQuestion(vote,location.state.name);
             Promise.resolve(succ).then((ret)=>{
                 if(ret[0] == "success"){
                     //call method again to change like value
