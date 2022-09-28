@@ -566,11 +566,11 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
   
 
 
-  const responsesDocsSnap = await getDocs(q)
+  await getDocs(q)
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        
+        pass = 'success';
         if(doc.data().response_reported==0){
           //Then the response was not reported and should be displayed
           var response = {
@@ -811,6 +811,7 @@ async function changeMark(mark,response_id,JSONuser){
   return 'failed'; //User doesnt have permission to change the marking
 }
 
+//Function that will change the report value of a post and will rectify the user's strikes
 async function changePostReportValue(table,post,value,JSONuser){
   var pass = "failed";
   var user;
@@ -900,6 +901,56 @@ async function changePostReportValue(table,post,value,JSONuser){
 
   return pass;
 }
+
+//Function that will generate a report
+async function createReport(question_id, response_id){
+  var pass = 'success';
+  var offender;
+  const reportColRef = collection(db,"Reports");//Reference to where to add the report
+  if(response_id==null){
+    //Then we are reporting a question
+    
+    //Getting the user who wrote the question
+    const reportUserRef = doc(db,"Questions",question_id);
+    await getDoc(reportUserRef).then((doc)=>{
+      offender = doc.data().question_reference; //Gets the person who commited the offence
+    })
+    .catch(e=>{
+      pass='failed';
+      console.log("Couldnt get question doc");
+    })  
+  }
+  else{
+    //Then we are reporting a response
+
+    //Getting the user who wrote the question
+    const reportUserRef = doc(db,"Responses",response_id);
+    await getDoc(reportUserRef).then((doc)=>{
+      offender = doc.data().response_reference; //Gets the person who commited the offence
+      question_id = doc.data().response_question
+    })
+    .catch(e=>{
+      pass = 'failed';
+      console.log("Couldnt get report doc")
+    })
+  }
+  if(pass=='success'){
+    //Adding the document
+    await addDoc(reportColRef,{
+      report_culprit: offender,
+      report_reporter: auth.currentUser.email,
+      report_date: serverTimestamp(),
+      report_question: question_id,
+      report_response: response_id,
+      report_solved: 0
+    })
+    .catch(e=>{
+      pass = 'failed';
+    })
+  }
+  
+  return pass;
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
@@ -909,4 +960,4 @@ async function changePostReportValue(table,post,value,JSONuser){
   export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
         getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
         giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue}
+        changePostReportValue, createReport}
