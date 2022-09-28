@@ -906,6 +906,7 @@ async function changePostReportValue(table,post,value,JSONuser){
 async function createReport(question_id, response_id){
   var pass = 'success';
   var offender;
+  var offence;
   const reportColRef = collection(db,"Reports");//Reference to where to add the report
   if(response_id==null){
     //Then we are reporting a question
@@ -914,6 +915,7 @@ async function createReport(question_id, response_id){
     const reportUserRef = doc(db,"Questions",question_id);
     await getDoc(reportUserRef).then((doc)=>{
       offender = doc.data().question_reference; //Gets the person who commited the offence
+      offence = doc.data().question_desc; //Gets the description which would be the offence
     })
     .catch(e=>{
       pass='failed';
@@ -927,6 +929,7 @@ async function createReport(question_id, response_id){
     const reportUserRef = doc(db,"Responses",response_id);
     await getDoc(reportUserRef).then((doc)=>{
       offender = doc.data().response_reference; //Gets the person who commited the offence
+      offence = doc.data().response_desc;
       question_id = doc.data().response_question
     })
     .catch(e=>{
@@ -939,6 +942,7 @@ async function createReport(question_id, response_id){
     //The report reason will be filled in when the admin changes the report value
     await addDoc(reportColRef,{
       report_culprit: offender,
+      report_offence: offence,
       report_reporter: auth.currentUser.email,
       report_date: serverTimestamp(),
       report_question: question_id,
@@ -953,6 +957,103 @@ async function createReport(question_id, response_id){
   
   return pass;
 }
+
+//Function that will return all the reports that have not been solved yet
+async function getAllReports(){
+  const colRef = collection(db,'Reports');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          if(doc.data().report_solved==0){
+            //Then the report has not been dealt with and should be visible
+
+            //Create the JSON representing the question
+            var Report = {
+              id: doc.id,
+              date: doc.data().report_date.toDate(),
+              offence: doc.data().report_offence,
+              question_id: doc.data().report_question,
+              response_id: doc.data().report_response
+            }
+            JSONarr.push(Report);
+          }
+          
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
+}
+
+//Function that will display allow the report to be displayed in a nice manner
+async function displayReport(reportJSON){
+  var pass = 'failed';
+  var JSONarr = []; //will push the JSONs of the question and the report to here
+  var JSON;
+  const questionRef = doc(db,"Questions",reportJSON.question_id); //Going to get the necessary details do display the question
+  await getDoc(questionRef).then(ret=>{
+    pass = 'success';
+    //Set the JSON for the question
+    JSON = {
+      "date": ret.data().question_date.toDate(),
+      "desc": ret.data().question_desc,
+      "title": ret.data().question_title,
+      "user_id":ret.data().question_user,
+      "images":ret.data().question_images,
+      "user_reference": ret.data().question_reference
+      }
+      JSONarr.push(JSON);
+    })
+    .catch(e=>{
+      pass = 'failed';
+      console.log("Question ref failed");
+    })
+  
+  if(reportJSON.response_id!=null && pass == 'success'){
+    //Then the actual report was far the response
+    const responseRef = doc(db,"Responses",reportJSON.response_id); //Going to get the necessary details do display the question
+    await getDoc(responseRef).then(ret=>{
+      pass = 'success';
+      //Set the JSON for the response
+      var JSON = {
+        "date": ret.data().response_date.toDate(),
+        "desc": ret.data().response_desc,
+        "user_id":ret.data().response_user,
+        "user_reference": ret.data().response_reference
+        }
+        JSONarr.push(JSON);
+      })
+      .catch(e=>{
+        pass = 'failed';
+        console.log("Response ref failed");
+      })
+  }
+  return [pass,JSONarr]
+}
+
+//Function that will close the report
+async function changeReportStatus(report_id,value,reason){
+  const repRef = doc(db,"Reports",report_id);
+  updateDoc(repRef,{
+    report_solved: value,
+      report_reason: reason,
+      report_closer: auth.currentUser.email
+  })
+  .catch(e=>{
+    return "failed"; //Update not done successfully
+  })
+  return "success";
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
@@ -962,4 +1063,4 @@ async function createReport(question_id, response_id){
   export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
         getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
         giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue, createReport}
+        changePostReportValue, createReport,getAllReports,displayReport,changeReportStatus}
