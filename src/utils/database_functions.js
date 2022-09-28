@@ -1045,7 +1045,7 @@ async function displayReport(reportJSON){
 async function changeReportStatus(report_id,value,reason){
   const repRef = doc(db,"Reports",report_id);
   updateDoc(repRef,{
-    report_solved: 1,
+    report_solved: value,
       report_reason: reason,
       report_closer: auth.currentUser.email
   })
