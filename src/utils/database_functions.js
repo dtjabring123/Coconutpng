@@ -906,6 +906,7 @@ async function changePostReportValue(table,post,value,JSONuser){
 async function createReport(question_id, response_id){
   var pass = 'success';
   var offender;
+  var offence;
   const reportColRef = collection(db,"Reports");//Reference to where to add the report
   if(response_id==null){
     //Then we are reporting a question
@@ -914,6 +915,7 @@ async function createReport(question_id, response_id){
     const reportUserRef = doc(db,"Questions",question_id);
     await getDoc(reportUserRef).then((doc)=>{
       offender = doc.data().question_reference; //Gets the person who commited the offence
+      offence = doc.data().question_desc; //Gets the description which would be the offence
     })
     .catch(e=>{
       pass='failed';
@@ -927,6 +929,7 @@ async function createReport(question_id, response_id){
     const reportUserRef = doc(db,"Responses",response_id);
     await getDoc(reportUserRef).then((doc)=>{
       offender = doc.data().response_reference; //Gets the person who commited the offence
+      offence = doc.data().response_desc;
       question_id = doc.data().response_question
     })
     .catch(e=>{
@@ -939,6 +942,7 @@ async function createReport(question_id, response_id){
     //The report reason will be filled in when the admin changes the report value
     await addDoc(reportColRef,{
       report_culprit: offender,
+      report_offence: offence,
       report_reporter: auth.currentUser.email,
       report_date: serverTimestamp(),
       report_question: question_id,
@@ -953,6 +957,43 @@ async function createReport(question_id, response_id){
   
   return pass;
 }
+
+//Function that will return all the reports that have not been solved yet
+async function getAllReports(){
+  const colRef = collection(db,'Reports');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          if(doc.data().report_solved==0){
+            //Then the report has not been dealt with and should be visible
+
+            //Create the JSON representing the question
+            var Report = {
+              id: doc.id,
+              date: doc.data().report_date.toDate(),
+              offence: doc.data().report_offence,
+              question_id: doc.data().report_question,
+              response_id: doc.data().report_response
+            }
+            JSONarr.push(Report);
+          }
+          
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
@@ -962,4 +1003,4 @@ async function createReport(question_id, response_id){
   export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
         getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
         giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue, createReport}
+        changePostReportValue, createReport,getAllReports}
