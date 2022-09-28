@@ -936,13 +936,15 @@ async function createReport(question_id, response_id){
   }
   if(pass=='success'){
     //Adding the document
+    //The report reason will be filled in when the admin changes the report value
     await addDoc(reportColRef,{
       report_culprit: offender,
       report_reporter: auth.currentUser.email,
       report_date: serverTimestamp(),
       report_question: question_id,
       report_response: response_id,
-      report_solved: 0
+      report_solved: 0,
+      report_reason: null
     })
     .catch(e=>{
       pass = 'failed';
