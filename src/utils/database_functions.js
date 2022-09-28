@@ -995,6 +995,7 @@ async function getAllReports(){
     return [pass,JSONarr];
 }
 
+//Function that will display allow the report to be displayed in a nice manner
 async function displayReport(reportJSON){
   var pass = 'failed';
   var JSONarr = []; //will push the JSONs of the question and the report to here
@@ -1039,6 +1040,20 @@ async function displayReport(reportJSON){
   }
   return [pass,JSONarr]
 }
+
+//Function that will close the report
+async function changeReportStatus(report_id,value,reason){
+  const repRef = doc(db,"Reports",report_id);
+  updateDoc(repRef,{
+    report_solved: 1,
+      report_reason: reason,
+      report_closer: auth.currentUser.email
+  })
+  .catch(e=>{
+    return "failed"; //Update not done successfully
+  })
+  return "success";
+}
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
@@ -1048,4 +1063,4 @@ async function displayReport(reportJSON){
   export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
         getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
         giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue, createReport,getAllReports,displayReport}
+        changePostReportValue, createReport,getAllReports,displayReport,changeReportStatus}
