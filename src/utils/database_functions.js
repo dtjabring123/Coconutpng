@@ -60,7 +60,7 @@ const firebaseConfig = {
         user_likes: [],
         user_titles: [],
         user_questions: [],
-        user_strikes:0,
+        user_strikes:[],
         user_responses:[]
       })
       .catch((err)=>{
@@ -812,7 +812,7 @@ async function changeMark(mark,response_id,JSONuser){
 }
 
 //Function that will change the report value of a post and will rectify the user's strikes
-async function changePostReportValue(table,post,value,JSONuser){
+async function changePostReportValue(table,post,value,JSONuser,report_id){
   var pass = "failed";
   var user;
   if(JSONuser.role<1){
@@ -881,22 +881,18 @@ async function changePostReportValue(table,post,value,JSONuser){
   if(pass==="success"){
     //So the post was reported, now we need to change the user's strikes value
     const userRef = doc(db,"Users",user);
-    var strikes;
-
-    //Get the user whose strikes we are going to change
-    await getDoc(userRef).then(ret=>{
-      strikes = ret.data().user_strikes;
-    })
-
-    //Changing value so that we can just add it
     if(value==0){
-      value=-1;
+      //Then we need to remove the strike
+      updateDoc(userRef,{
+        user_strikes: arrayRemove(report_id)
+      })
     }
-
-    //Updating the strikes value
-    updateDoc(userRef,{
-      user_strikes: strikes+value
-    })
+    else{
+      //Then we need to add the strike
+      updateDoc(userRef,{
+        user_strikes: arrayUnion(report_id)
+      })
+    }
   }
 
   return pass;
@@ -1045,7 +1041,7 @@ async function displayReport(reportJSON){
 async function changeReportStatus(report_id,value,reason){
   const repRef = doc(db,"Reports",report_id);
   updateDoc(repRef,{
-    report_solved: value,
+      report_solved: value,
       report_reason: reason,
       report_closer: auth.currentUser.email
   })
