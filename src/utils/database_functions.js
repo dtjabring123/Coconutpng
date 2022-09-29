@@ -60,7 +60,7 @@ const firebaseConfig = {
         user_likes: [],
         user_titles: [],
         user_questions: [],
-        user_strikes:0,
+        user_strikes:[],
         user_responses:[]
       })
       .catch((err)=>{
@@ -298,13 +298,15 @@ async function updateUserDetails(JSONobj){
 }
 
 //Function to get all the questions to display on the home page
-async function getAllQuestions(){
+async function getAllQuestions(userJSON){
   const colRef = collection(db,'Questions');
   var pass = 'failed';
   let JSONarr = [];
   
-  //Get all the docs
-  await getDocs(colRef)
+  //Check if the user is not banned
+  if(userJSON.role>-1){
+    //Get all the docs
+    await getDocs(colRef)
     .then((snapshot)=>{
 
       snapshot.docs.forEach((doc)=>{
@@ -329,6 +331,12 @@ async function getAllQuestions(){
         
       })
     })
+  }
+  else{
+    pass = 'success';
+    JSONarr.push("User is banned");
+  }
+  
     return [pass,JSONarr];
 }
 
@@ -566,11 +574,11 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
   
 
 
-  const responsesDocsSnap = await getDocs(q)
+  await getDocs(q)
   .then((snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       if(doc.data()!=null){
-        
+        pass = 'success';
         if(doc.data().response_reported==0){
           //Then the response was not reported and should be displayed
           var response = {
@@ -811,7 +819,8 @@ async function changeMark(mark,response_id,JSONuser){
   return 'failed'; //User doesnt have permission to change the marking
 }
 
-async function changePostReportValue(table,post,value,JSONuser){
+//Function that will change the report value of a post and will rectify the user's strikes
+async function changePostReportValue(table,post,value,JSONuser,report_id){
   var pass = "failed";
   var user;
   if(JSONuser.role<1){
@@ -836,6 +845,7 @@ async function changePostReportValue(table,post,value,JSONuser){
     })
     .catch(e=>{
       pass = "failed";
+      console.log("Question updating failed");
     })
 
   }
@@ -855,6 +865,7 @@ async function changePostReportValue(table,post,value,JSONuser){
     })
     .catch(e=>{
       pass = "failed";
+      console.log("Response updating failed");
     })
 
   }
@@ -874,32 +885,342 @@ async function changePostReportValue(table,post,value,JSONuser){
     })
     .catch(e=>{
       pass = "failed";
+      console.log("Comment updating failed");
     })
   }
 
   if(pass==="success"){
     //So the post was reported, now we need to change the user's strikes value
     const userRef = doc(db,"Users",user);
-    var strikes;
-
-    //Get the user whose strikes we are going to change
-    await getDoc(userRef).then(ret=>{
-      strikes = ret.data().user_strikes;
-    })
-
-    //Changing value so that we can just add it
+    var report_ids = [];
     if(value==0){
-      value=-1;
-    }
+      //Then we need to remove the strike
+      updateDoc(userRef,{
+        user_strikes: arrayRemove(report_id)
+      })
 
-    //Updating the strikes value
-    updateDoc(userRef,{
-      user_strikes: strikes+value
-    })
+      //Check that the user was not banned
+      try{
+        //The user had a ban on their account
+        var ban_confirmed; //Will use this to check that the user has not already been banned
+        getDoc(doc(db,"Bans",user)).then((doc)=>{
+          report_ids = doc.data().ban_reports;
+          ban_confirmed:doc.data().ban_confirmed;
+        })
+        .catch(e=>{
+          return 'failed';
+        })
+
+        //Update their ban doc to no longer include that entry
+        updateDoc(doc(db,"Bans",user),{
+          ban_reports: arrayRemove(report_id)
+        })
+        .catch(e=>{
+          return 'failed';
+        })
+
+        if(report_ids==3){
+          //Then we need to remove their account from the banned list
+          if(ban_confirmed==1){
+            //User has been banned and will need to be unbanned
+            updateDoc(userRef,{
+              user_role:0
+            })
+          }
+          //delete their ban document
+          deleteDoc(doc(db,"Bans",user));
+        }
+      }
+      catch(e){
+        //User did not have a ban on their account
+      }
+
+    }
+    else{
+      //Then we need to add the strike
+      updateDoc(userRef,{
+        user_strikes: arrayUnion(report_id)
+      })
+
+      //Check if the user needs to be considered for a ban
+      getDoc(userRef).then((doc)=>{
+        report_ids=doc.data().user_strikes;
+      })
+      if(report_ids.length>2){
+        //Then the user needs to be considered for a ban
+
+        //Create the ban request for the user
+        setDoc(doc(db,"Bans",user),{
+          ban_user: user,
+          ban_reports: report_ids,
+          ban_date: serverTimestamp(),
+          ban_confirmed: 0
+        })
+        .catch(e=>{
+          pass='failed';
+        })
+      }
+    }
   }
 
   return pass;
 }
+
+//Function that will generate a report
+async function createReport(question_id, response_id){
+  var pass = 'success';
+  var offender;
+  var offence;
+  const reportColRef = collection(db,"Reports");//Reference to where to add the report
+  if(response_id==null){
+    //Then we are reporting a question
+    
+    //Getting the user who wrote the question
+    const reportUserRef = doc(db,"Questions",question_id);
+    await getDoc(reportUserRef).then((doc)=>{
+      offender = doc.data().question_reference; //Gets the person who commited the offence
+      offence = doc.data().question_desc; //Gets the description which would be the offence
+    })
+    .catch(e=>{
+      pass='failed';
+      console.log("Couldnt get question doc");
+    })  
+  }
+  else{
+    //Then we are reporting a response
+
+    //Getting the user who wrote the question
+    const reportUserRef = doc(db,"Responses",response_id);
+    await getDoc(reportUserRef).then((doc)=>{
+      offender = doc.data().response_reference; //Gets the person who commited the offence
+      offence = doc.data().response_desc;
+      question_id = doc.data().response_question
+    })
+    .catch(e=>{
+      pass = 'failed';
+      console.log("Couldnt get report doc")
+    })
+  }
+  if(pass=='success'){
+    //Adding the document
+    //The report reason will be filled in when the admin changes the report value
+    await addDoc(reportColRef,{
+      report_culprit: offender,
+      report_offence: offence,
+      report_reporter: auth.currentUser.email,
+      report_date: serverTimestamp(),
+      report_question: question_id,
+      report_response: response_id,
+      report_solved: 0,
+      report_reason: null
+    })
+    .catch(e=>{
+      pass = 'failed';
+    })
+  }
+  
+  return pass;
+}
+
+//Function that will return all the reports that have not been solved yet
+async function getAllReports(){
+  const colRef = collection(db,'Reports');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+  //Get all the docs
+  await getDocs(colRef)
+    .then((snapshot)=>{
+
+      snapshot.docs.forEach((doc)=>{
+        if(doc.data()!=null){
+          pass = 'success'
+          if(doc.data().report_solved==0){
+            //Then the report has not been dealt with and should be visible
+
+            //Create the JSON representing the question
+            var Report = {
+              id: doc.id,
+              date: doc.data().report_date.toDate(),
+              offence: doc.data().report_offence,
+              question_id: doc.data().report_question,
+              response_id: doc.data().report_response
+            }
+            JSONarr.push(Report);
+          }
+          
+        }
+        else{
+          return ['failed',[]];
+        }
+        
+      })
+    })
+    return [pass,JSONarr];
+}
+
+//Function that will display allow the report to be displayed in a nice manner
+async function displayReport(reportJSON){
+  var pass = 'failed';
+  var JSONarr = []; //will push the JSONs of the question and the report to here
+  var JSON;
+  const questionRef = doc(db,"Questions",reportJSON.question_id); //Going to get the necessary details do display the question
+  await getDoc(questionRef).then(ret=>{
+    pass = 'success';
+    //Set the JSON for the question
+    JSON = {
+      "date": ret.data().question_date.toDate(),
+      "desc": ret.data().question_desc,
+      "title": ret.data().question_title,
+      "user_id":ret.data().question_user,
+      "images":ret.data().question_images,
+      "user_reference": ret.data().question_reference
+      }
+      JSONarr.push(JSON);
+    })
+    .catch(e=>{
+      pass = 'failed';
+      console.log("Question ref failed");
+    })
+  
+  if(reportJSON.response_id!=null && pass == 'success'){
+    //Then the actual report was far the response
+    const responseRef = doc(db,"Responses",reportJSON.response_id); //Going to get the necessary details do display the question
+    await getDoc(responseRef).then(ret=>{
+      pass = 'success';
+      //Set the JSON for the response
+      var JSON = {
+        "date": ret.data().response_date.toDate(),
+        "desc": ret.data().response_desc,
+        "user_id":ret.data().response_user,
+        "user_reference": ret.data().response_reference
+        }
+        JSONarr.push(JSON);
+      })
+      .catch(e=>{
+        pass = 'failed';
+        console.log("Response ref failed");
+      })
+  }
+  return [pass,JSONarr]
+}
+
+//Function that will close the report
+async function changeReportStatus(report_id,value,reason){
+  const repRef = doc(db,"Reports",report_id);
+  updateDoc(repRef,{
+      report_solved: value,
+      report_reason: reason,
+      report_closer: auth.currentUser.email
+  })
+  .catch(e=>{
+    return "failed"; //Update not done successfully
+  })
+  return "success";
+}
+
+//Function that will ban a user
+async function banUser(ban_id,user_id,reason){
+  var pass = 'success';
+  const userRef = doc(db,"Users",user_id);
+  const banRef = doc(db,"Bans",ban_id);
+
+  //Update their role to reflect that they are banned
+  updateDoc(userRef,{
+    user_role:-1
+  })
+  .catch(e=>{
+    pass='failed';
+  })
+
+  if(pass=='success'){
+    //Then update the banned doc to signal that the request has been closed
+    updateDoc(banRef,{
+      ban_confirmed:1,
+      ban_closer:auth.currentUser.email,
+      ban_reason:reason
+    })
+    .catch(e=>{
+      pass='failed';
+     })
+  }
+  return pass
+}
+
+//Function that will display all bans
+async function getAllBans(){
+  const colRef = collection(db,'Bans');
+  var pass = 'failed';
+  let JSONarr = [];
+  
+    //Get all the docs
+  await getDocs(colRef)
+  .then((snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+      if(doc.data()!=null){
+        pass = 'success'
+        if(doc.data().ban_confirmed==0){
+          //Then the ban has not been considered and should be visible
+          //Create the JSON representing the ban
+          var Ban = {
+            "user": doc.data().ban_user,
+            "date": doc.data().ban_date.toDate(),
+            "ban_id": doc.id
+          }
+          JSONarr.push(Ban);
+        }
+        
+      }
+      else{
+        return ['failed',[]];
+      }
+      
+    })
+  })
+  
+    return [pass,JSONarr];
+}
+
+//Function to get a single ban and the reasons associated with it
+async function getBan(ban_id){
+  var pass = 'failed';
+  var JSON;
+  const banRef = doc(db,"Bans",ban_id);
+  
+  //Variables that will store the necessary items to have access to the ban
+  var ban_user;
+  var ban_date;
+  var ban_reports;
+  //Get the ban doc
+  await getDoc(banRef).then((doc)=>{
+    ban_user=doc.data().ban_user;
+    ban_date=doc.data().ban_date.toDate();
+    ban_reports=doc.data().ban_reports;
+    pass = 'success';
+  })
+  .catch(e=>{
+    return [pass,JSON];
+  })
+
+  //Iterate over all the reports so that we get the reason for the report
+  for(let i=0;i<ban_reports.length;i++){
+    var reportRef = doc(db,"Reports",ban_reports[i]);
+    await getDoc(reportRef).then((doc)=>{
+      ban_reports[i]=doc.data().report_reason;
+    })
+    .catch(e=>{
+      return ['failed',JSON];
+    })
+  }
+  //Create the JSON of the ban
+  JSON={
+    user:ban_user,
+    date:ban_date,
+    reasons:ban_reports
+  }
+  return [pass,JSON];
+}
+
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
@@ -909,4 +1230,5 @@ async function changePostReportValue(table,post,value,JSONuser){
   export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
         getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
         giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue}
+        changePostReportValue, createReport,getAllReports,displayReport,changeReportStatus,
+        banUser,getAllBans,getBan}
