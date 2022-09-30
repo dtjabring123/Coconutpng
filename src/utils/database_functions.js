@@ -1,116 +1,116 @@
 //Set up imports
 //Imports
-import { initializeApp }from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 
 import {
-    getFirestore,collection,getDocs,doc,query,where,onSnapshot,addDoc, getDoc,startAt,startAfter,endAt,endBefore, orderBy,limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-    deleteDoc,sendPasswordResetEmail,toDate
-}from 'firebase/firestore'
+  getFirestore, collection, getDocs, doc, query, where, onSnapshot, addDoc, getDoc, startAt, startAfter, endAt, endBefore, orderBy, limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
+  deleteDoc, sendPasswordResetEmail, toDate
+} from 'firebase/firestore'
 
-import{
-    getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged, updateProfile, updatePassword, updateEmail
-}from 'firebase/auth'
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, updatePassword, updateEmail
+} from 'firebase/auth'
 
-import {getStorage,ref, uploadBytes, listAll, getDownloadURL} from 'firebase/storage'
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage'
 
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 
 
 //Firebase object connection
 const firebaseConfig = {
-    apiKey: "AIzaSyA-6DSz8cM6NtY7gu-uonAu0LgFHzCfTWg",
-    authDomain: "witsoverflow-5e429.firebaseapp.com",
-    projectId: "witsoverflow-5e429",
-    storageBucket: "witsoverflow-5e429.appspot.com",
-    messagingSenderId: "1091499652485",
-    appId: "1:1091499652485:web:66e28f6abae04303b900ec",
-    measurementId: "G-C6EQ71ZXR2"
-  };
+  apiKey: "AIzaSyA-6DSz8cM6NtY7gu-uonAu0LgFHzCfTWg",
+  authDomain: "witsoverflow-5e429.firebaseapp.com",
+  projectId: "witsoverflow-5e429",
+  storageBucket: "witsoverflow-5e429.appspot.com",
+  messagingSenderId: "1091499652485",
+  appId: "1:1091499652485:web:66e28f6abae04303b900ec",
+  measurementId: "G-C6EQ71ZXR2"
+};
 
-  //Initialiseing firebase connection
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore();
-  const auth = getAuth();
-  const storage = getStorage(app); //Make a reference to storage part of the database
+//Initialiseing firebase connection
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const auth = getAuth();
+const storage = getStorage(app); //Make a reference to storage part of the database
 
-  //Creates the user
-  async function register(first_name,last_name,dob,id_number,mobile_number,role,email,password){   
-    //Will use to return if the the signing up is a success/failure and if it is a success then returns the user as a JSON object
-    let arr = [];
-    const makeUser = await createUserWithEmailAndPassword(auth,email,password)
-    .then((cred)=>{
-      
+//Creates the user
+async function register(first_name, last_name, dob, id_number, mobile_number, role, email, password) {
+  //Will use to return if the the signing up is a success/failure and if it is a success then returns the user as a JSON object
+  let arr = [];
+  const makeUser = await createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+
       const user_id = cred.user.uid;
-  
+
       //Adds their display name to their auth token
-      updateProfile(auth.currentUser,{
+      updateProfile(auth.currentUser, {
         displayName: first_name + " " + last_name,
       });
-  
+
       //Creates their document in the users collection 
-      setDoc(doc(db,"Users",email),{
-        user_login_id:user_id,
+      setDoc(doc(db, "Users", email), {
+        user_login_id: user_id,
         user_first_name: first_name,
-        user_last_name:last_name,
+        user_last_name: last_name,
         user_DoB: dob,
         user_id: id_number,
         user_email: email,
-        user_phone:mobile_number,
+        user_phone: mobile_number,
         user_role: role,
         user_likes: [],
         user_titles: [],
         user_questions: [],
-        user_strikes:[],
-        user_responses:[]
+        user_strikes: [],
+        user_responses: []
       })
-      .catch((err)=>{
-        console.log(err.message);
-        arr.push("failed");
-        arr.push(err);
-      })
+        .catch((err) => {
+          console.log(err.message);
+          arr.push("failed");
+          arr.push(err);
+        })
       arr.push("success")
       var loggedIn = {
         "displayName": first_name,
         "firstName": first_name,
         "lastName": last_name,
         "emailAddress": email,
-        "role":role,
-        "titles":[]
+        "role": role,
+        "titles": []
       }
       arr.push(loggedIn);
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.log(err.message);
       arr.push("failed");
       arr.push(err);
     })
-    return arr;
-  }
-  //Logs the user in
-async function logIn(email,password){
-    //Will use to return if the the logging in is a success/failure and if it is a success then returns the user as a JSON object
-    var pass = "failed";
-    var JSONobj;
-  
-    const signIn = await signInWithEmailAndPassword(auth,email,password)
-    .then((cred)=>{
+  return arr;
+}
+//Logs the user in
+async function logIn(email, password) {
+  //Will use to return if the the logging in is a success/failure and if it is a success then returns the user as a JSON object
+  var pass = "failed";
+  var JSONobj;
+
+  const signIn = await signInWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
       pass = "success";
-      console.log('user logged in: ',cred.user.displayName)
+      console.log('user logged in: ', cred.user.displayName)
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.log(err.message);
     })
 
-    if(pass==="success"){
-      //Get the user object to pass through so that we know what view to use
-      const userRef = doc(db,"Users",auth.currentUser.email);
-      
-      await getDoc(userRef)
-      .then((ret)=>{
+  if (pass === "success") {
+    //Get the user object to pass through so that we know what view to use
+    const userRef = doc(db, "Users", auth.currentUser.email);
+
+    await getDoc(userRef)
+      .then((ret) => {
         //Check that the user document exists
-        if(ret.data()==null){
+        if (ret.data() == null) {
           console.log("User not logged in");
-          return ["failed",null];
+          return ["failed", null];
         }
         //create the json object
         JSONobj = {
@@ -121,285 +121,285 @@ async function logIn(email,password){
           titles: ret.data().user_titles
         }
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(err.message);
         pass = "failed";
       })
-  
-      
-    }
-    return [pass,JSONobj];
-  }
 
-  //logging out
-function logOut(){
-    var pass = "success";;
-    signOut(auth)
-    .then(()=>{
-    })
-    .catch((err)=>{
-      console.log(err.message);
-      pass='failed';
-    })
-    return pass;
+
   }
+  return [pass, JSONobj];
+}
+
+//logging out
+function logOut() {
+  var pass = "success";;
+  signOut(auth)
+    .then(() => {
+    })
+    .catch((err) => {
+      console.log(err.message);
+      pass = 'failed';
+    })
+  return pass;
+}
 
 //Gets the user's details
-async function getUserDetails(){  
+async function getUserDetails() {
   //Get a user reference
   var pass = 'failed';
   var JSONobj = null;
-  
-  try{
+
+  try {
     //Try catch to make sure that the user has logged in
-    const userRef = doc(db,"Users",auth.currentUser.email);
+    const userRef = doc(db, "Users", auth.currentUser.email);
 
     await getDoc(userRef)
-    .then((ret)=>{
-      //Check that the user document exists
-      if(ret.data()==null){
-        return [pass,JSONobj]
+      .then((ret) => {
+        //Check that the user document exists
+        if (ret.data() == null) {
+          return [pass, JSONobj]
 
-      }
-      pass = 'success';
-      //create the json object
-      JSONobj = {
-        DoB: ret.data().user_DoB,
-        firstName: ret.data().user_first_name,
-        lastName: ret.data().user_last_name,
-        phoneNumber: ret.data().user_phone,
-        emailAddress: ret.data().user_email,
-        role: ret.data().user_role,
-        titles: ret.data().user_titles
-      }
-    })
-    .catch(err=>{
-      console.log(err.message)
-    })
+        }
+        pass = 'success';
+        //create the json object
+        JSONobj = {
+          DoB: ret.data().user_DoB,
+          firstName: ret.data().user_first_name,
+          lastName: ret.data().user_last_name,
+          phoneNumber: ret.data().user_phone,
+          emailAddress: ret.data().user_email,
+          role: ret.data().user_role,
+          titles: ret.data().user_titles
+        }
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
 
-    return [pass,JSONobj];
+    return [pass, JSONobj];
   }
-  catch(e){
+  catch (e) {
     //User has not logged in
-    return [pass,JSONobj];
+    return [pass, JSONobj];
   }
-  
+
 }
 //Gets the usersID so that it can be used for password reset validation
-async function CompareUserID(email,id){
+async function CompareUserID(email, id) {
   var arr = [];
-  const docRef = doc(db,"Users",email);
-  
+  const docRef = doc(db, "Users", email);
+
 
   //Gets the id value
   await getDoc(docRef)
-    .then((ret)=>{
+    .then((ret) => {
       //Checks that the id exists
-      if(ret.data() != null){
+      if (ret.data() != null) {
         arr.push("success");
-        if(id===ret.data().user_id){
+        if (id === ret.data().user_id) {
           arr.push(true);
         }
-        else{
+        else {
           arr.push(false);
         }
       }
       //Id does not exist
-      else{
+      else {
         arr.push('failed');
         arr.push('Not a valid email address');
       }
-     
+
     })
     //Could not establish a connection with the database and thus failed
-    .catch(err=>{
+    .catch(err => {
       arr.push('failed');
       arr.push(err);
     })
-    return arr;
+  return arr;
 }
 
 //Function that changes the user's password
-function changePassword(new_password){
+function changePassword(new_password) {
   var arr = ['success'];
   //Resets the password of the currently signed in user
-  updatePassword(auth.currentUser,new_password)
-  .catch((error)=>{
-    console.log(error.message);
-    arr[0]='failed';
-    arr.push(error);
-  })
+  updatePassword(auth.currentUser, new_password)
+    .catch((error) => {
+      console.log(error.message);
+      arr[0] = 'failed';
+      arr.push(error);
+    })
   return arr;
 }
 
 //Function that will allow for most of the user's details to be changed
-async function updateUserDetails(JSONobj){
+async function updateUserDetails(JSONobj) {
   var pass = 'failed';
   var failed_arr = [];
-  const userRef = doc(db,"Users",auth.currentUser.email);
+  const userRef = doc(db, "Users", auth.currentUser.email);
 
 
-  if(JSONobj.first_name!=null){
+  if (JSONobj.first_name != null) {
     //User wants a first_name change
-    updateDoc(userRef,{
+    updateDoc(userRef, {
       user_first_name: JSONobj.first_name
     })
-    .catch((error)=>{
-      console.log(error.message);
-      failed_arr.push("firstName_change")
-    })
+      .catch((error) => {
+        console.log(error.message);
+        failed_arr.push("firstName_change")
+      })
     //Update the name that will be displayed when they log in
-    updateProfile(auth.currentUser,{
+    updateProfile(auth.currentUser, {
       displayName: JSONobj.first_name
     })
     pass = "success"
   }
 
-  if(JSONobj.last_name!=null){
+  if (JSONobj.last_name != null) {
     //User wants a last_name change
-    updateDoc(userRef,{
+    updateDoc(userRef, {
       user_last_name: JSONobj.last_name
     })
-    .catch((error)=>{
-      console.log(error.message);
-      failed_arr.push("lastName_change")
-    })
+      .catch((error) => {
+        console.log(error.message);
+        failed_arr.push("lastName_change")
+      })
     pass = "success"
   }
 
-  if(JSONobj.phoneNumber!=null){
+  if (JSONobj.phoneNumber != null) {
     //User wants a last_name change
-    updateDoc(userRef,{
+    updateDoc(userRef, {
       user_phone: JSONobj.phoneNumber
     })
-    .catch((error)=>{
-      console.log(error.message);
-      failed_arr.push("phoneNumber_change")
-    })
+      .catch((error) => {
+        console.log(error.message);
+        failed_arr.push("phoneNumber_change")
+      })
     pass = "success"
   }
 
-  if(JSONobj.role!=null){
+  if (JSONobj.role != null) {
     //User wants a role change
-    updateDoc(userRef,{
+    updateDoc(userRef, {
       user_role: JSONobj.role
     })
-    .catch((error)=>{
-      console.log(error.message);
-      failed_arr.push("role_change")
-    })
+      .catch((error) => {
+        console.log(error.message);
+        failed_arr.push("role_change")
+      })
     pass = "success"
   }
 
-  if(failed_arr.length>0){
-    return ["failed",failed_arr]
+  if (failed_arr.length > 0) {
+    return ["failed", failed_arr]
   }
   return [pass];
 }
 
 //Function to get all the questions to display on the home page
-async function getAllQuestions(userJSON){
-  const colRef = collection(db,'Questions');
+async function getAllQuestions(userJSON) {
+  const colRef = collection(db, 'Questions');
   var pass = 'failed';
   let JSONarr = [];
-  
+
   //Check if the user is not banned
-  if(userJSON.role>-1){
+  if (userJSON.role > -1) {
     //Get all the docs
     await getDocs(colRef)
-    .then((snapshot)=>{
+      .then((snapshot) => {
 
-      snapshot.docs.forEach((doc)=>{
-        if(doc.data()!=null){
-          pass = 'success'
-          if(doc.data().question_reported==0){
-            //Then the question has not been 'removed' and should be visible
-            //Create the JSON representing the question
-            var Question = {
-              "title": doc.data().question_title,
-              "likes": doc.data().question_likes,
-              "author": doc.data().question_user,
-              "question_id": doc.id
+        snapshot.docs.forEach((doc) => {
+          if (doc.data() != null) {
+            pass = 'success'
+            if (doc.data().question_reported == 0) {
+              //Then the question has not been 'removed' and should be visible
+              //Create the JSON representing the question
+              var Question = {
+                "title": doc.data().question_title,
+                "likes": doc.data().question_likes,
+                "author": doc.data().question_user,
+                "question_id": doc.id
+              }
+              JSONarr.push(Question);
             }
-            JSONarr.push(Question);
+
           }
-          
-        }
-        else{
-          return ['failed',[]];
-        }
-        
+          else {
+            return ['failed', []];
+          }
+
+        })
       })
-    })
   }
-  else{
+  else {
     pass = 'success';
     JSONarr.push("User is banned");
   }
-  
-    return [pass,JSONarr];
+
+  return [pass, JSONarr];
 }
 
 //Function to create a question
-async function askQuestion(title, desc, image){
-  const questionsRef = collection(db,"Questions");
+async function askQuestion(title, desc, image) {
+  const questionsRef = collection(db, "Questions");
   var pass = "success";
 
   //Creates a new question based on passed in parameters and predefined values
-  await addDoc(questionsRef,{
-    "question_user":auth.currentUser.displayName,
-    "question_title":title,
-    "question_desc":desc,
+  await addDoc(questionsRef, {
+    "question_user": auth.currentUser.displayName,
+    "question_title": title,
+    "question_desc": desc,
     "question_date": serverTimestamp(),
-    "question_likes":0,
-    "question_reported":0,
-    "question_reference":auth.currentUser.email,
-    "question_images":[]
+    "question_likes": 0,
+    "question_reported": 0,
+    "question_reference": auth.currentUser.email,
+    "question_images": []
   })
-  .then((docRef)=>{
-    
-    if(image!=null){
-      //Then the user uploaded an image
-      var imageRef = ref(storage,`question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
-      
-      uploadBytes(imageRef,image) //upload the file
-      .then(()=>{
-        var imageListRef = ref(storage,`question_images/${docRef.id}/`);
-        const questRef = doc(db,"Questions",docRef.id)
-        listAll(imageListRef).then((response)=>{ //Get all the images uploaded for that question
-          response.items.forEach((item)=>{
-            getDownloadURL(item).then((url)=>{ //Get the urls for all those images
-              updateDoc(questRef,{
-                question_images: arrayUnion(url)
-              })
-              .catch(e=>{
-                pass = "failed";
+    .then((docRef) => {
+
+      if (image != null) {
+        //Then the user uploaded an image
+        var imageRef = ref(storage, `question_images/${docRef.id}/${image.name + v4()}`); //generate the file path
+
+        uploadBytes(imageRef, image) //upload the file
+          .then(() => {
+            var imageListRef = ref(storage, `question_images/${docRef.id}/`);
+            const questRef = doc(db, "Questions", docRef.id)
+            listAll(imageListRef).then((response) => { //Get all the images uploaded for that question
+              response.items.forEach((item) => {
+                getDownloadURL(item).then((url) => { //Get the urls for all those images
+                  updateDoc(questRef, {
+                    question_images: arrayUnion(url)
+                  })
+                    .catch(e => {
+                      pass = "failed";
+                    })
+                })
               })
             })
-          })
-        })
-        
-        
 
-      })
-    }
-    // console.log("Document id = ",docRef.id); Doc id testing
-  })
-  .catch((e)=>{
-    pass = "failed"; //Used to symbolise that the creation of the question failed.
-  })
+
+
+          })
+      }
+      // console.log("Document id = ",docRef.id); Doc id testing
+    })
+    .catch((e) => {
+      pass = "failed"; //Used to symbolise that the creation of the question failed.
+    })
 
   return pass;
 }
 
 //function that will help determine if the user has liked a question based on their likes
-function hasLiked(question_id,arr){
-  var liked = 0; 
+function hasLiked(question_id, arr) {
+  var liked = 0;
   //Loop to go through all the user's likes
-  for(let i=0;i<arr.length;i++){
+  for (let i = 0; i < arr.length; i++) {
     var entry = arr[i];
     var split = entry.split(","); //splits the like from the value
-    if(split[0]===question_id){
+    if (split[0] === question_id) {
       liked = parseInt(split[1]);
       break;
     }
@@ -408,141 +408,141 @@ function hasLiked(question_id,arr){
 }
 
 //Function to handle the liking and disliking of questions
-async function likeQuestion(value,question_id){
-  const questionRef = doc(db,"Questions",question_id);
+async function likeQuestion(value, question_id) {
+  const questionRef = doc(db, "Questions", question_id);
   var pass = "failed";
   var failed_arr = [];
   var new_likes = 0;
 
   //In the case that the user has not logged in then they cant vote on a question
-  try{
-    const userRef = doc(db,"Users",auth.currentUser.email);
+  try {
+    const userRef = doc(db, "Users", auth.currentUser.email);
 
-    var liked=-3.1415; //arbitrary value that will be used for comparison
-    await getDoc(userRef).then(ret=>{
-      liked=ret.data().user_likes;
-      liked=hasLiked(question_id,liked);
-   })
-   .catch(e=>{
-      return [pass,[e]];
-   })
-
-   if(liked==value){
-    //Then the value should not change
-    return ["success",failed_arr];
-   }
-   else{
-    //Then the value is different from what they want to change their vote to
-    
-    //Fetching the number of likes the question currently has
-    var prior_likes = -1;
-    await getDoc(questionRef).then((ret)=>{
-      prior_likes = ret.data().question_likes;
-      pass = "success";
-      new_likes = prior_likes;
+    var liked = -3.1415; //arbitrary value that will be used for comparison
+    await getDoc(userRef).then(ret => {
+      liked = ret.data().user_likes;
+      liked = hasLiked(question_id, liked);
     })
-    .catch(e=>{
-      console.log(e);
-      failed_arr.push(e);
-    })
-   }
-
-   //Removing the extra dis/like due to the the user's previous decision
-   if(pass==='success'){
-
-    if(value==0 || value<=-1*liked){
-      //There vote is getting changed or deleted
-      var concated = (question_id.concat(",",liked)).toString();
-      new_likes += (-liked);
-      
-      //Removing the like from the user's list
-      updateDoc(userRef,{
-        user_likes: arrayRemove(concated)
-      })
-      .catch(e=>{
-        pass = "failed";
-        failed_arr.push(e);
+      .catch(e => {
+        return [pass, [e]];
       })
 
-      //Updating the likes value
-      updateDoc(questionRef,{
-      question_likes : new_likes
-      })
-      .catch(e=>{
-        pass = "failed";
-        failed_arr.push(e);
-        console.log(e);
-      })
-
+    if (liked == value) {
+      //Then the value should not change
+      return ["success", failed_arr];
     }
-   }
+    else {
+      //Then the value is different from what they want to change their vote to
 
-   //Adding the actual entries to the likes after taking the necessary ones away
-   if(pass==='success'){
-    //Changing the questions liked value
-    updateDoc(questionRef,{
-      question_likes : new_likes+value
-    })
-    .catch(e=>{
-      pass = 'failed';
-      failed_arr.push(e);
-    })
-
-    if(pass==="success" && value!=0){ //Dont include when the value is 0 as we dont want to add it to the user's likes as they removed their like
-      //Updating the user's likes
-      var concated = (question_id.concat(",",value)).toString();
-      updateDoc(userRef,{
-        user_likes: arrayUnion(concated)
+      //Fetching the number of likes the question currently has
+      var prior_likes = -1;
+      await getDoc(questionRef).then((ret) => {
+        prior_likes = ret.data().question_likes;
+        pass = "success";
+        new_likes = prior_likes;
       })
-      .catch(e=>{
-        console.log(e);
-        failed_arr.push(e);
-      })
+        .catch(e => {
+          console.log(e);
+          failed_arr.push(e);
+        })
     }
+
+    //Removing the extra dis/like due to the the user's previous decision
+    if (pass === 'success') {
+
+      if (value == 0 || value <= -1 * liked) {
+        //There vote is getting changed or deleted
+        var concated = (question_id.concat(",", liked)).toString();
+        new_likes += (-liked);
+
+        //Removing the like from the user's list
+        updateDoc(userRef, {
+          user_likes: arrayRemove(concated)
+        })
+          .catch(e => {
+            pass = "failed";
+            failed_arr.push(e);
+          })
+
+        //Updating the likes value
+        updateDoc(questionRef, {
+          question_likes: new_likes
+        })
+          .catch(e => {
+            pass = "failed";
+            failed_arr.push(e);
+            console.log(e);
+          })
+
+      }
+    }
+
+    //Adding the actual entries to the likes after taking the necessary ones away
+    if (pass === 'success') {
+      //Changing the questions liked value
+      updateDoc(questionRef, {
+        question_likes: new_likes + value
+      })
+        .catch(e => {
+          pass = 'failed';
+          failed_arr.push(e);
+        })
+
+      if (pass === "success" && value != 0) { //Dont include when the value is 0 as we dont want to add it to the user's likes as they removed their like
+        //Updating the user's likes
+        var concated = (question_id.concat(",", value)).toString();
+        updateDoc(userRef, {
+          user_likes: arrayUnion(concated)
+        })
+          .catch(e => {
+            console.log(e);
+            failed_arr.push(e);
+          })
+      }
+    }
+
   }
-   
-  }
-  catch(e){ 
+  catch (e) {
     failed_arr.push(e);
   }
 
-  return [pass,failed_arr];
+  return [pass, failed_arr];
 }
 
 //Function that will be used to get the comments related to a response
-async function getComments(response_id){
-  const colRef = collection(db,'Comments');
+async function getComments(response_id) {
+  const colRef = collection(db, 'Comments');
   var pass = "failed";
   let JSONarr = [];
 
   //Make a query requesting for the correct comments
-  const q = query(colRef,where("comment_response","==",response_id));
+  const q = query(colRef, where("comment_response", "==", response_id));
   const commentsDocsSnap = await getDocs(q)
-  .then((snapshot)=>{
-    snapshot.docs.forEach((doc)=>{
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
 
-      if(doc.data()!=null){
-        pass = 'success'
-        if(doc.data().comment_reported==0){
-          //Then the comment was not reported and thus should be seen
-          var comment = {
-          "id": doc.id,
-          "date": doc.data().comment_date.toDate(),
-          "description": doc.data().comment_desc,
-          "response": doc.data().comment_response,
-          "user": doc.data().comment_user
+        if (doc.data() != null) {
+          pass = 'success'
+          if (doc.data().comment_reported == 0) {
+            //Then the comment was not reported and thus should be seen
+            var comment = {
+              "id": doc.id,
+              "date": doc.data().comment_date.toDate(),
+              "description": doc.data().comment_desc,
+              "response": doc.data().comment_response,
+              "user": doc.data().comment_user
+            }
+            JSONarr.push(comment);
+          }
         }
-        JSONarr.push(comment);
-        }
-      }
+      })
     })
-  })
-  return [pass,JSONarr]
+  return [pass, JSONarr]
 }
 
 //Function that will get a questions responses and their comments
-async function getResponses(question_id,sorting_attribute,sorting_direction,startingValue,limit_num){
-  const colRef = collection(db,'Responses');
+async function getResponses(question_id, sorting_attribute, sorting_direction, startingValue, limit_num) {
+  const colRef = collection(db, 'Responses');
   var pass = 'failed';
   let JSONarr = [];
   //startingValue represents the starting value of sorting attribute i.e. when likes=startingValue
@@ -550,77 +550,77 @@ async function getResponses(question_id,sorting_attribute,sorting_direction,star
 
   var q;
   //Queries the data
-  if(startingValue==null){
-    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),limit(limit_num));
+  if (startingValue == null) {
+    q = query(colRef, where("response_question", "==", question_id), orderBy(sorting_attribute, sorting_direction), limit(limit_num));
   }
-  else{
-    q = query(colRef,where("response_question","==",question_id),orderBy(sorting_attribute,sorting_direction),startAfter(startingValue),limit(limit_num));
+  else {
+    q = query(colRef, where("response_question", "==", question_id), orderBy(sorting_attribute, sorting_direction), startAfter(startingValue), limit(limit_num));
   }
-  
+
   //Will use the following to see if the user liked the response
   var user_likes;
 
-  
-  try{
-    const userRef = doc(db,"Users",auth.currentUser.email);
-    await getDoc(userRef).then(ret=>{
+
+  try {
+    const userRef = doc(db, "Users", auth.currentUser.email);
+    await getDoc(userRef).then(ret => {
       user_likes = ret.data().user_likes_responses;
     })
   }
-  catch(e){
-    return ["failed","Auth token expired"]
+  catch (e) {
+    return ["failed", "Auth token expired"]
   }
-  
-  
+
+
 
 
   await getDocs(q)
-  .then((snapshot)=>{
-    snapshot.docs.forEach((doc)=>{
-      if(doc.data()!=null){
-        pass = 'success';
-        if(doc.data().response_reported==0){
-          //Then the response was not reported and should be displayed
-          var response = {
-            "id": doc.id,
-            "date": doc.data().response_date.toDate(),
-            "description": doc.data().response_desc,
-            "likes": doc.data().response_likes,
-            "question": doc.data().response_question,
-            "mark": doc.data().response_mark,
-            "user": doc.data().response_user
-          }
-          response.liked = hasLiked(doc.id,user_likes);
-          if(doc.data().response_mark!=0){
-            //Then this is the correct answer and thus display it first
-            JSONarr.unshift(response);
-          }
-          else{
-            //Not the correct answer
-            JSONarr.push(response)
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data() != null) {
+          pass = 'success';
+          if (doc.data().response_reported == 0) {
+            //Then the response was not reported and should be displayed
+            var response = {
+              "id": doc.id,
+              "date": doc.data().response_date.toDate(),
+              "description": doc.data().response_desc,
+              "likes": doc.data().response_likes,
+              "question": doc.data().response_question,
+              "mark": doc.data().response_mark,
+              "user": doc.data().response_user
+            }
+            response.liked = hasLiked(doc.id, user_likes);
+            if (doc.data().response_mark != 0) {
+              //Then this is the correct answer and thus display it first
+              JSONarr.unshift(response);
+            }
+            else {
+              //Not the correct answer
+              JSONarr.push(response)
+            }
           }
         }
-      }
+      })
     })
-  })
-  .catch(e=>{
-    console.log(e);
-  })
+    .catch(e => {
+      console.log(e);
+    })
 
 
 
-return [pass,JSONarr];
-  
+  return [pass, JSONarr];
+
 }
 
 //Function that will return all data that would be necessary to display the question
-async function getQuestionInfo(question_id){
+async function getQuestionInfo(question_id) {
   //Will return if the request passed/failed and the JSON representing the question
   var pass = 'failed';
   var JSON;
 
-  const questionRef = doc(db,"Questions",question_id);
-  await getDoc(questionRef).then(ret=>{
+  const questionRef = doc(db, "Questions", question_id);
+  await getDoc(questionRef).then(ret => {
     pass = 'success'
     //Set the JSON for the question
     JSON = {
@@ -628,337 +628,337 @@ async function getQuestionInfo(question_id){
       "desc": ret.data().question_desc,
       "likes": ret.data().question_likes,
       "title": ret.data().question_title,
-      "user_id":ret.data().question_user,
-      "isQuestioner": ret.data().question_reference==auth.currentUser.email, //returns if they asked the question
-      "liked":0, //default value means that the user did not like.
-      "images":ret.data().question_images
-      }
-    })
-    
+      "user_id": ret.data().question_user,
+      "isQuestioner": ret.data().question_reference == auth.currentUser.email, //returns if they asked the question
+      "liked": 0, //default value means that the user did not like.
+      "images": ret.data().question_images
+    }
+  })
+
 
   //Function will return if the user has liked it or not, thus the try catch will be for if the user is not logged in
-  try{
-    const userRef = doc(db,"Users",auth.currentUser.email);
-    if(pass==='success'){
-      await getDoc(userRef).then(ret=>{
+  try {
+    const userRef = doc(db, "Users", auth.currentUser.email);
+    if (pass === 'success') {
+      await getDoc(userRef).then(ret => {
         var likes = ret.data().user_likes_questions;
-        JSON.liked = hasLiked(question_id,likes);
+        JSON.liked = hasLiked(question_id, likes);
       })
     }
   }
-  catch(e){
+  catch (e) {
     //Setting the liked value to an unnecessarily obtuse and specific value so that it can be known that the user has not logged in and thus cannot like the question
     JSON.liked = 3.1415;
     console.log(e);
   }
 
-  return [pass,JSON];
-  
+  return [pass, JSON];
+
 }
 
 //Function that will create a response to a question
-async function giveResponse_or_Comment(check,id,desc){
+async function giveResponse_or_Comment(check, id, desc) {
   //If check = 0 then we are making a response else we are giving a comment
   var pass = "success";
-  if(check==0){
-    const responsesRef = collection(db,"Responses");
-    
+  if (check == 0) {
+    const responsesRef = collection(db, "Responses");
+
     //Creates a new question based on passed in parameters and predefined values
-    await addDoc(responsesRef,{
-      "response_user":auth.currentUser.displayName,
-      "response_reference":auth.currentUser.email,
-      "response_desc":desc,
+    await addDoc(responsesRef, {
+      "response_user": auth.currentUser.displayName,
+      "response_reference": auth.currentUser.email,
+      "response_desc": desc,
       "response_date": serverTimestamp(),
-      "response_likes":0,
-      "response_question":id,
-      "response_mark":0,
-      "response_reported":0
+      "response_likes": 0,
+      "response_question": id,
+      "response_mark": 0,
+      "response_reported": 0
     })
-    .catch((e)=>{
-      pass = "failed"; //Used to symbolise that the creation of the response failed.
-    })
+      .catch((e) => {
+        pass = "failed"; //Used to symbolise that the creation of the response failed.
+      })
     return pass;
   }
-  else{
-      const commentsRef = collection(db,"Comments");
+  else {
+    const commentsRef = collection(db, "Comments");
 
-      //Creates a new question based on passed in parameters and predefined values
-      await addDoc(commentsRef,{
-        "comment_user":auth.currentUser.displayName,
-        "comment_reference":auth.currentUser.email,
-        "comment_desc":desc,
-        "comment_date": serverTimestamp(),
-        "comment_response":id,
-        "comment_reported":0
-      })
-      .catch((e)=>{
+    //Creates a new question based on passed in parameters and predefined values
+    await addDoc(commentsRef, {
+      "comment_user": auth.currentUser.displayName,
+      "comment_reference": auth.currentUser.email,
+      "comment_desc": desc,
+      "comment_date": serverTimestamp(),
+      "comment_response": id,
+      "comment_reported": 0
+    })
+      .catch((e) => {
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
       })
     return pass;
   }
-  
+
 }
 //Function that will allow the user to like the response
-async function likeResponse(value, response_id){
-  const responseRef = doc(db,"Responses",response_id);
+async function likeResponse(value, response_id) {
+  const responseRef = doc(db, "Responses", response_id);
   var pass = "failed";
   var failed_arr = [];
   var new_likes = 0;
 
   //In the case that the user has not logged in then they cant vote on a response
-  try{
-    const userRef = doc(db,"Users",auth.currentUser.email);
+  try {
+    const userRef = doc(db, "Users", auth.currentUser.email);
 
-    var liked=-3.1415; //arbitrary value that will be used for comparison
-    await getDoc(userRef).then(ret=>{
-      liked=ret.data().user_likes_responses;
-      liked=hasLiked(response_id,liked);
-   })
-   .catch(e=>{
-      return [pass,[e]];
-   })
-
-   if(liked==value){
-    //Then the value should not change
-    return ["success",failed_arr];
-   }
-   else{
-    //Then the value is different from what they want to change their vote to
-    
-    //Fetching the number of likes the question currently has
-    var prior_likes = -1;
-    await getDoc(responseRef).then((ret)=>{
-      prior_likes = ret.data().response_likes;
-      pass = "success";
-      new_likes = prior_likes;
+    var liked = -3.1415; //arbitrary value that will be used for comparison
+    await getDoc(userRef).then(ret => {
+      liked = ret.data().user_likes_responses;
+      liked = hasLiked(response_id, liked);
     })
-    .catch(e=>{
-      console.log(e);
-      failed_arr.push(e);
-    })
-   }
-
-   //Removing the extra dis/like due to the the user's previous decision
-   if(pass==='success'){
-
-    if(value==0 || value<=-1*liked){
-      //There vote is getting changed or deleted
-      var concated = (response_id.concat(",",liked)).toString();
-      new_likes += (-liked);
-      
-      //Removing the like from the user's list
-      updateDoc(userRef,{
-        user_likes_responses: arrayRemove(concated)
-      })
-      .catch(e=>{
-        pass = "failed";
-        failed_arr.push(e);
+      .catch(e => {
+        return [pass, [e]];
       })
 
-      //Updating the likes value
-      updateDoc(responseRef,{
-      response_likes : new_likes
-      })
-      .catch(e=>{
-        pass = "failed";
-        failed_arr.push(e);
-        console.log(e);
-      })
-
+    if (liked == value) {
+      //Then the value should not change
+      return ["success", failed_arr];
     }
-   }
+    else {
+      //Then the value is different from what they want to change their vote to
 
-   //Adding the actual entries to the likes after taking the necessary ones away
-   if(pass==='success'){
-    //Changing the questions liked value
-    updateDoc(responseRef,{
-      response_likes : new_likes+value
-    })
-    .catch(e=>{
-      pass = 'failed';
-      failed_arr.push(e);
-    })
-
-    if(pass==="success" && value!=0){ //Dont include when the value is 0 as we dont want to add it to the user's likes as they removed their like
-      //Updating the user's likes
-      var concated = (response_id.concat(",",value)).toString();
-      updateDoc(userRef,{
-        user_likes_responses: arrayUnion(concated)
+      //Fetching the number of likes the question currently has
+      var prior_likes = -1;
+      await getDoc(responseRef).then((ret) => {
+        prior_likes = ret.data().response_likes;
+        pass = "success";
+        new_likes = prior_likes;
       })
-      .catch(e=>{
-        console.log(e);
-        failed_arr.push(e);
-      })
+        .catch(e => {
+          console.log(e);
+          failed_arr.push(e);
+        })
     }
+
+    //Removing the extra dis/like due to the the user's previous decision
+    if (pass === 'success') {
+
+      if (value == 0 || value <= -1 * liked) {
+        //There vote is getting changed or deleted
+        var concated = (response_id.concat(",", liked)).toString();
+        new_likes += (-liked);
+
+        //Removing the like from the user's list
+        updateDoc(userRef, {
+          user_likes_responses: arrayRemove(concated)
+        })
+          .catch(e => {
+            pass = "failed";
+            failed_arr.push(e);
+          })
+
+        //Updating the likes value
+        updateDoc(responseRef, {
+          response_likes: new_likes
+        })
+          .catch(e => {
+            pass = "failed";
+            failed_arr.push(e);
+            console.log(e);
+          })
+
+      }
+    }
+
+    //Adding the actual entries to the likes after taking the necessary ones away
+    if (pass === 'success') {
+      //Changing the questions liked value
+      updateDoc(responseRef, {
+        response_likes: new_likes + value
+      })
+        .catch(e => {
+          pass = 'failed';
+          failed_arr.push(e);
+        })
+
+      if (pass === "success" && value != 0) { //Dont include when the value is 0 as we dont want to add it to the user's likes as they removed their like
+        //Updating the user's likes
+        var concated = (response_id.concat(",", value)).toString();
+        updateDoc(userRef, {
+          user_likes_responses: arrayUnion(concated)
+        })
+          .catch(e => {
+            console.log(e);
+            failed_arr.push(e);
+          })
+      }
+    }
+
   }
-   
-  }
-  catch(e){ 
+  catch (e) {
     failed_arr.push(e);
   }
 
-  return [pass,failed_arr];
+  return [pass, failed_arr];
 }
 
 
 //Function that will change the state of correct or incorrect based on user input
-async function changeMark(mark,response_id,JSONuser){
-  
-  if(JSONuser.role == 1 || JSONuser.isQuestioner == true){
+async function changeMark(mark, response_id, JSONuser) {
+
+  if (JSONuser.role == 1 || JSONuser.isQuestioner == true) {
     //Then they are the admin ar the question and thus can mark the question as true or false
-      //Removing the like from the user's list
-      const respRef = doc(db,"Responses",response_id);
-      updateDoc(respRef,{
-        response_mark: mark
-      })
-      .catch(e=>{
+    //Removing the like from the user's list
+    const respRef = doc(db, "Responses", response_id);
+    updateDoc(respRef, {
+      response_mark: mark
+    })
+      .catch(e => {
         return "failed"; //Update not done successfully
-        })
+      })
     return "success";
   }
   return 'failed'; //User doesnt have permission to change the marking
 }
 
 //Function that will change the report value of a post and will rectify the user's strikes
-async function changePostReportValue(table,post,value,JSONuser,report_id){
+async function changePostReportValue(table, post, value, JSONuser, report_id) {
   var pass = "failed";
   var user;
-  if(JSONuser.role<1){
+  if (JSONuser.role < 1) {
     //Then they are not an admin thus they dont have permissions to change this variable
     return pass;
   }
-  
-  if(table==0){
+
+  if (table == 0) {
     //Then the post_id is for a question
-    const questRef = doc(db,"Questions",post);
+    const questRef = doc(db, "Questions", post);
     pass = "success";
 
     //Get the user whose strikes we are going to change
-    await getDoc(questRef).then(ret=>{
+    await getDoc(questRef).then(ret => {
       user = ret.data().question_reference;
     })
 
 
     //Updating the report value
-    updateDoc(questRef,{
-        question_reported: value
+    updateDoc(questRef, {
+      question_reported: value
     })
-    .catch(e=>{
-      pass = "failed";
-      console.log("Question updating failed");
-    })
+      .catch(e => {
+        pass = "failed";
+        console.log("Question updating failed");
+      })
 
   }
-  else if(table==1){
+  else if (table == 1) {
     //Then the post_id is for a response
-    const respRef = doc(db,"Responses",post);
+    const respRef = doc(db, "Responses", post);
     pass = "success";
 
     //Get the user whose strikes we are going to change
-    await getDoc(respRef).then(ret=>{
+    await getDoc(respRef).then(ret => {
       user = ret.data().response_reference;
     })
 
     //Updating the report value
-    updateDoc(respRef,{
-          response_reported: value
+    updateDoc(respRef, {
+      response_reported: value
     })
-    .catch(e=>{
-      pass = "failed";
-      console.log("Response updating failed");
-    })
+      .catch(e => {
+        pass = "failed";
+        console.log("Response updating failed");
+      })
 
   }
-  else if(table==2){
+  else if (table == 2) {
     //Then the post_id is for a comment
-    const commRef = doc(db,"Comments",post);
+    const commRef = doc(db, "Comments", post);
     pass = "success";
 
     //Get the user whose strikes we are going to change
-    await getDoc(commRef).then(ret=>{
+    await getDoc(commRef).then(ret => {
       user = ret.data().comment_reference;
     })
 
     //Updating the report value
-    updateDoc(commRef,{
+    updateDoc(commRef, {
       comment_reported: value
     })
-    .catch(e=>{
-      pass = "failed";
-      console.log("Comment updating failed");
-    })
+      .catch(e => {
+        pass = "failed";
+        console.log("Comment updating failed");
+      })
   }
 
-  if(pass==="success"){
+  if (pass === "success") {
     //So the post was reported, now we need to change the user's strikes value
-    const userRef = doc(db,"Users",user);
+    const userRef = doc(db, "Users", user);
     var report_ids = [];
-    if(value==0){
+    if (value == 0) {
       //Then we need to remove the strike
-      updateDoc(userRef,{
+      updateDoc(userRef, {
         user_strikes: arrayRemove(report_id)
       })
 
       //Check that the user was not banned
-      try{
+      try {
         //The user had a ban on their account
         var ban_confirmed; //Will use this to check that the user has not already been banned
-        getDoc(doc(db,"Bans",user)).then((doc)=>{
+        getDoc(doc(db, "Bans", user)).then((doc) => {
           report_ids = doc.data().ban_reports;
-          ban_confirmed=doc.data().ban_confirmed;
+          ban_confirmed = doc.data().ban_confirmed;
         })
-        .catch(e=>{
-          return 'failed';
-        })
+          .catch(e => {
+            return 'failed';
+          })
 
         //Update their ban doc to no longer include that entry
-        updateDoc(doc(db,"Bans",user),{
+        updateDoc(doc(db, "Bans", user), {
           ban_reports: arrayRemove(report_id)
         })
-        .catch(e=>{
-          return 'failed';
-        })
+          .catch(e => {
+            return 'failed';
+          })
 
-        if(report_ids==3){
+        if (report_ids == 3) {
           //Then we need to remove their account from the banned list
-          if(ban_confirmed==1){
+          if (ban_confirmed == 1) {
             //User has been banned and will need to be unbanned
-            updateDoc(userRef,{
-              user_role:0
+            updateDoc(userRef, {
+              user_role: 0
             })
           }
           //delete their ban document
-          deleteDoc(doc(db,"Bans",user));
+          deleteDoc(doc(db, "Bans", user));
         }
       }
-      catch(e){
+      catch (e) {
         //User did not have a ban on their account
       }
 
     }
-    else{
+    else {
       //Then we need to add the strike
-      updateDoc(userRef,{
+      updateDoc(userRef, {
         user_strikes: arrayUnion(report_id)
       })
 
       //Check if the user needs to be considered for a ban
-      getDoc(userRef).then((doc)=>{
-        report_ids=doc.data().user_strikes;
+      getDoc(userRef).then((doc) => {
+        report_ids = doc.data().user_strikes;
       })
-      if(report_ids.length>2){
+      if (report_ids.length > 2) {
         //Then the user needs to be considered for a ban
 
         //Create the ban request for the user
-        setDoc(doc(db,"Bans",user),{
+        setDoc(doc(db, "Bans", user), {
           ban_user: user,
           ban_reports: report_ids,
           ban_date: serverTimestamp(),
           ban_confirmed: 0
         })
-        .catch(e=>{
-          pass='failed';
-        })
+          .catch(e => {
+            pass = 'failed';
+          })
       }
     }
   }
@@ -967,44 +967,44 @@ async function changePostReportValue(table,post,value,JSONuser,report_id){
 }
 
 //Function that will generate a report
-async function createReport(question_id, response_id){
+async function createReport(question_id, response_id) {
   var pass = 'success';
   var offender;
   var offence;
-  const reportColRef = collection(db,"Reports");//Reference to where to add the report
-  if(response_id==null){
+  const reportColRef = collection(db, "Reports");//Reference to where to add the report
+  if (response_id == null) {
     //Then we are reporting a question
-    
+
     //Getting the user who wrote the question
-    const reportUserRef = doc(db,"Questions",question_id);
-    await getDoc(reportUserRef).then((doc)=>{
+    const reportUserRef = doc(db, "Questions", question_id);
+    await getDoc(reportUserRef).then((doc) => {
       offender = doc.data().question_reference; //Gets the person who commited the offence
       offence = doc.data().question_desc; //Gets the description which would be the offence
     })
-    .catch(e=>{
-      pass='failed';
-      console.log("Couldnt get question doc");
-    })  
+      .catch(e => {
+        pass = 'failed';
+        console.log("Couldnt get question doc");
+      })
   }
-  else{
+  else {
     //Then we are reporting a response
 
     //Getting the user who wrote the question
-    const reportUserRef = doc(db,"Responses",response_id);
-    await getDoc(reportUserRef).then((doc)=>{
+    const reportUserRef = doc(db, "Responses", response_id);
+    await getDoc(reportUserRef).then((doc) => {
       offender = doc.data().response_reference; //Gets the person who commited the offence
       offence = doc.data().response_desc;
       question_id = doc.data().response_question
     })
-    .catch(e=>{
-      pass = 'failed';
-      console.log("Couldnt get report doc")
-    })
+      .catch(e => {
+        pass = 'failed';
+        console.log("Couldnt get report doc")
+      })
   }
-  if(pass=='success'){
+  if (pass == 'success') {
     //Adding the document
     //The report reason will be filled in when the admin changes the report value
-    await addDoc(reportColRef,{
+    await addDoc(reportColRef, {
       report_culprit: offender,
       report_offence: offence,
       report_reporter: auth.currentUser.email,
@@ -1014,28 +1014,28 @@ async function createReport(question_id, response_id){
       report_solved: 0,
       report_reason: null
     })
-    .catch(e=>{
-      pass = 'failed';
-    })
+      .catch(e => {
+        pass = 'failed';
+      })
   }
-  
+
   return pass;
 }
 
 //Function that will return all the reports that have not been solved yet
-async function getAllReports(){
-  const colRef = collection(db,'Reports');
+async function getAllReports() {
+  const colRef = collection(db, 'Reports');
   var pass = 'failed';
   let JSONarr = [];
-  
+
   //Get all the docs
   await getDocs(colRef)
-    .then((snapshot)=>{
+    .then((snapshot) => {
 
-      snapshot.docs.forEach((doc)=>{
-        if(doc.data()!=null){
+      snapshot.docs.forEach((doc) => {
+        if (doc.data() != null) {
           pass = 'success'
-          if(doc.data().report_solved==0){
+          if (doc.data().report_solved == 0) {
             //Then the report has not been dealt with and should be visible
 
             //Create the JSON representing the question
@@ -1048,187 +1048,189 @@ async function getAllReports(){
             }
             JSONarr.push(Report);
           }
-          
+
         }
-        else{
-          return ['failed',[]];
+        else {
+          return ['failed', []];
         }
-        
+
       })
     })
-    return [pass,JSONarr];
+  return [pass, JSONarr];
 }
 
 //Function that will display allow the report to be displayed in a nice manner
-async function displayReport(reportJSON){
+async function displayReport(reportJSON) {
   var pass = 'failed';
   var JSONarr = []; //will push the JSONs of the question and the report to here
   var JSON;
-  const questionRef = doc(db,"Questions",reportJSON.question_id); //Going to get the necessary details do display the question
-  await getDoc(questionRef).then(ret=>{
+  const questionRef = doc(db, "Questions", reportJSON.question_id); //Going to get the necessary details do display the question
+  await getDoc(questionRef).then(ret => {
     pass = 'success';
     //Set the JSON for the question
     JSON = {
       "date": ret.data().question_date.toDate(),
       "desc": ret.data().question_desc,
       "title": ret.data().question_title,
-      "user_id":ret.data().question_user,
-      "images":ret.data().question_images,
+      "user_id": ret.data().question_user,
+      "images": ret.data().question_images,
       "user_reference": ret.data().question_reference
-      }
-      JSONarr.push(JSON);
-    })
-    .catch(e=>{
+    }
+    JSONarr.push(JSON);
+  })
+    .catch(e => {
       pass = 'failed';
       console.log("Question ref failed");
     })
-  
-  if(reportJSON.response_id!=null && pass == 'success'){
+
+  if (reportJSON.response_id != null && pass == 'success') {
     //Then the actual report was far the response
-    const responseRef = doc(db,"Responses",reportJSON.response_id); //Going to get the necessary details do display the question
-    await getDoc(responseRef).then(ret=>{
+    const responseRef = doc(db, "Responses", reportJSON.response_id); //Going to get the necessary details do display the question
+    await getDoc(responseRef).then(ret => {
       pass = 'success';
       //Set the JSON for the response
       var JSON = {
         "date": ret.data().response_date.toDate(),
         "desc": ret.data().response_desc,
-        "user_id":ret.data().response_user,
+        "user_id": ret.data().response_user,
         "user_reference": ret.data().response_reference
-        }
-        JSONarr.push(JSON);
-      })
-      .catch(e=>{
+      }
+      JSONarr.push(JSON);
+    })
+      .catch(e => {
         pass = 'failed';
         console.log("Response ref failed");
       })
   }
-  return [pass,JSONarr]
+  return [pass, JSONarr]
 }
 
 //Function that will close the report
-async function changeReportStatus(report_id,value,reason){
-  const repRef = doc(db,"Reports",report_id);
-  updateDoc(repRef,{
-      report_solved: value,
-      report_reason: reason,
-      report_closer: auth.currentUser.email
+async function changeReportStatus(report_id, value, reason) {
+  const repRef = doc(db, "Reports", report_id);
+  updateDoc(repRef, {
+    report_solved: value,
+    report_reason: reason,
+    report_closer: auth.currentUser.email
   })
-  .catch(e=>{
-    return "failed"; //Update not done successfully
-  })
+    .catch(e => {
+      return "failed"; //Update not done successfully
+    })
   return "success";
 }
 
 //Function that will ban a user
-async function banUser(ban_id,user_id,reason){
+async function banUser(ban_id, user_id, reason) {
   var pass = 'success';
-  const userRef = doc(db,"Users",user_id);
-  const banRef = doc(db,"Bans",ban_id);
+  const userRef = doc(db, "Users", user_id);
+  const banRef = doc(db, "Bans", ban_id);
 
   //Update their role to reflect that they are banned
-  updateDoc(userRef,{
-    user_role:-1
+  updateDoc(userRef, {
+    user_role: -1
   })
-  .catch(e=>{
-    pass='failed';
-  })
-
-  if(pass=='success'){
-    //Then update the banned doc to signal that the request has been closed
-    updateDoc(banRef,{
-      ban_confirmed:1,
-      ban_closer:auth.currentUser.email,
-      ban_reason:reason
+    .catch(e => {
+      pass = 'failed';
     })
-    .catch(e=>{
-      pass='failed';
-     })
+
+  if (pass == 'success') {
+    //Then update the banned doc to signal that the request has been closed
+    updateDoc(banRef, {
+      ban_confirmed: 1,
+      ban_closer: auth.currentUser.email,
+      ban_reason: reason
+    })
+      .catch(e => {
+        pass = 'failed';
+      })
   }
   return pass
 }
 
 //Function that will display all bans
-async function getAllBans(){
-  const colRef = collection(db,'Bans');
+async function getAllBans() {
+  const colRef = collection(db, 'Bans');
   var pass = 'failed';
   let JSONarr = [];
-  
-    //Get all the docs
+
+  //Get all the docs
   await getDocs(colRef)
-  .then((snapshot)=>{
-    snapshot.docs.forEach((doc)=>{
-      if(doc.data()!=null){
-        pass = 'success'
-        if(doc.data().ban_confirmed==0){
-          //Then the ban has not been considered and should be visible
-          //Create the JSON representing the ban
-          var Ban = {
-            "user": doc.data().ban_user,
-            "date": doc.data().ban_date.toDate(),
-            "ban_id": doc.id
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data() != null) {
+          pass = 'success'
+          if (doc.data().ban_confirmed == 0) {
+            //Then the ban has not been considered and should be visible
+            //Create the JSON representing the ban
+            var Ban = {
+              "user": doc.data().ban_user,
+              "date": doc.data().ban_date.toDate(),
+              "ban_id": doc.id
+            }
+            JSONarr.push(Ban);
           }
-          JSONarr.push(Ban);
+
         }
-        
-      }
-      else{
-        return ['failed',[]];
-      }
-      
+        else {
+          return ['failed', []];
+        }
+
+      })
     })
-  })
-  
-    return [pass,JSONarr];
+
+  return [pass, JSONarr];
 }
 
 //Function to get a single ban and the reasons associated with it
-async function getBan(ban_id){
+async function getBan(ban_id) {
   var pass = 'failed';
   var JSON;
-  const banRef = doc(db,"Bans",ban_id);
-  
+  const banRef = doc(db, "Bans", ban_id);
+
   //Variables that will store the necessary items to have access to the ban
   var ban_user;
   var ban_date;
   var ban_reports;
   //Get the ban doc
-  await getDoc(banRef).then((doc)=>{
-    ban_user=doc.data().ban_user;
-    ban_date=doc.data().ban_date.toDate();
-    ban_reports=doc.data().ban_reports;
+  await getDoc(banRef).then((doc) => {
+    ban_user = doc.data().ban_user;
+    ban_date = doc.data().ban_date.toDate();
+    ban_reports = doc.data().ban_reports;
     pass = 'success';
   })
-  .catch(e=>{
-    return [pass,JSON];
-  })
+    .catch(e => {
+      return [pass, JSON];
+    })
 
   //Iterate over all the reports so that we get the reason for the report
-  for(let i=0;i<ban_reports.length;i++){
-    var reportRef = doc(db,"Reports",ban_reports[i]);
-    await getDoc(reportRef).then((doc)=>{
-      ban_reports[i]=doc.data().report_reason;
+  for (let i = 0; i < ban_reports.length; i++) {
+    var reportRef = doc(db, "Reports", ban_reports[i]);
+    await getDoc(reportRef).then((doc) => {
+      ban_reports[i] = doc.data().report_reason;
     })
-    .catch(e=>{
-      return ['failed',JSON];
-    })
+      .catch(e => {
+        return ['failed', JSON];
+      })
   }
   //Create the JSON of the ban
-  JSON={
-    user:ban_user,
-    date:ban_date,
-    reasons:ban_reports
+  JSON = {
+    user: ban_user,
+    date: ban_date,
+    reasons: ban_reports
   }
-  return [pass,JSON];
+  return [pass, JSON];
 }
 
-  //subscribing to auth changes
-  onAuthStateChanged(auth,(user)=>{
-    console.log('user status changed: ',user)
-  })
+//subscribing to auth changes
+onAuthStateChanged(auth, (user) => {
+  console.log('user status changed: ', user)
+})
 
-  //Exports all the functions
-  export{register, logIn,logOut,getUserDetails,CompareUserID,changePassword,updateUserDetails,
-        getAllQuestions,askQuestion,likeQuestion,getQuestionInfo,
-        giveResponse_or_Comment,getResponses,getComments,changeMark,likeResponse,
-        changePostReportValue, createReport,getAllReports,displayReport,changeReportStatus,
-        banUser,getAllBans,getBan}
+//Exports all the functions
+export {
+  register, logIn, logOut, getUserDetails, CompareUserID, changePassword, updateUserDetails,
+  getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,
+  giveResponse_or_Comment, getResponses, getComments, changeMark, likeResponse,
+  changePostReportValue, createReport, getAllReports, displayReport, changeReportStatus,
+  banUser, getAllBans, getBan
+}
