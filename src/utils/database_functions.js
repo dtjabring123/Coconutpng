@@ -905,7 +905,7 @@ async function changePostReportValue(table,post,value,JSONuser,report_id){
         var ban_confirmed; //Will use this to check that the user has not already been banned
         getDoc(doc(db,"Bans",user)).then((doc)=>{
           report_ids = doc.data().ban_reports;
-          ban_confirmed:doc.data().ban_confirmed;
+          ban_confirmed=doc.data().ban_confirmed;
         })
         .catch(e=>{
           return 'failed';
