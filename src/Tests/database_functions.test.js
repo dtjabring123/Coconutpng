@@ -24,8 +24,8 @@ const details = { // valid details
 describe("register tests",()=>{
     test("valid details", async () => {
         try {
-            //details = await register("the", "tester", "1998-02-12","0000000000008","0784039821","0","tester@gmail.com","nunYaBussiness")
-            let outcome = await register(details)
+            outcome = await register("the", "tester", "1998-02-12","0000000000008","0784039821","0","tester@gmail.com","nunYaBussiness")
+            //let outcome = await register(details)
             Promise.resolve(outcome).then((arr) => {
                 expect(arr[0]).toBe("failed")
             })
