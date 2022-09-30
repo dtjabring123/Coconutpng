@@ -46,10 +46,14 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test("valid login", () => {
+    /*test("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
+    })*/
+    test("valid login", async () =>{
+        const output = await logIn(testDetails.email,testDetails.password);
+        expect(output[0]).toBe("success");
     })
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
