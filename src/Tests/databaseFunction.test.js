@@ -45,27 +45,12 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test("valid login", async () => {
-        try {
-            outcome = await logIn(testDetails.email, testDetails.password)
-            Promise.resolve(outcome).then((arr) => {
-                expect(arr).toBe('success')
-            })
-        } catch (e) {
-        }
-    })
-    test("valid login", async () => {
-        let outcome = await logIn(testDetails.email, testDetails.password)
-        Promise.resolve(outcome).then((arr) => {
-            expect(arr).toBe('success')
-        })
-    })
-    test.only("valid login", () => {
+    test("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
             expect(output).toBe("success");
         })
     })
-    test.only("invalid login", () => {
+    test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
