@@ -27,7 +27,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -57,12 +57,12 @@ describe("logIn test", () => {
 
 //tests for CompareUserID, tests for valid and invalid
 describe("CompareUserID test", () => {
-    test("valid details", () => {
+    test.skip("valid details", () => {
         return CompareUserID(testDetails.email, testDetails.id_number).then(output => {
             expect(output[0]).toBe("success");
         })
     })
-    test("invalid details", () => {
+    test.skip("invalid details", () => {
         return CompareUserID("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
@@ -71,7 +71,7 @@ describe("CompareUserID test", () => {
 
 //test for changePassword, test for valid
 describe("changePassword test", () => {
-    test("valid password", () => {
+    test.skip("valid password", () => {
         expect(changePassword(testDetails.password)).toStrictEqual(["success"]);
     })
 })
@@ -84,7 +84,7 @@ describe("updateUserDetails test", () => {
         phoneNumber: "4594625966",
         role: 1
     }
-    test("valid", () => {
+    test.skip("valid", () => {
         return updateUserDetails(tempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -95,7 +95,7 @@ describe("updateUserDetails test", () => {
         phoneNumber: "0784039821",
         role: 0
     }
-    test("valid", () => {
+    test.skip("valid", () => {
         return updateUserDetails(moreTempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -104,7 +104,7 @@ describe("updateUserDetails test", () => {
 
 //test for getUserDetails
 describe("getUserDetails test", () => {
-    test("valid details", () => {
+    test.skip("valid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("success");
         })
