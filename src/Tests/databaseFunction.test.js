@@ -1,6 +1,7 @@
 /**
  * @jest-environment node
  */
+import { async } from "@firebase/util";
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails
@@ -45,7 +46,7 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test.only("valid login", () => {
+    test.only("valid login", async () => {
         try {
             return logIn(testDetails.email, testDetails.password).then(output => {
                 expect(output[0]).toBe("success");
