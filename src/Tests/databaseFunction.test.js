@@ -48,7 +48,7 @@ describe("logIn test", () => {
             expect(output[0]).toBe("failed");
         })
     })
-    test.only("valid login", () => {
+    test("valid login", () => {
         return logIn(testDetails.email,testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
