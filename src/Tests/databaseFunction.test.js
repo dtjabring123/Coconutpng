@@ -45,9 +45,9 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test("valid login", async () => {
+    test.only("valid login", async () => {
         try {
-            let outcome = await logIn(testDetails.email, testDetails.password)
+            outcome = await logIn(testDetails.email, testDetails.password)
             Promise.resolve(outcome).then((arr) => {
                 expect(arr).toBe('success')
             })
