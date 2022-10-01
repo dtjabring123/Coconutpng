@@ -54,6 +54,10 @@ describe("logIn test", () => {
         })
     })
     test.only("valid login", async () => {
+        const output = await logIn(testDetails.email, testDetails.password);
+        expect(output).toBe("success");
+    })
+    test.only("valid login", async () => {
         expect.assertions(1);
         try {
             const output = await logIn(testDetails.email, testDetails.password);
