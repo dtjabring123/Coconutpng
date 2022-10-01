@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { async } from "@firebase/util";
 import exp from "constants";
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
@@ -47,12 +48,13 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test.only("valid login", () => {
+    test("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
             expect(output).toBe("success");
         })
     })
-    test("valid login", async () => {
+    test.only("valid login", async () => {
+        expect.assertions(1);
         try {
             const output = await logIn(testDetails.email, testDetails.password);
             expect(output).toBe("success");
@@ -67,9 +69,17 @@ describe("logIn test", () => {
 
         }
     })
-    test.only("valid login", async () =>{
+    test("valid login", async () =>{
         await expect(logIn(testDetails.email, testDetails.password)).resolves.toBe("success")
 
+    })
+    test("valid login", async () =>{
+        expect.assertions(1);
+        try{
+            await logIn(testDetails.email,testDetails.password);
+        }catch(e){
+
+        }
     })
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
