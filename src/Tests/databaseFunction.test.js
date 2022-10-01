@@ -27,7 +27,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -57,12 +57,12 @@ describe("logIn test", () => {
 
 //tests for CompareUserID, tests for valid and invalid
 describe("CompareUserID test", () => {
-    test.skip("valid details", () => {
+    test("valid details", () => {
         return CompareUserID(testDetails.email, testDetails.id_number).then(output => {
             expect(output[0]).toBe("success");
         })
     })
-    test.skip("invalid details", () => {
+    test("invalid details", () => {
         return CompareUserID("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
@@ -71,7 +71,7 @@ describe("CompareUserID test", () => {
 
 //test for changePassword, test for valid
 describe("changePassword test", () => {
-    test.skip("valid password", () => {
+    test("valid password", () => {
         expect(changePassword(testDetails.password)).toStrictEqual(["success"]);
     })
 })
