@@ -82,9 +82,9 @@ describe("updateUserDetails test", () => {
         first_name: "ya",
         last_name: "boi",
         phoneNumber: "4594625966",
-        role: 1
+        role: 0
     }
-    test.skip("valid", () => {
+    test.skip("valid details", () => {
         return updateUserDetails(tempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -95,7 +95,7 @@ describe("updateUserDetails test", () => {
         phoneNumber: "0784039821",
         role: 0
     }
-    test.skip("valid", () => {
+    test("valid details", () => {
         return updateUserDetails(moreTempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -104,7 +104,7 @@ describe("updateUserDetails test", () => {
 
 //test for getUserDetails
 describe("getUserDetails test", () => {
-    test.skip("valid details", () => {
+    test("valid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("success");
         })
