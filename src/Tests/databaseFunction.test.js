@@ -54,7 +54,7 @@ describe("logIn test", () => {
         } catch (e) {
         }
     })
-    test.only("valid login", async () => {
+    test("valid login", async () => {
         let outcome = await logIn(testDetails.email, testDetails.password)
         Promise.resolve(outcome).then((arr) => {
             expect(arr).toBe('success')
