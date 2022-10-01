@@ -97,7 +97,7 @@ describe("updateUserDetails test", () => {
         phoneNumber: "0784039821",
         role: 0
     }
-    test.only("valid", () => {
+    test("valid", () => {
         return updateUserDetails(moreTempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -106,7 +106,7 @@ describe("updateUserDetails test", () => {
 
 //test for getUserDetails
 describe("getUserDetails test", () => {
-    test.only("valid details", () => {
+    test("valid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("success");
         })
