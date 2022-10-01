@@ -32,7 +32,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -46,18 +46,19 @@ describe("getUserDetails test", () => {
     })
 })
 
+jest.setTimeout(10000)
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
     test("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
-            expect(output).toBe("success");
+            expect(output[0]).toBe("success");
         })
     })
-    test.only("valid login", async () => {
+    test.skip("valid login", async () => {
         const output = await logIn(testDetails.email, testDetails.password);
         expect(output).toBe("success");
     })
-    test.only("valid login", async () => {
+    test.skip("valid login", async () => {
         expect.assertions(1);
         try {
             const output = await logIn(testDetails.email, testDetails.password);
@@ -66,18 +67,18 @@ describe("logIn test", () => {
 
         }
     })
-    test("valid login", async () => {
+    test.skip("valid login", async () => {
         try {
             await expect(logIn(testDetails.email, testDetails.password)).resolves.toBe("success")
         } catch (e) {
 
         }
     })
-    test("valid login", async () =>{
+    test.skip("valid login", async () =>{
         await expect(logIn(testDetails.email, testDetails.password)).resolves.toBe("success")
 
     })
-    test("valid login", async () =>{
+    test.skip("valid login", async () =>{
         expect.assertions(1);
         try{
             await logIn(testDetails.email,testDetails.password);
@@ -91,6 +92,7 @@ describe("logIn test", () => {
         })
     })
 })
+jest.setTimeout(5000)
 
 //tests for CompareUserID, tests for valid and invalid
 describe("CompareUserID test", () => {
