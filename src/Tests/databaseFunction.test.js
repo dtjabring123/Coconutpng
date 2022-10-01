@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import exp from "constants";
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails
@@ -46,14 +47,17 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    /*test("valid login", () => {
+    test.only("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
-            expect(output[0]).toBe("success");
+            expect(output).toBe("success");
         })
-    })*/
-    test("valid login", async () =>{
+    })
+    test.only("valid login", async () =>{
         const output = await logIn(testDetails.email,testDetails.password);
-        expect(output[0]).toBe("success");
+        expect(output).toBe("success");
+    })
+    test.only("valid login", async ()=>{
+        await expect(logIn(testDetails.email,testDetails.password)).resolves.toBe("success")
     })
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
