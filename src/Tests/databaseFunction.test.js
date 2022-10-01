@@ -27,7 +27,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test("valid log out", () => {
+    test.only("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -110,4 +110,3 @@ describe("getUserDetails test", () => {
         })
     })
 })
-
