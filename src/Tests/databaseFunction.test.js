@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-import { async } from "@firebase/util";
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails
@@ -48,13 +47,23 @@ describe("getUserDetails test", () => {
 describe("logIn test", () => {
     test.only("valid login", async () => {
         try {
-            return logIn(testDetails.email, testDetails.password).then(output => {
-                expect(output[0]).toBe("success");
+            let outcome = await logIn(testDetails.email, testDetails.password)
+            Promise.resolve(outcome).then((arr) => {
+                expect(arr).toBe('success')
             })
-        }catch(e){
-
+        } catch (e) {
         }
-        
+    })
+    test.only("valid login", async () => {
+        let outcome = await logIn(testDetails.email, testDetails.password)
+        Promise.resolve(outcome).then((arr) => {
+            expect(arr).toBe('success')
+        })
+    })
+    test.only("valid login", () => {
+        return logIn(testDetails.email, testDetails.password).then(output => {
+            expect(output).toBe("success");
+        })
     })
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
