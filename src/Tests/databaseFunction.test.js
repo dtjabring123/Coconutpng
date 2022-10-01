@@ -18,7 +18,7 @@ const testDetails = {
 
 //test for register, test for invalid (auth/admin-restricted-operation)
 describe("register test", () => {
-    test.only("invalid data", () => {
+    test("invalid data", () => {
         return register(testDetails).then(output => {
             expect(output[0]).toBe("failed");
         })
@@ -43,7 +43,7 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test.only("invalid login", () => {
+    test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
