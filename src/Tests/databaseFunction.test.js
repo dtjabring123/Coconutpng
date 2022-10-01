@@ -45,7 +45,7 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test.only("valid login", async () => {
+    test("valid login", async () => {
         try {
             outcome = await logIn(testDetails.email, testDetails.password)
             Promise.resolve(outcome).then((arr) => {
@@ -65,7 +65,7 @@ describe("logIn test", () => {
             expect(output).toBe("success");
         })
     })
-    test("invalid login", () => {
+    test.only("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
