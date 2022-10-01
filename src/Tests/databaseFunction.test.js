@@ -34,7 +34,7 @@ describe("logOut test", () => {
 
 //test for getUserDetails (null)
 describe("getUserDetails test", () => {
-    test("valid details", () => {
+    test("invalid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("failed");
         })
@@ -48,14 +48,8 @@ describe("logIn test", () => {
             expect(output[0]).toBe("failed");
         })
     })
-    test("valid login", () => {
-        return logIn(testDetails.email, testDetails.password).then(output => {
-            expect(output[0]).toBe("success");
-        })
-    })
-    test("valid login", async () => {
-        outcome = await logIn(testDetails.email, testDetails.password)
-        Promise.resolve(outcome).then((output) => {
+    test.only("valid login", () => {
+        return logIn(testDetails.email,testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
     })
@@ -68,7 +62,7 @@ describe("CompareUserID test", () => {
             expect(output[0]).toBe("success");
         })
     })
-    test("invalid details", () => {
+    test.only("invalid details", () => {
         return CompareUserID("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
         })
