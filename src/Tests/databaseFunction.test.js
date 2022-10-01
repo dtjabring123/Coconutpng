@@ -1,9 +1,6 @@
 /**
  * @jest-environment node
  */
-
-import { async } from "@firebase/util";
-import exp from "constants";
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails
@@ -48,42 +45,10 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test("valid login", () => {
+    test.only("valid login", () => {
         return logIn(testDetails.email, testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
-    })
-    test.skip("valid login", async () => {
-        const output = await logIn(testDetails.email, testDetails.password);
-        expect(output).toBe("success");
-    })
-    test.skip("valid login", async () => {
-        expect.assertions(1);
-        try {
-            const output = await logIn(testDetails.email, testDetails.password);
-            expect(output).toBe("success");
-        } catch (e) {
-
-        }
-    })
-    test.skip("valid login", async () => {
-        try {
-            await expect(logIn(testDetails.email, testDetails.password)).resolves.toBe("success")
-        } catch (e) {
-
-        }
-    })
-    test.skip("valid login", async () =>{
-        await expect(logIn(testDetails.email, testDetails.password)).resolves.toBe("success")
-
-    })
-    test.skip("valid login", async () =>{
-        expect.assertions(1);
-        try{
-            await logIn(testDetails.email,testDetails.password);
-        }catch(e){
-
-        }
     })
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
@@ -132,7 +97,7 @@ describe("updateUserDetails test", () => {
         phoneNumber: "0784039821",
         role: 0
     }
-    test("valid", () => {
+    test.only("valid", () => {
         return updateUserDetails(moreTempDetails).then(output => {
             expect(output).toStrictEqual(["success"]);
         })
@@ -141,7 +106,7 @@ describe("updateUserDetails test", () => {
 
 //test for getUserDetails
 describe("getUserDetails test", () => {
-    test("valid details", () => {
+    test.only("valid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("success");
         })

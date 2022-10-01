@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage -u --detectOpenHandles",
+    "test": "react-scripts test --env=jsdom --coverage -u --runInBand --detectOpenHandles",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
