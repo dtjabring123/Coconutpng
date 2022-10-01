@@ -1,6 +1,4 @@
-/**
- * @jest-environment node
- */
+
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails
@@ -20,7 +18,7 @@ const testDetails = {
 
 //test for register, test for invalid (auth/admin-restricted-operation)
 describe("register test", () => {
-    test("invalid data", () => {
+    test.only("invalid data", () => {
         return register(testDetails).then(output => {
             expect(output[0]).toBe("failed");
         })
@@ -45,14 +43,20 @@ describe("getUserDetails test", () => {
 
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
-    test.skip("valid login", () => {
-        return logIn(testDetails.email, testDetails.password).then(output => {
-            expect(output).toBe("success");
-        })
-    })
-    test("invalid login", () => {
+    test.only("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
             expect(output[0]).toBe("failed");
+        })
+    })
+    test("valid login", () => {
+        return logIn(testDetails.email, testDetails.password).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+    test("valid login", async () => {
+        outcome = await logIn(testDetails.email, testDetails.password)
+        Promise.resolve(outcome).then((output) => {
+            expect(output[0]).toBe("success");
         })
     })
 })

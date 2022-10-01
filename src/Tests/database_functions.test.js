@@ -1,6 +1,4 @@
-/**
- * @jest-environment node
- */
+
 import {
     register, logIn, logOut, getUserDetails, CompareUserID, changePassword, 
     updateUserDetails, getAllQuestions, askQuestion, likeQuestion, 
