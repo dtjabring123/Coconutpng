@@ -27,7 +27,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -48,7 +48,7 @@ describe("logIn test", () => {
             expect(output[0]).toBe("failed");
         })
     })
-    test("valid login", () => {
+    test.only("valid login", () => {
         return logIn(testDetails.email,testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
