@@ -46,7 +46,6 @@ describe("getUserDetails test", () => {
     })
 })
 
-jest.setTimeout(10000)
 //test for logIn, test for invalid (undefined)
 describe("logIn test", () => {
     test("valid login", () => {
@@ -92,7 +91,6 @@ describe("logIn test", () => {
         })
     })
 })
-jest.setTimeout(5000)
 
 //tests for CompareUserID, tests for valid and invalid
 describe("CompareUserID test", () => {
