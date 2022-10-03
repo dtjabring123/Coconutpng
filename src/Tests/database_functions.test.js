@@ -1,6 +1,4 @@
-/**
- * @jest-environment node
- */
+
 import {
     register, logIn, logOut, getUserDetails, CompareUserID, changePassword, 
     updateUserDetails, getAllQuestions, askQuestion, likeQuestion, 
@@ -9,13 +7,25 @@ import {
 }
     from '../utils/database_functions.js'
 
-//test for register, test for valid
+const details = { // valid details
+    first_name: "the",
+    last_name: "tester",
+    dob: "1998-02-12",
+    mobile_number: "0784039821",
+    email: "tester132@gmail.com",
+    password: "nunYaBussiness",
+    role: "0",
+    id_number: "0000000000008"
+}
+
+//test for register, test for invalid
 describe("register tests",()=>{
     test("valid details", async () => {
         try {
-            details = await register("the", "tester", "1998-02-12","0000000000008","0784039821","0","tester@gmail.com","nunYaBussiness")
-            Promise.resolve(details).then((arr) => {
-                expect(arr[0]).toBe('success')
+            outcome = await register("the", "tester", "1998-02-12","0000000000008","0784039821","0","tester@gmail.com","nunYaBussiness")
+            //let outcome = await register(details)
+            Promise.resolve(outcome).then((arr) => {
+                expect(arr[0]).toBe("failed")
             })
         } catch (e) {
         }
@@ -101,6 +111,7 @@ describe('CompareUserID tests', () => {
         }
     })
 })
+
 
 //tests for changePassword, tests for valid
 describe("changePassword tests",()=>{

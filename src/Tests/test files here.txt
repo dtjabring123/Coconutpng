@@ -5,3 +5,12 @@ describe("test name",() =>{
 		expect(validation.method('input')).toBe('output');
 	})
 });
+
+//test for , test for valid
+describe(" test", () => {
+    test.only("valid details", () => {
+        return ().then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+})
