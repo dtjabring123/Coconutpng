@@ -135,7 +135,7 @@ describe("getAllQuestions test", () => {
 describe("askQuestion test", () => {
     test("valid details", () => {
         return askQuestion("test", "test", null).then(output => {
-            expect(output).toBe("failed");
+            expect(output).toBe("success");
         })
     })
 })
