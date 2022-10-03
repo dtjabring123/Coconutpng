@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { validLogin } from '../utils/login.js'
 import { logIn } from '../utils/database_functions'
+import { setUser } from '../utils/userDetails.js'
 import '../index.css';
 export default class LoginPage extends React.Component {
 	state = { //store email and password to be used to login 
@@ -33,8 +34,8 @@ export default class LoginPage extends React.Component {
 				if(ret[0] == "success"){
 					this.output("Login Success");
 					//go to main screen
+					setUser(ret[1]);
 					this.movepage();
-					
 				}
 				else{
 					this.output("Email or password are incorrect");
@@ -45,6 +46,7 @@ export default class LoginPage extends React.Component {
 		}
 	}
 	
+
 	handleEnter = (event)=>{  // do nothing if enter key is pressed
         if(event.key == "Enter"){
             event.preventDefault();
@@ -76,7 +78,7 @@ export default class LoginPage extends React.Component {
 						</div>
 
 						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
-						<Link to="/homepage" props = {{something : "here"}}>      
+						<Link to="/homepage">      
 							<button type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
 						<Link to="/">      

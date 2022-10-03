@@ -14,7 +14,7 @@ import{
 import {getStorage,ref, uploadBytes, listAll, getDownloadURL} from 'firebase/storage'
 
 import {v4} from 'uuid'
-
+import { setUser, uid_setUser } from './userDetails'
 
 //Firebase object connection
 const firebaseConfig = {
@@ -1224,6 +1224,12 @@ async function getBan(ban_id){
   //subscribing to auth changes
   onAuthStateChanged(auth,(user)=>{
     console.log('user status changed: ',user)
+    if(user != null){
+      uid_setUser(user.uid); //set user variable on user change
+    }else{
+      setUser(null);
+    }
+    
   })
 
   //Exports all the functions
