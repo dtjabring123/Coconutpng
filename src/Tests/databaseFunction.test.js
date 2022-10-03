@@ -1,7 +1,9 @@
 
 import {
     register, logIn, logOut, getUserDetails, CompareUserID,
-    changePassword, updateUserDetails
+    changePassword, updateUserDetails, getAllQuestions, askQuestion, likeQuestion,
+    getComments, getResponses, getQuestionInfo, giveResponse_or_Comment, likeResponse,
+    changeMark
 } from "../utils/database_functions";
 
 //user details used for testing
@@ -15,6 +17,10 @@ const testDetails = {
     email: "maintester@gmail.com",
     password: "dontworryBout1t"
 }
+const questionID = "mAfYZHkSEOyQNe75U3VH";
+const responseID = "xRuGOufyhu6VohNt1Qw7";
+//const commentID = ;
+
 
 //test for register, test for invalid (auth/admin-restricted-operation)
 describe("register test", () => {
@@ -27,7 +33,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -41,7 +47,7 @@ describe("getUserDetails test", () => {
     })
 })
 
-//test for logIn, test for invalid (undefined)
+//tests for logIn, test for valid and invalid
 describe("logIn test", () => {
     test("invalid login", () => {
         return logIn("asdf", "1234").then(output => {
@@ -49,13 +55,13 @@ describe("logIn test", () => {
         })
     })
     test("valid login", () => {
-        return logIn(testDetails.email,testDetails.password).then(output => {
+        return logIn(testDetails.email, testDetails.password).then(output => {
             expect(output[0]).toBe("success");
         })
     })
 })
 
-//tests for CompareUserID, tests for valid and invalid
+//tests for CompareUserID, test for valid and invalid
 describe("CompareUserID test", () => {
     test("valid details", () => {
         return CompareUserID(testDetails.email, testDetails.id_number).then(output => {
@@ -76,7 +82,7 @@ describe("changePassword test", () => {
     })
 })
 
-//test for updateUserDetails,tests for valid
+//test for updateUserDetails, test for valid
 describe("updateUserDetails test", () => {
     const tempDetails = {
         first_name: "ya",
@@ -107,6 +113,122 @@ describe("getUserDetails test", () => {
     test("valid details", () => {
         return getUserDetails().then(output => {
             expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//tests for getAllQuestions, test for valid and invalid
+describe("getAllQuestions test", () => {
+    test("valid details", () => {
+        return getAllQuestions(testDetails).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+    test("invalid details", () => {
+        return getAllQuestions({ role: -1 }).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for askQuestion, test for valid
+describe("askQuestion test", () => {
+    test("valid details", () => {
+        return askQuestion("test", "test", null).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+})
+
+//tests for likeQuestion, tests for valid
+describe("likeQuestion test", () => {
+    test("valid like", () => {
+        return likeQuestion(1, questionID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+    test("valid unlike", () => {
+        return likeQuestion(0, questionID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for getComments, test for valid and invalid
+describe("getComments test", () => {
+    test("invalid details", () => {
+        return getComments(questionID).then(output => {
+            expect(output[0]).toBe("failed");
+        })
+    })
+    test("valid details", () => {
+        return getComments(responseID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for getResponses, test for valid
+describe("getResponses test", () => {
+    test("valid details", () => {
+        return getResponses(questionID, "response_likes", "asc", null, 100).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for getQuestionInfo, test for valid
+describe("getQuestionInfo test", () => {
+    test("valid details", () => {
+        return getQuestionInfo(questionID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//tests for giveResponse_or_Comment, tests for valid
+describe("giveResponse_or_Comment test", () => {
+    test("valid details response", () => {
+        return giveResponse_or_Comment(0, questionID, "please work").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid details comment", () => {
+        return giveResponse_or_Comment(1, responseID, "please work").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+})
+
+//tests for likeResponse, tests for valid
+describe("likeResponse test", () => {
+    test("valid like", () => {
+        return likeResponse(1, responseID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+    test("valid unlike", () => {
+        return likeResponse(0, responseID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//tests for changeMark, tests for valid and invalid
+describe("changeMark test", () => {
+    test("valid details admin", () => {
+        return changeMark(1, responseID, { role: 1, isQuestioner: false }).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid details questioner", () => {
+        return changeMark(1, responseID, { role: 0, isQuestioner: true }).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("invalid details", () => {
+        return changeMark(1, responseID, { role: 0, isQuestioner: false }).then(output => {
+            expect(output).toBe("failed");
         })
     })
 })

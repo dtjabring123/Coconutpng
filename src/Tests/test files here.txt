@@ -6,9 +6,9 @@ describe("test name",() =>{
 	})
 });
 
-//test for ,test for valid
-describe("test", () => {
-    test.only("", () => {
+//test for , test for valid
+describe(" test", () => {
+    test.only("valid details", () => {
         return function().then(output => {
             expect(output).toBe("failed");
         })
