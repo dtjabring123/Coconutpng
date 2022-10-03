@@ -3,7 +3,8 @@ import {
     register, logIn, logOut, getUserDetails, CompareUserID,
     changePassword, updateUserDetails, getAllQuestions, askQuestion, likeQuestion,
     getComments, getResponses, getQuestionInfo, giveResponse_or_Comment, likeResponse,
-    changeMark
+    changeMark, changePostReportValue, createReport, getAllReports, displayReport,
+    changeReportStatus, banUser, getAllBans, getBan
 } from "../utils/database_functions";
 
 //user details used for testing
@@ -19,7 +20,8 @@ const testDetails = {
 }
 const questionID = "mAfYZHkSEOyQNe75U3VH";
 const responseID = "xRuGOufyhu6VohNt1Qw7";
-//const commentID = ;
+const reportQuestionID = "ny9HbIhzZUgVZOsRkHgT";
+const reportResponseID = "ZHe1NGrqwsWRTEPuL1iI";
 
 
 //test for register, test for invalid (auth/admin-restricted-operation)
@@ -33,7 +35,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -79,6 +81,15 @@ describe("CompareUserID test", () => {
 describe("changePassword test", () => {
     test("valid password", () => {
         expect(changePassword(testDetails.password)).toStrictEqual(["success"]);
+    })
+})
+
+//test for banUser, test for valid
+describe("banUser test", () => {
+    test("valid details", () => {
+        return banUser("testing",testDetails.email,"2cool4skool").then(output => {
+            expect(output).toBe("success");
+        })
     })
 })
 
@@ -229,6 +240,95 @@ describe("changeMark test", () => {
     test("invalid details", () => {
         return changeMark(1, responseID, { role: 0, isQuestioner: false }).then(output => {
             expect(output).toBe("failed");
+        })
+    })
+})
+
+//tests for changePostReportValue, tests for valid **
+describe("changePostReportValue test", () => {
+    test.skip("valid details question ban", () => {
+        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 1, { role: 1 }).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+    test.skip("valid details response ban", () => {
+        return changePostReportValue(1, "HxBXcHLeXqX38pdIoAth", 1, { role: 1 }, "tT8vzYqbEoZCFQtDTVU").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test.skip("valid details comment ban", () => {
+        return changePostReportValue(2, "hMqbNDA2y9ggO4Cvpayg", 1, { role: 1 }).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+    test("invalid details", () => {
+        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 1, { role: 0 }).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+    test.skip("valid details question unban", () => {
+        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 0, { role: 1 }).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+    test.skip("valid details response unban", () => {
+        return changePostReportValue(1, "HxBXcHLeXqX38pdIoAth", 0, { role: 1 }, "tT8vzYqbEoZCFQtDTVU").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test.skip("valid details comment unban", () => {
+        return changePostReportValue(2, "hMqbNDA2y9ggO4Cvpayg", 0, { role: 1 }).then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+})
+
+//tests for createReport, tests for valid
+describe("createReport test", () => {
+    test("valid details question", () => {
+        return createReport(questionID,null).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid details response", () => {
+        return createReport(null, responseID).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+})
+
+//test for getAllReports, test for valid
+describe("getAllReports test", () => {
+    test("valid details", () => {
+        return getAllReports().then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for displayReport, test for valid
+describe("displayReport test", () => {
+    test("valid details", () => {
+        return displayReport({question_id:questionID,response_id:responseID}).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for getAllBans, test for valid
+describe("getAllBans test", () => {
+    test("valid details", () => {
+        return getAllBans().then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//test for getBan, test for valid
+describe("getBan test", () => {
+    test("valid details", () => {
+        return getBan("5aatpW5UjFMVgZ8H9otx").then(output => {
+            expect(output[0]).toBe("success");
         })
     })
 })
