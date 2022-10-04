@@ -137,7 +137,7 @@ function logOut() {
   signOut(auth)
     .then(() => {
     })
-    .catch((err) => {
+    .catch(/* istanbul ignore next */(err) => {
       console.log(err.message);
       pass = 'failed';
     })

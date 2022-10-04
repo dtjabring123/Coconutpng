@@ -357,5 +357,3 @@ describe("getBan test", () => {
         })
     })
 })
-
-
