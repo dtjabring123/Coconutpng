@@ -3,7 +3,7 @@ import { Link,useLocation } from "react-router-dom";
 import { tokens, components } from 'react-ui/themes/base';
 import { ThemeProvider, Switch } from 'react-ui'
 import { useEffect } from "react";
-import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion } from "../utils/database_functions";
+import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion,createReport } from "../utils/database_functions";
 import ResponseBlocks from "../components/response_blocks";
 export default function QuestionInfo(){
     const location  = useLocation();
@@ -12,6 +12,7 @@ export default function QuestionInfo(){
     const [response_list,setResponse_list] = useState([]); //stores list of responses to be displayed
     const [changeResponseList,setChangeResponseList] = useState(false);//used to indicate if database should be queried for response list 
     const [imageDisp,setImageDisp] = useState("");
+    const [questioner,setQuestioner] = useState(false);
     useEffect(()=>{
         //runs when page is loaded
         initialiseValues(location.state.name); //start loading details about the question
@@ -38,6 +39,8 @@ export default function QuestionInfo(){
     //set values to match data
     function displayDetails(details){
         console.log(details);
+        setQuestioner(details.isQuestioner);
+        console.log(questioner);
         var title_lbl = document.getElementById("title");
         title_lbl.textContent = details.title;
         var description_lbl = document.getElementById("description");
@@ -48,12 +51,18 @@ export default function QuestionInfo(){
         }
       setImageDisp(details.images[0]);
         try {
-            console.log(details.images[0]);
             let image_lbl = document.getElementById("image");
-            image_lbl.src = details.images[0];
+            if(details.images[0] != null){
+                image_lbl.src = details.images[0];
+            }
+            else{
+                image_lbl.style.visibility = false;
+            }
+            
 
         } catch (error) {
-            
+            let image_lbl = document.getElementById("image");
+            image_lbl.style.visibility = false;
         }
     }
 
@@ -85,8 +94,6 @@ export default function QuestionInfo(){
       //handle adding user adding a response
       function handleResponseAdd(){
         //check response is not empty
-        console.log(response_data);
-        console.log(location.state.name);
         if((response_data != null) && (response_data.length > 0)){
             //call db method to add response
             
@@ -107,7 +114,16 @@ export default function QuestionInfo(){
            output("Your comment cannot be empty");
         }
       }
-
+      const handleReport = ()=>{ //handles reporting the question
+        let succ = createReport(location.state.name,null);
+        Promise.resolve(succ).then((ret)=>{
+            if(ret == "success"){
+                output("Question reported");
+            }else{
+                output("Could not report question");
+            }
+        })
+      }
       function output(message){ //output is given a message and displays a toast message of the input
 		var x = document.getElementById("snackbar");
 		x.className = "show";
@@ -153,6 +169,7 @@ export default function QuestionInfo(){
             <ThemeProvider tokens={tokens} components={components}>
                     <Switch id= "liked_btn" onChange={()=>handleLike()} />
                 </ThemeProvider>
+            <input type={"button"} value = "Report" onClick={()=>handleReport()}/>
             </div>
 
 
@@ -175,7 +192,7 @@ export default function QuestionInfo(){
             </div>
             <div className="container2">
             {/*render responses here */}
-            <ResponseBlocks props = {response_list} id = "response_container" />
+            <ResponseBlocks props = {response_list} data = {questioner} id = "response_container" />
             </div>
 
             <Link to="/homepage">      
