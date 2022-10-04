@@ -45,5 +45,8 @@
   },
   "devDependencies": {
     "jest-environment-jsdom": "^29.1.2"
+  },
+  "jest":{
+    "coveragePathIgnorePatterns":["<rootDir>/src/pages","<rootDir>/src/components"]
   }
 }
