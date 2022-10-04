@@ -2,7 +2,7 @@ import React from "react";
 import "../stylesheets/comments.css";
 import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
-import { likeResponse,changeMark } from "../utils/database_functions";
+import { likeResponse,changeMark,createReport } from "../utils/database_functions";
 import { user } from "../utils/userDetails";
 
 export default class ResponseBlock extends React.Component{
@@ -25,10 +25,16 @@ export default class ResponseBlock extends React.Component{
             question : this.props.props.question
            });
            //update like switch to reflect if user has liked or not before
-           var like_lbl = document.getElementById("like_btn");
+           var like_lbl = document.getElementById(this.state.id + "like_btn");
            if(this.props.props.liked == 1 ){
             like_lbl.checked = true;
            }
+          // hide mark as correct button if user is not the questioner
+           if(this.props.data == false){
+            var mark_lbl = document.getElementById(this.state.id + "mark_btn");
+            mark_lbl.style.visibility = "hidden";
+        }
+           
 
 
     //update like button to reflect database value
@@ -40,7 +46,7 @@ export default class ResponseBlock extends React.Component{
       }
     }
     handleLike = () =>{ //handles user liking response
-        var like_lbl = document.getElementById("like_btn");
+        var like_lbl = document.getElementById(this.state.id + "like_btn");
         console.log(like_lbl.checked);
         var option = like_lbl.checked;
         var vote;
@@ -67,39 +73,59 @@ export default class ResponseBlock extends React.Component{
             }
         })
     }
-    handleMarkResponse = () =>{ //handles user marking a response as correct
-        console.log("Mark response as correct");
-
-        let succ = changeMark(1,this.state.id,user);
+     handleMarkResponse = () =>{ //handles user marking a response as correct
+        let userObj = {
+            isQuestioner : this.props.data ,
+            role : user.role
+        }
+        let succ = changeMark(1,this.state.id,userObj);
         Promise.resolve(succ).then((ret)=>{
             if(ret == "success"){
-                console.log("marked as answer");
+                this.output("marked as answer");
             }
             else{
-                console.log("could not mark answer");
+                this.output("could not mark answer");
             }
         })
     }
-
+    handleReport = () =>{
+        let succ = createReport(this.state.id,this.state.question);
+        Promise.resolve(succ).then((ret)=>{
+            if(ret == "success"){
+                this.output("response reported");
+            }else{
+                this.output("could not report response");
+            }
+        })
+    }
+     output = (message)=>{ //output is given a message and displays a toast message of the input
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		x.innerHTML = message;
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 3000);
+	}
 
 render(){
+    var mark_id = this.state.id + "mark_btn";
     return(
                <div class="response_container">
+           <div id = "snackbar" />
                 <div className='response_card'>
-                    <h3 className="head2">Response by: {this.state.author}        
-                        <button type = "button" id = "mark_btn" onClick={() =>this.handleMarkResponse()}>
-                            Mark as Correct
-                            </button></h3>
+                    <h3 className="head2">Response by: {this.state.author}      
+                        <input type = "button" id = {mark_id} onClick={() =>this.handleMarkResponse()} value="Mark as Correct" />
+                        </h3>
                     <p className="par">
                         {this.state.description}
-
+                    <input type={"button"} value={"Report"} onClick={()=>this.handleReport()}/>
                     </p>
 
                     <div className='response_card-footer'>
                         <div> Answered on:  </div>
                         <div> {this.state.likes} Likes</div>
                         <ThemeProvider tokens={tokens} components={components}>
-                            <Switch id="like_btn" onChange={()=>this.handleLike()}/>
+                            <Switch id={ this.state.id + "like_btn"} onChange={()=>this.handleLike()}/>
                         </ThemeProvider>
                     </div>
                   
