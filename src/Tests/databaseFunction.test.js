@@ -18,7 +18,7 @@ const testDetails = {
     email: "maintester@gmail.com",
     password: "dontworryBout1t"
 }
-const questionID = "mAfYZHkSEOyQNe75U3VH";
+const questionID = "0LkcRl8PZendHoLAf4YB";
 const responseID = "xRuGOufyhu6VohNt1Qw7";
 const reportQuestionID = "ny9HbIhzZUgVZOsRkHgT";
 const reportResponseID = "ZHe1NGrqwsWRTEPuL1iI";
@@ -35,7 +35,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
