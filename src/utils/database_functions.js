@@ -13,7 +13,7 @@ import {
 
 import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage'
 
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 import { setUser, uid_setUser } from './userDetails'
 
 //Firebase object connection
@@ -63,7 +63,7 @@ async function register(first_name, last_name, dob, id_number, mobile_number, ro
         user_strikes: [],
         user_responses: []
       })
-        .catch((err) => {
+        .catch(/* istanbul ignore next */(err) => {
           console.log(err.message);
           arr.push("failed");
           arr.push(err);
@@ -79,7 +79,7 @@ async function register(first_name, last_name, dob, id_number, mobile_number, ro
       }
       arr.push(loggedIn);
     })
-    .catch((err) => {
+    .catch(/* istanbul ignore next */(err) => {
       console.log(err.message);
       arr.push("failed");
       arr.push(err);
@@ -97,7 +97,7 @@ async function logIn(email, password) {
       pass = "success";
       console.log('user logged in: ', cred.user.displayName)
     })
-    .catch((err) => {
+    .catch(/* istanbul ignore next */(err) => {
       console.log(err.message);
     })
 
@@ -121,7 +121,7 @@ async function logIn(email, password) {
           titles: ret.data().user_titles
         }
       })
-      .catch(err => {
+      .catch(/* istanbul ignore next */err => {
         console.log(err.message);
         pass = "failed";
       })
@@ -173,7 +173,7 @@ async function getUserDetails() {
           titles: ret.data().user_titles
         }
       })
-      .catch(err => {
+      .catch(/* istanbul ignore next */err => {
         console.log(err.message)
       })
 
@@ -212,7 +212,7 @@ async function CompareUserID(email, id) {
 
     })
     //Could not establish a connection with the database and thus failed
-    .catch(err => {
+    .catch(/* istanbul ignore next */err => {
       arr.push('failed');
       arr.push(err);
     })
@@ -224,7 +224,7 @@ function changePassword(new_password) {
   var arr = ['success'];
   //Resets the password of the currently signed in user
   updatePassword(auth.currentUser, new_password)
-    .catch((error) => {
+    .catch(/* istanbul ignore next */(error) => {
       console.log(error.message);
       arr[0] = 'failed';
       arr.push(error);
@@ -244,7 +244,7 @@ async function updateUserDetails(JSONobj) {
     updateDoc(userRef, {
       user_first_name: JSONobj.first_name
     })
-      .catch((error) => {
+      .catch(/* istanbul ignore next */(error) => {
         console.log(error.message);
         failed_arr.push("firstName_change")
       })
@@ -260,7 +260,7 @@ async function updateUserDetails(JSONobj) {
     updateDoc(userRef, {
       user_last_name: JSONobj.last_name
     })
-      .catch((error) => {
+      .catch(/* istanbul ignore next */(error) => {
         console.log(error.message);
         failed_arr.push("lastName_change")
       })
@@ -272,7 +272,7 @@ async function updateUserDetails(JSONobj) {
     updateDoc(userRef, {
       user_phone: JSONobj.phoneNumber
     })
-      .catch((error) => {
+      .catch(/* istanbul ignore next */(error) => {
         console.log(error.message);
         failed_arr.push("phoneNumber_change")
       })
@@ -284,7 +284,7 @@ async function updateUserDetails(JSONobj) {
     updateDoc(userRef, {
       user_role: JSONobj.role
     })
-      .catch((error) => {
+      .catch(/* istanbul ignore next */(error) => {
         console.log(error.message);
         failed_arr.push("role_change")
       })
@@ -385,7 +385,7 @@ async function askQuestion(title, desc, image) {
       }
       // console.log("Document id = ",docRef.id); Doc id testing
     })
-    .catch((e) => {
+    .catch(/* istanbul ignore next */(e) => {
       pass = "failed"; //Used to symbolise that the creation of the question failed.
     })
 
@@ -423,7 +423,7 @@ async function likeQuestion(value, question_id) {
       liked = ret.data().user_likes;
       liked = hasLiked(question_id, liked);
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         return [pass, [e]];
       })
 
@@ -441,7 +441,7 @@ async function likeQuestion(value, question_id) {
         pass = "success";
         new_likes = prior_likes;
       })
-        .catch(e => {
+        .catch(/* istanbul ignore next */e => {
           console.log(e);
           failed_arr.push(e);
         })
@@ -459,7 +459,7 @@ async function likeQuestion(value, question_id) {
         updateDoc(userRef, {
           user_likes: arrayRemove(concated)
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             pass = "failed";
             failed_arr.push(e);
           })
@@ -468,7 +468,7 @@ async function likeQuestion(value, question_id) {
         updateDoc(questionRef, {
           question_likes: new_likes
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             pass = "failed";
             failed_arr.push(e);
             console.log(e);
@@ -483,7 +483,7 @@ async function likeQuestion(value, question_id) {
       updateDoc(questionRef, {
         question_likes: new_likes + value
       })
-        .catch(e => {
+        .catch(/* istanbul ignore next */e => {
           pass = 'failed';
           failed_arr.push(e);
         })
@@ -494,7 +494,7 @@ async function likeQuestion(value, question_id) {
         updateDoc(userRef, {
           user_likes: arrayUnion(concated)
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             console.log(e);
             failed_arr.push(e);
           })
@@ -502,7 +502,7 @@ async function likeQuestion(value, question_id) {
     }
 
   }
-  catch (e) {
+  catch /* istanbul ignore next */(e) {
     failed_arr.push(e);
   }
 
@@ -567,7 +567,7 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
       user_likes = ret.data().user_likes_responses;
     })
   }
-  catch (e) {
+  catch /* istanbul ignore next */(e) {
     return ["failed", "Auth token expired"]
   }
 
@@ -603,7 +603,7 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
         }
       })
     })
-    .catch(e => {
+    .catch(/* istanbul ignore next */e => {
       console.log(e);
     })
 
@@ -646,7 +646,7 @@ async function getQuestionInfo(question_id) {
       })
     }
   }
-  catch (e) {
+  catch /* istanbul ignore next */(e) {
     //Setting the liked value to an unnecessarily obtuse and specific value so that it can be known that the user has not logged in and thus cannot like the question
     JSON.liked = 3.1415;
     console.log(e);
@@ -674,7 +674,7 @@ async function giveResponse_or_Comment(check, id, desc) {
       "response_mark": 0,
       "response_reported": 0
     })
-      .catch((e) => {
+      .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the response failed.
       })
     return pass;
@@ -691,7 +691,7 @@ async function giveResponse_or_Comment(check, id, desc) {
       "comment_response": id,
       "comment_reported": 0
     })
-      .catch((e) => {
+      .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
       })
     return pass;
@@ -714,7 +714,7 @@ async function likeResponse(value, response_id) {
       liked = ret.data().user_likes_responses;
       liked = hasLiked(response_id, liked);
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         return [pass, [e]];
       })
 
@@ -732,7 +732,7 @@ async function likeResponse(value, response_id) {
         pass = "success";
         new_likes = prior_likes;
       })
-        .catch(e => {
+        .catch(/* istanbul ignore next */e => {
           console.log(e);
           failed_arr.push(e);
         })
@@ -750,7 +750,7 @@ async function likeResponse(value, response_id) {
         updateDoc(userRef, {
           user_likes_responses: arrayRemove(concated)
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             pass = "failed";
             failed_arr.push(e);
           })
@@ -759,7 +759,7 @@ async function likeResponse(value, response_id) {
         updateDoc(responseRef, {
           response_likes: new_likes
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             pass = "failed";
             failed_arr.push(e);
             console.log(e);
@@ -774,7 +774,7 @@ async function likeResponse(value, response_id) {
       updateDoc(responseRef, {
         response_likes: new_likes + value
       })
-        .catch(e => {
+        .catch(/* istanbul ignore next */e => {
           pass = 'failed';
           failed_arr.push(e);
         })
@@ -785,7 +785,7 @@ async function likeResponse(value, response_id) {
         updateDoc(userRef, {
           user_likes_responses: arrayUnion(concated)
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             console.log(e);
             failed_arr.push(e);
           })
@@ -793,7 +793,7 @@ async function likeResponse(value, response_id) {
     }
 
   }
-  catch (e) {
+  catch /* istanbul ignore next */(e) {
     failed_arr.push(e);
   }
 
@@ -811,7 +811,7 @@ async function changeMark(mark, response_id, JSONuser) {
     updateDoc(respRef, {
       response_mark: mark
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         return "failed"; //Update not done successfully
       })
     return "success";
@@ -843,7 +843,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
     updateDoc(questRef, {
       question_reported: value
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = "failed";
         console.log("Question updating failed");
       })
@@ -863,7 +863,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
     updateDoc(respRef, {
       response_reported: value
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = "failed";
         console.log("Response updating failed");
       })
@@ -883,7 +883,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
     updateDoc(commRef, {
       comment_reported: value
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = "failed";
         console.log("Comment updating failed");
       })
@@ -907,7 +907,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
           report_ids = doc.data().ban_reports;
           ban_confirmed = doc.data().ban_confirmed;
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             return 'failed';
           })
 
@@ -915,7 +915,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
         updateDoc(doc(db, "Bans", user), {
           ban_reports: arrayRemove(report_id)
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             return 'failed';
           })
 
@@ -931,7 +931,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
           deleteDoc(doc(db, "Bans", user));
         }
       }
-      catch (e) {
+      catch /* istanbul ignore next */(e) {
         //User did not have a ban on their account
       }
 
@@ -956,7 +956,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
           ban_date: serverTimestamp(),
           ban_confirmed: 0
         })
-          .catch(e => {
+          .catch(/* istanbul ignore next */e => {
             pass = 'failed';
           })
       }
@@ -981,7 +981,7 @@ async function createReport(question_id, response_id) {
       offender = doc.data().question_reference; //Gets the person who commited the offence
       offence = doc.data().question_desc; //Gets the description which would be the offence
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = 'failed';
         console.log("Couldnt get question doc");
       })
@@ -996,7 +996,7 @@ async function createReport(question_id, response_id) {
       offence = doc.data().response_desc;
       question_id = doc.data().response_question
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = 'failed';
         console.log("Couldnt get report doc")
       })
@@ -1014,7 +1014,7 @@ async function createReport(question_id, response_id) {
       report_solved: 0,
       report_reason: null
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = 'failed';
       })
   }
@@ -1078,7 +1078,7 @@ async function displayReport(reportJSON) {
     }
     JSONarr.push(JSON);
   })
-    .catch(e => {
+    .catch(/* istanbul ignore next */e => {
       pass = 'failed';
       console.log("Question ref failed");
     })
@@ -1097,7 +1097,7 @@ async function displayReport(reportJSON) {
       }
       JSONarr.push(JSON);
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = 'failed';
         console.log("Response ref failed");
       })
@@ -1113,7 +1113,7 @@ async function changeReportStatus(report_id, value, reason) {
     report_reason: reason,
     report_closer: auth.currentUser.email
   })
-    .catch(e => {
+    .catch(/* istanbul ignore next */e => {
       return "failed"; //Update not done successfully
     })
   return "success";
@@ -1129,7 +1129,7 @@ async function banUser(ban_id, user_id, reason) {
   updateDoc(userRef, {
     user_role: -1
   })
-    .catch(e => {
+    .catch(/* istanbul ignore next */e => {
       pass = 'failed';
     })
 
@@ -1140,7 +1140,7 @@ async function banUser(ban_id, user_id, reason) {
       ban_closer: auth.currentUser.email,
       ban_reason: reason
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         pass = 'failed';
       })
   }
@@ -1198,7 +1198,7 @@ async function getBan(ban_id) {
     ban_reports = doc.data().ban_reports;
     pass = 'success';
   })
-    .catch(e => {
+    .catch(/* istanbul ignore next */e => {
       return [pass, JSON];
     })
 
@@ -1208,7 +1208,7 @@ async function getBan(ban_id) {
     await getDoc(reportRef).then((doc) => {
       ban_reports[i] = doc.data().report_reason;
     })
-      .catch(e => {
+      .catch(/* istanbul ignore next */e => {
         return ['failed', JSON];
       })
   }
@@ -1221,16 +1221,16 @@ async function getBan(ban_id) {
   return [pass, JSON];
 }
 
-  //subscribing to auth changes
-  onAuthStateChanged(auth,(user)=>{
-    console.log('user status changed: ',user)
-    if(user != null){
-      uid_setUser(user.uid); //set user variable on user change
-    }else{
-      setUser(null);
-    }
-    
-  })
+//subscribing to auth changes
+onAuthStateChanged(auth, (user) => {
+  console.log('user status changed: ', user)
+  if (user != null) {
+    uid_setUser(user.uid); //set user variable on user change
+  } else {
+    setUser(null);
+  }
+
+})
 
 //Exports all the functions
 export {
