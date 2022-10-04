@@ -20,6 +20,7 @@ const testDetails = {
 }
 const questionID = "0LkcRl8PZendHoLAf4YB";
 const responseID = "xRuGOufyhu6VohNt1Qw7";
+const commentID = "hR7yCkhGhiJcRFzBeCvV";
 const reportQuestionID = "ny9HbIhzZUgVZOsRkHgT";
 const reportResponseID = "ZHe1NGrqwsWRTEPuL1iI";
 
@@ -246,39 +247,39 @@ describe("changeMark test", () => {
 
 //tests for changePostReportValue, tests for valid **
 describe("changePostReportValue test", () => {
-    test.skip("valid details question ban", () => {
-        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 1, { role: 1 }).then(output => {
-            expect(output).toBe("failed");
-        })
-    })
-    test.skip("valid details response ban", () => {
-        return changePostReportValue(1, "HxBXcHLeXqX38pdIoAth", 1, { role: 1 }, "tT8vzYqbEoZCFQtDTVU").then(output => {
+    test("valid details question ban", () => {
+        return changePostReportValue(0, questionID, 1, { role: 1 }, reportQuestionID).then(output => {
             expect(output).toBe("success");
         })
     })
-    test.skip("valid details comment ban", () => {
-        return changePostReportValue(2, "hMqbNDA2y9ggO4Cvpayg", 1, { role: 1 }).then(output => {
-            expect(output).toBe("failed");
+    test("valid details response ban", () => {
+        return changePostReportValue(1, responseID, 1, { role: 1 }, reportResponseID).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid details comment ban", () => {
+        return changePostReportValue(2, commentID, 1, { role: 1 }, reportResponseID).then(output => {
+            expect(output).toBe("success");
         })
     })
     test("invalid details", () => {
-        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 1, { role: 0 }).then(output => {
+        return changePostReportValue(0, questionID, 1, { role: 0 }, reportQuestionID).then(output => {
             expect(output).toBe("failed");
         })
     })
-    test.skip("valid details question unban", () => {
-        return changePostReportValue(0, "YWapWst9kPJKIGv8ZbC0", 0, { role: 1 }).then(output => {
-            expect(output).toBe("failed");
-        })
-    })
-    test.skip("valid details response unban", () => {
-        return changePostReportValue(1, "HxBXcHLeXqX38pdIoAth", 0, { role: 1 }, "tT8vzYqbEoZCFQtDTVU").then(output => {
+    test("valid details question unban", () => {
+        return changePostReportValue(0, questionID, 0, { role: 1 }, reportQuestionID).then(output => {
             expect(output).toBe("success");
         })
     })
-    test.skip("valid details comment unban", () => {
-        return changePostReportValue(2, "hMqbNDA2y9ggO4Cvpayg", 0, { role: 1 }).then(output => {
-            expect(output).toBe("failed");
+    test("valid details response unban", () => {
+        return changePostReportValue(1, responseID, 0, { role: 1 }, reportResponseID).then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid details comment unban", () => {
+        return changePostReportValue(2, commentID, 0, { role: 1 }, reportResponseID).then(output => {
+            expect(output).toBe("success");
         })
     })
 })
@@ -315,6 +316,20 @@ describe("displayReport test", () => {
     })
 })
 
+//tests for changeReportStatus, tests for valid
+describe("changeReportStatus test", () => {
+    test("valid close", () => {
+        return changeReportStatus(reportQuestionID, 1, "because i can").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+    test("valid re open", () => {
+        return changeReportStatus(reportQuestionID, 0, "because i can").then(output => {
+            expect(output).toBe("success");
+        })
+    })
+})
+
 //test for getAllBans, test for valid
 describe("getAllBans test", () => {
     test("valid details", () => {
@@ -332,3 +347,5 @@ describe("getBan test", () => {
         })
     })
 })
+
+
