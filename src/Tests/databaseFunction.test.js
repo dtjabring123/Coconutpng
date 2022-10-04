@@ -146,7 +146,7 @@ describe("getAllQuestions test", () => {
 //test for askQuestion, test for valid
 describe("askQuestion test", () => {
     test("valid details", () => {
-        return askQuestion("test", "test", null).then(output => {
+        return askQuestion("test", "test", "test").then(output => {
             expect(output).toBe("success");
         })
     })
@@ -185,6 +185,11 @@ describe("getResponses test", () => {
     test("valid details", () => {
         return getResponses(questionID, "response_likes", "asc", null, 100).then(output => {
             expect(output[0]).toBe("success");
+        })
+    })
+    test("invalid details", () => {
+        return getResponses(questionID, "response_likes", "asc", 5, 100).then(output => {
+            expect(output[0]).toBe("failed");
         })
     })
 })
