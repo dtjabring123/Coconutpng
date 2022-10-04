@@ -145,8 +145,13 @@ describe("getAllQuestions test", () => {
 
 //test for askQuestion, test for valid
 describe("askQuestion test", () => {
-    test("valid details", () => {
+    test("valid details picture", () => {
         return askQuestion("test", "test", "test").then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+    test("valid details", () => {
+        return askQuestion("test", "test", null).then(output => {
             expect(output).toBe("success");
         })
     })
