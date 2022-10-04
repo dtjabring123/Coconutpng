@@ -372,7 +372,7 @@ async function askQuestion(title, desc, image) {
                   updateDoc(questRef, {
                     question_images: arrayUnion(url)
                   })
-                    .catch(e => {
+                    .catch(/* istanbul ignore next */e => {
                       pass = "failed";
                     })
                 })
@@ -502,7 +502,7 @@ async function likeQuestion(value, question_id) {
     }
 
   }
-  catch /* istanbul ignore next */(e) {
+  catch (e) /* istanbul ignore next */{
     failed_arr.push(e);
   }
 
@@ -567,7 +567,7 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
       user_likes = ret.data().user_likes_responses;
     })
   }
-  catch /* istanbul ignore next */(e) {
+  catch (e) /* istanbul ignore next */{
     return ["failed", "Auth token expired"]
   }
 
@@ -793,7 +793,7 @@ async function likeResponse(value, response_id) {
     }
 
   }
-  catch /* istanbul ignore next */(e) {
+  catch (e) /* istanbul ignore next */{
     failed_arr.push(e);
   }
 

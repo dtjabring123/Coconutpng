@@ -164,6 +164,11 @@ describe("likeQuestion test", () => {
             expect(output[0]).toBe("success");
         })
     })
+    test("valid like", () => {
+        return likeQuestion(1, questionID).then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
     test("valid unlike", () => {
         return likeQuestion(0, questionID).then(output => {
             expect(output[0]).toBe("success");
