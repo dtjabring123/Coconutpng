@@ -89,7 +89,7 @@ export default class ResponseBlock extends React.Component{
         })
     }
     handleReport = () =>{
-        let succ = createReport(this.state.id,this.state.question);
+        let succ = createReport(this.state.question,this.state.id);
         Promise.resolve(succ).then((ret)=>{
             if(ret == "success"){
                 this.output("response reported");

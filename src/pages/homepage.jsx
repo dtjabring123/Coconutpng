@@ -93,6 +93,12 @@ render(){
                                 Ask a Question
                             </button>
                     </Link>
+                    <Link to="/reportsPage">
+                        <button className='buttonstyle'
+                            style={{marginTop:10,marginBottom:30}}>
+                                View Reports
+                            </button>
+                    </Link>
                 
                 </div>
                 <div className='container1'>
