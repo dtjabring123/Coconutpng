@@ -1,4 +1,4 @@
-//Set up imports
+//Set up importssetUser
 //Imports
 import { initializeApp } from 'firebase/app'
 
@@ -527,7 +527,7 @@ async function getComments(response_id) {
             //Then the comment was not reported and thus should be seen
             var comment = {
               "id": doc.id,
-              "date": doc.data().comment_date.toDate(),
+              "date": doc.data().comment_date.toDate().toString(),
               "description": doc.data().comment_desc,
               "response": doc.data().comment_response,
               "user": doc.data().comment_user
@@ -583,7 +583,7 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
             //Then the response was not reported and should be displayed
             var response = {
               "id": doc.id,
-              "date": doc.data().response_date.toDate(),
+              "date": doc.data().response_date.toDate().toString(),
               "description": doc.data().response_desc,
               "likes": doc.data().response_likes,
               "question": doc.data().response_question,
@@ -624,7 +624,7 @@ async function getQuestionInfo(question_id) {
     pass = 'success'
     //Set the JSON for the question
     JSON = {
-      "date": ret.data().question_date.toDate(),
+      "date": ret.data().question_date.toDate().toString(),
       "desc": ret.data().question_desc,
       "likes": ret.data().question_likes,
       "title": ret.data().question_title,
@@ -1041,7 +1041,7 @@ async function getAllReports() {
             //Create the JSON representing the question
             var Report = {
               id: doc.id,
-              date: doc.data().report_date.toDate(),
+              date: doc.data().report_date.toDate().toString(),
               offence: doc.data().report_offence,
               question_id: doc.data().report_question,
               response_id: doc.data().report_response
@@ -1069,7 +1069,7 @@ async function displayReport(reportJSON) {
     pass = 'success';
     //Set the JSON for the question
     JSON = {
-      "date": ret.data().question_date.toDate(),
+      "date": ret.data().question_date.toDate().toString(),
       "desc": ret.data().question_desc,
       "title": ret.data().question_title,
       "user_id": ret.data().question_user,
@@ -1090,7 +1090,7 @@ async function displayReport(reportJSON) {
       pass = 'success';
       //Set the JSON for the response
       var JSON = {
-        "date": ret.data().response_date.toDate(),
+        "date": ret.data().response_date.toDate().toString(),
         "desc": ret.data().response_desc,
         "user_id": ret.data().response_user,
         "user_reference": ret.data().response_reference
@@ -1164,7 +1164,7 @@ async function getAllBans() {
             //Create the JSON representing the ban
             var Ban = {
               "user": doc.data().ban_user,
-              "date": doc.data().ban_date.toDate(),
+              "date": doc.data().ban_date.toDate().toString(),
               "ban_id": doc.id
             }
             JSONarr.push(Ban);
@@ -1194,7 +1194,7 @@ async function getBan(ban_id) {
   //Get the ban doc
   await getDoc(banRef).then((doc) => {
     ban_user = doc.data().ban_user;
-    ban_date = doc.data().ban_date.toDate();
+    ban_date = doc.data().ban_date.toDate().toString();
     ban_reports = doc.data().ban_reports;
     pass = 'success';
   })
