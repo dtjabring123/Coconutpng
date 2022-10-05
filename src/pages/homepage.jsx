@@ -3,12 +3,14 @@ import { Link } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
 import Question_Block from '../components/question_block.js';
+import {user,setUser} from '../utils/userDetails.js';
 
 export default class HomePage extends React.Component {
     state = {
         questions : []
     }
     handleLogout = () =>{  // method handles user trying to log out
+        setUser(null);
         var succ = logOut(); //call database method to log out
         Promise.resolve(succ).then((ret) =>{
             if(ret === "success"){
@@ -21,8 +23,17 @@ export default class HomePage extends React.Component {
 
     componentDidMount(){ //executes on page load to display posts
         // get posts from database to display
-        console.log(this.props);
-        var succ = getAllQuestions();
+        var userdetails = {
+            emailAddress: "test@email.com",
+            firstName : "Test",
+            lastName : "Tester",
+            role : 0,
+            titles : []
+        }
+        if(user != null){
+            userdetails = user;
+        }
+        var succ = getAllQuestions(userdetails);
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
                 this.processPosts(ret[1]);
@@ -45,6 +56,7 @@ export default class HomePage extends React.Component {
 	}
 
 render(){
+
     return (
     <div class="area" >
         <ul class="circles">
@@ -81,6 +93,12 @@ render(){
                                 Ask a Question
                             </button>
                     </Link>
+                    <Link to="/reportsPage">
+                        <button className='buttonstyle'
+                            style={{marginTop:10,marginBottom:30}}>
+                                View Reports
+                            </button>
+                    </Link>
                 
                 </div>
                 <div className='container1'>
@@ -90,7 +108,6 @@ render(){
                             if((question.title != null) && (question.title != "")){
                                 return(<Question_Block props = {question} key = {question.question_id} />)
                             }
-                            console.log(this);
                         })  
                     } 
                 </div>
