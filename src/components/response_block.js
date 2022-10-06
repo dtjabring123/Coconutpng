@@ -108,13 +108,17 @@ export default class ResponseBlock extends React.Component{
 	}
 
 render(){
-    var mark_id = this.state.id + "mark_btn";
+    //default hide mark as answer button
+    var visible_val = "hidden"
+    if(this.props.data == true){
+        visible_val = "visible"
+    }
     return(
                <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
                     <h3 className="head2">Response by: {this.state.author}      
-                        <input type = "button" id = {mark_id} onClick={() =>this.handleMarkResponse()} value="Mark as Correct" />
+                        <input type = "button" id = "mark_btn" onClick={() =>this.handleMarkResponse()} value="Mark as Correct" style= {{ visibility : visible_val}}/>
                         </h3>
                     <p className="par">
                         {this.state.description}
