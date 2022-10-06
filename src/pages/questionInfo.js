@@ -163,8 +163,8 @@ export default function QuestionInfo(){
 
     return(
         <form>
-        <div id = "snackbar"></div>
         <div className="q-inner">
+        <div id = "snackbar"></div>
             <div>
             <label htmlFor="title" id = "title">Title</label>
             <ThemeProvider tokens={tokens} components={components}>
