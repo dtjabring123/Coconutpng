@@ -14,9 +14,11 @@ export default class Report extends React.Component{
         return(
             <div>
                 <div  className="row">
-
                     <label>
-                        {this.props.data.offence} ;
+                        {this.props.data.date};
+                    </label>
+                    <label>
+                        {this.props.data.offence}
                     </label>
                 </div>
             </div>
