@@ -5,6 +5,7 @@ import { ThemeProvider, Switch } from 'react-ui'
 import { useEffect } from "react";
 import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion,createReport } from "../utils/database_functions";
 import ResponseBlocks from "../components/response_blocks";
+import "../stylesheets/questiondetails.css";
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState(""); //stores user input for a response
