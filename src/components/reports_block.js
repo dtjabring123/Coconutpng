@@ -27,7 +27,6 @@ export default class ReportsBlock extends React.Component{
     }
     setData = (obj) =>{ //set question id and response id to selected report
         this.setState({reportJSON : obj});
-        console.log(this.state);
     }
 
 

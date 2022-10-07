@@ -4,15 +4,13 @@ export default class Report extends React.Component{
 
     //displays specific report info
     handleClick = () =>{
-        console.log("clicked");
-        this.props.method(this.state.question_id,this.state.response_id);
+        this.props.method(this.props.data);
     }
 
     render(){
+
         return(
-            <div onClick={this.handleClick=()=>{
-               this.props.method(this.props.data);
-            }}>
+            <div onClick={this.handleClick}>
                 <div  className="row">
                     <label>
                         {this.props.data.date};
