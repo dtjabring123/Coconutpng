@@ -13,7 +13,7 @@ export default class ReportsBlockManager extends React.Component{
                         Date ; Offence ; Question ID ; Response ID
                     </label>
                     {this.props.list.map((report)=>{
-                        return( <Report data = {report} key={report.id}/> )
+                        return( <Report data = {report} key={report.id} method = {this.props.method}/> )
                     } )}
                 </div>
             )

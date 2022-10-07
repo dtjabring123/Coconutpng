@@ -9,9 +9,6 @@ export default class ReportsPage extends React.Component{
             <div >
                 <div className="coloumn">
 
-                <label>
-                    Reports here
-                </label>
                 <ReportsBlock key={"reporting here"}/>
                 
                 <Link to="/homepage">
