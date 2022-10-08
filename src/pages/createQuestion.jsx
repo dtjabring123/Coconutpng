@@ -23,7 +23,6 @@ export default class createQuestion extends React.Component{
 	}
 
     handleQuestion = ()=>{
-		console.log(this.state.file);
 		if(validQuestion(this.state) == true){
 			//call database method
 			let succ = askQuestion(this.state.title,this.state.description,this.state.file);

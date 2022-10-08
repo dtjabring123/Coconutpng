@@ -8,10 +8,7 @@ export default class ReportsPage extends React.Component{
         return(
             <div >
                 <div className="coloumn">
-
-                <label>
-                    Reports here
-                </label>
+                {/* displaythe lefthand side of the page */}
                 <ReportsBlock key={"reporting here"}/>
                 
                 <Link to="/homepage">

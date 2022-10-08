@@ -105,6 +105,8 @@ export default function QuestionInfo(){
                     setChangeResponseList(false);
                     var text_lbl = document.getElementById("input_field");
                     text_lbl.value = "";
+                    setChangeResponseList(false);
+                    displayResponses();
                 }else{
                     console.log(ret);
                 }
@@ -163,8 +165,8 @@ export default function QuestionInfo(){
 
     return(
         <form>
-        <div id = "snackbar"></div>
         <div className="q-inner">
+        <div id = "snackbar"></div>
             <div>
             <label htmlFor="title" id = "title">Title</label>
             <ThemeProvider tokens={tokens} components={components}>
