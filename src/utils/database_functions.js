@@ -943,7 +943,7 @@ async function changePostReportValue(table, post, value, JSONuser, report_id) {
       })
 
       //Check if the user needs to be considered for a ban
-      getDoc(userRef).then((doc) => {
+      await getDoc(userRef).then((doc) => {
         report_ids = doc.data().user_strikes;
       })
       if (report_ids.length > 2) {
