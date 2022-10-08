@@ -6,7 +6,7 @@ export default class ReportsBlockManager extends React.Component{
 
     render(){
         let arr=  this.props.list;
-        if(arr.length != 0){
+        if(arr.length != 0){ //generate list of reports if the array is not empty
             return(
                 <div>
                     <label>
@@ -17,7 +17,7 @@ export default class ReportsBlockManager extends React.Component{
                     } )}
                 </div>
             )
-        }else{
+        }else{ // list of reports is empty 
             return(
                 <div>
                     <label>

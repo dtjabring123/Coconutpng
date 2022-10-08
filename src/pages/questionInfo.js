@@ -105,6 +105,8 @@ export default function QuestionInfo(){
                     setChangeResponseList(false);
                     var text_lbl = document.getElementById("input_field");
                     text_lbl.value = "";
+                    setChangeResponseList(false);
+                    displayResponses();
                 }else{
                     console.log(ret);
                 }
