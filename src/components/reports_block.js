@@ -17,10 +17,8 @@ export default class ReportsBlock extends React.Component{
         let succ = getAllReports();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == "success"){
-                console.log(ret[1]);
                 this.setState({reports_list : ret[1]});
-            }else{
-                console.log("No reports given");
+            }else{ // no questions/responses reported
             }
         })
     }

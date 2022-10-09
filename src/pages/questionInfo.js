@@ -39,9 +39,7 @@ export default function QuestionInfo(){
     }
     //set values to match data
     function displayDetails(details){
-        console.log(details);
         setQuestioner(details.isQuestioner);
-        console.log(questioner);
         var title_lbl = document.getElementById("title");
         title_lbl.textContent = details.title;
         var description_lbl = document.getElementById("description");
@@ -76,7 +74,6 @@ export default function QuestionInfo(){
                  if(ret[0] == "success"){
                     setResponse_list(ret[1]);
                     //change flag for fetching response list 
-                    console.log(ret);
                     setChangeResponseList(true);
                     
                     var responseblock_lbl = document.getElementById("response_container");
@@ -108,7 +105,7 @@ export default function QuestionInfo(){
                     setChangeResponseList(false);
                     displayResponses();
                 }else{
-                    console.log(ret);
+
                 }
 
             })
@@ -151,7 +148,6 @@ export default function QuestionInfo(){
             Promise.resolve(succ).then((ret)=>{
                 if(ret[0] == "success"){
                     //call method again to change like value
-                    console.log("updated like");
                 }
             })
         }
