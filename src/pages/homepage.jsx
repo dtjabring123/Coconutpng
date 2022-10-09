@@ -7,7 +7,8 @@ import {user,setUser} from '../utils/userDetails.js';
 
 export default class HomePage extends React.Component {
     state = {
-        questions : []
+        questions : [],
+        prev_user : ""
     }
     handleLogout = () =>{  // method handles user trying to log out
         setUser(null);
@@ -24,12 +25,13 @@ export default class HomePage extends React.Component {
     componentDidMount(){ //executes on page load to display posts
         // get posts from database to display
         var userdetails = {
-            emailAddress: "test@email.com",
-            firstName : "Test",
-            lastName : "Tester",
-            role : 0,
+            emailAddress: "report@email.com",
+            firstName : "Report",
+            lastName : "Me",
+            role : -1,
             titles : []
         }
+        this.setState({prev_user : userdetails})
         if(user != null){
             userdetails = user;
         }
@@ -56,6 +58,14 @@ export default class HomePage extends React.Component {
 	}
 
 render(){
+    try {
+        if(this.state.prev_user.emailAddress != user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
+            this.setState({prev_user : user});
+            this.componentDidMount();
+        }
+    } catch (error) {
+        
+    }
 
     return (
     <div class="area" >

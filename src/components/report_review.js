@@ -55,7 +55,7 @@ export default class ReportReview extends React.Component{
                 if(ret == "success"){
                     if(table == 0){
                         this.output("Question removed");
-                        this.setState({reason : null})
+                        
                     }else{
                         this.output("Response removed");
                     }
@@ -63,6 +63,8 @@ export default class ReportReview extends React.Component{
                     this.props.method("");
                     //update list of reports
                     this.props.updateTable();
+                    //reset reason
+                    this.setState({reason : ""})
                 }else{
                     this.output("Could not close report");
                 }

@@ -22,13 +22,9 @@ export default class ReportedUsersBlock extends React.Component{
     }
 
     updateSelectedUser = (user)=>{ //used to update selected_user - is called by child components
-        console.log("selected user is")
         this.setState({selected_user : user});
-        console.log(this.state);
     }
 
-    //banUser(ban_id, user_id, reason) 
-    //getBan(ban_id) get reasons
     render(){
         if(this.state.selected_user == ""  | this.state.selected_user == null){
             return(
