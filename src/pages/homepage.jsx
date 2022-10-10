@@ -35,6 +35,12 @@ export default class HomePage extends React.Component {
         if(user != null){
             userdetails = user;
         }
+        var visible = false;
+        if(userdetails.role ==1){
+            visible = true;
+        }
+        let reports_lbl = document.getElementById("reports_btn");
+        reports_lbl.style.visible = visible
         var succ = getAllQuestions(userdetails);
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
@@ -58,6 +64,7 @@ export default class HomePage extends React.Component {
 	}
 
 render(){
+
     try {
         if(this.state.prev_user.emailAddress != user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
             this.setState({prev_user : user});
@@ -104,7 +111,7 @@ render(){
                             </button>
                     </Link>
                     <Link to="/reportsPage">
-                        <button className='buttonstyle'
+                        <button className='buttonstyle' id="reports_btn"
                             style={{marginTop:10,marginBottom:30}}>
                                 View Reports
                             </button>
