@@ -5,6 +5,7 @@ import { ThemeProvider, Switch } from 'react-ui'
 import { useEffect } from "react";
 import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion,createReport } from "../utils/database_functions";
 import ResponseBlocks from "../components/response_blocks";
+import "../stylesheets/questiondetails.css";
 export default function QuestionInfo(){
     const location  = useLocation();
     const [response_data,setResponse_data] = useState(""); //stores user input for a response
@@ -13,6 +14,15 @@ export default function QuestionInfo(){
     const [changeResponseList,setChangeResponseList] = useState(false);//used to indicate if database should be queried for response list 
     const [imageDisp,setImageDisp] = useState("");
     const [questioner,setQuestioner] = useState(false);
+    const [questionData,setQuestionData] = useState("") //used to store details about the question
+    if(questionData != ""){
+        var liked_lbl = document.getElementById("liked_btn");
+        if(questionData.liked != 0 ){
+            liked_lbl.checked = true;
+        }else{
+            liked_lbl.checked = false;
+        }
+    }
     useEffect(()=>{
         //runs when page is loaded
         initialiseValues(location.state.name); //start loading details about the question
@@ -28,6 +38,7 @@ export default function QuestionInfo(){
                 //show received details
                 if(ret[0] == "success"){
                     setChangeQuestionDetails(true);
+                    setQuestionData(ret[1]);
                     displayDetails(ret[1]);
                 }else{
                     output("Auth token Expired");
@@ -38,15 +49,13 @@ export default function QuestionInfo(){
     }
     //set values to match data
     function displayDetails(details){
-        console.log(details);
         setQuestioner(details.isQuestioner);
-        console.log(questioner);
         var title_lbl = document.getElementById("title");
         title_lbl.textContent = details.title;
         var description_lbl = document.getElementById("description");
         description_lbl.value = details.desc;
         var liked_lbl = document.getElementById("liked_btn");
-        if((details.liked != 3.1415) && (details.liked != 0) ){
+        if(details.liked != 0 ){
             liked_lbl.checked = true;
         }
       setImageDisp(details.images[0]);
@@ -75,7 +84,6 @@ export default function QuestionInfo(){
                  if(ret[0] == "success"){
                     setResponse_list(ret[1]);
                     //change flag for fetching response list 
-                    console.log(ret);
                     setChangeResponseList(true);
                     
                     var responseblock_lbl = document.getElementById("response_container");
@@ -104,8 +112,10 @@ export default function QuestionInfo(){
                     setChangeResponseList(false);
                     var text_lbl = document.getElementById("input_field");
                     text_lbl.value = "";
+                    setChangeResponseList(false);
+                    displayResponses();
                 }else{
-                    console.log(ret);
+
                 }
 
             })
@@ -148,7 +158,6 @@ export default function QuestionInfo(){
             Promise.resolve(succ).then((ret)=>{
                 if(ret[0] == "success"){
                     //call method again to change like value
-                    console.log("updated like");
                 }
             })
         }
@@ -162,8 +171,8 @@ export default function QuestionInfo(){
 
     return(
         <form>
-        <div id = "snackbar"></div>
         <div className="q-inner">
+        <div id = "snackbar"></div>
             <div>
             <label htmlFor="title" id = "title">Title</label>
             <div className="report">
