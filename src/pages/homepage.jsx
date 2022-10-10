@@ -25,22 +25,12 @@ export default class HomePage extends React.Component {
     componentDidMount(){ //executes on page load to display posts
         // get posts from database to display
         var userdetails = {
-            emailAddress: "report@email.com",
-            firstName : "Report",
-            lastName : "Me",
-            role : -1,
-            titles : []
+            role : 0
         }
         this.setState({prev_user : userdetails})
         if(user != null){
             userdetails = user;
         }
-        var visible = false;
-        if(userdetails.role ==1){
-            visible = true;
-        }
-        let reports_lbl = document.getElementById("reports_btn");
-        reports_lbl.style.visible = visible
         var succ = getAllQuestions(userdetails);
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
@@ -70,8 +60,166 @@ render(){
             this.setState({prev_user : user});
             this.componentDidMount();
         }
+        if(user.role == 1){
+            return (
+                <div class="area" >
+                    <ul class="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                    </ul>
+                        <div className='homestyle'>
+                            <h1 className='questions'>Questions</h1>
+                            <div class="row_questions">
+                                <div id = "snackbar"></div>
+                                <Link to="/">      
+                                    <button className='buttonstyle' onClick={this.handleLogout}
+                                        style={{marginTop:10, marginBottom:30}}>
+                                        Logout
+                                    </button>
+                                </Link>
+                                <Link to="/profiles">      
+                                    <button className='buttonstyle'
+                                        style={{marginTop:10, marginBottom:30}}>
+                                        Change Profile
+                                    </button>
+                                </Link>
+                                <Link to="/createQuestion">
+                                    <button className='buttonstyle'
+                                        style={{marginTop:10,marginBottom:30}}>
+                                            Ask a Question
+                                        </button>
+                                </Link>
+                                <Link to="/reportsPage">
+                                    <button className='buttonstyle' id="reports_btn"
+                                        style={{marginTop:10,marginBottom:30}}>
+                                            View Reports
+                                        </button>
+                                </Link>
+                            
+                            </div>
+                            <div className='container1'>
+                                {/*displaying questions here*/}
+                                {
+                                this.state.questions.map((question) =>{
+                                        if((question.title != null) && (question.title != "")){
+                                            return(<Question_Block props = {question} key = {question.question_id} />)
+                                        }
+                                    })  
+                                } 
+                            </div>
+                        </div>
+                </div>);
+        }else{
+            return (
+                <div class="area" >
+                    <ul class="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                    </ul>
+                        <div className='homestyle'>
+                            <h1 className='questions'>Questions</h1>
+                            <div class="row_questions">
+                                <div id = "snackbar"></div>
+                                <Link to="/">      
+                                    <button className='buttonstyle' onClick={this.handleLogout}
+                                        style={{marginTop:10, marginBottom:30}}>
+                                        Logout
+                                    </button>
+                                </Link>
+                                <Link to="/profiles">      
+                                    <button className='buttonstyle'
+                                        style={{marginTop:10, marginBottom:30}}>
+                                        Change Profile
+                                    </button>
+                                </Link>
+                                <Link to="/createQuestion">
+                                    <button className='buttonstyle'
+                                        style={{marginTop:10,marginBottom:30}}>
+                                            Ask a Question
+                                        </button>
+                                </Link>
+                            
+                            </div>
+                            <div className='container1'>
+                                {/*displaying questions here*/}
+                                {
+                                this.state.questions.map((question) =>{
+                                        if((question.title != null) && (question.title != "")){
+                                            return(<Question_Block props = {question} key = {question.question_id} />)
+                                        }
+                                    })  
+                                } 
+                            </div>
+                        </div>
+                </div>);
+        }
     } catch (error) {
-        
+        return (
+            <div class="area" >
+                <ul class="circles">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+                    <div className='homestyle'>
+                        <h1 className='questions'>Questions</h1>
+                        <div class="row_questions">
+                            <div id = "snackbar"></div>
+                            <Link to="/">      
+                                <button className='buttonstyle' onClick={this.handleLogout}
+                                    style={{marginTop:10, marginBottom:30}}>
+                                    Logout
+                                </button>
+                            </Link>
+                            <Link to="/profiles">      
+                                <button className='buttonstyle'
+                                    style={{marginTop:10, marginBottom:30}}>
+                                    Change Profile
+                                </button>
+                            </Link>
+                            <Link to="/createQuestion">
+                                <button className='buttonstyle'
+                                    style={{marginTop:10,marginBottom:30}}>
+                                        Ask a Question
+                                    </button>
+                            </Link>
+                        
+                        </div>
+                        <div className='container1'>
+                            {/*displaying questions here*/}
+                            {
+                            this.state.questions.map((question) =>{
+                                    if((question.title != null) && (question.title != "")){
+                                        return(<Question_Block props = {question} key = {question.question_id} />)
+                                    }
+                                })  
+                            } 
+                        </div>
+                    </div>
+            </div>);
     }
 
     return (

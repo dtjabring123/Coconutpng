@@ -14,6 +14,15 @@ export default function QuestionInfo(){
     const [changeResponseList,setChangeResponseList] = useState(false);//used to indicate if database should be queried for response list 
     const [imageDisp,setImageDisp] = useState("");
     const [questioner,setQuestioner] = useState(false);
+    const [questionData,setQuestionData] = useState("") //used to store details about the question
+    if(questionData != ""){
+        var liked_lbl = document.getElementById("liked_btn");
+        if(questionData.liked != 0 ){
+            liked_lbl.checked = true;
+        }else{
+            liked_lbl.checked = false;
+        }
+    }
     useEffect(()=>{
         //runs when page is loaded
         initialiseValues(location.state.name); //start loading details about the question
@@ -29,6 +38,7 @@ export default function QuestionInfo(){
                 //show received details
                 if(ret[0] == "success"){
                     setChangeQuestionDetails(true);
+                    setQuestionData(ret[1]);
                     displayDetails(ret[1]);
                 }else{
                     output("Auth token Expired");
@@ -45,7 +55,7 @@ export default function QuestionInfo(){
         var description_lbl = document.getElementById("description");
         description_lbl.value = details.desc;
         var liked_lbl = document.getElementById("liked_btn");
-        if((details.liked != 3.1415) && (details.liked != 0) ){
+        if(details.liked != 0 ){
             liked_lbl.checked = true;
         }
       setImageDisp(details.images[0]);
