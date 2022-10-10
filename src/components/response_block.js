@@ -117,22 +117,25 @@ render(){
                <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
-                    <h3 className="head2">Response by: {this.state.author}      
-                        <input type = "button" id = "mark_btn" onClick={() =>this.handleMarkResponse()} value="Mark as Correct" style= {{ visibility : visible_val}}/>
+                    <h3 className="head2">Response by: {this.state.author}  
+                        <div className="report">
+                            <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value="Mark as Correct" style= {{ visibility : visible_val}}/>
+                        </div> 
                         </h3>
                     <p className="par">
                         {this.state.description}
-                    <input type={"button"} value={"Report"} onClick={()=>this.handleReport()}/>
                     </p>
 
                     <div className='response_card-footer'>
+                        <div><input type={"button"} value={"Report"} class="rep1" onClick={()=>this.handleReport()}/></div>
                         <div> Answered on:  </div>
                         <div> {this.state.likes} Likes</div>
                         <ThemeProvider tokens={tokens} components={components}>
                             <Switch id={ this.state.id + "like_btn"} onChange={()=>this.handleLike()}/>
                         </ThemeProvider>
+                        
                     </div>
-                  
+                    
                 </div>
 
             </div>
