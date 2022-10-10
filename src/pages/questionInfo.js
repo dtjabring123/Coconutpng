@@ -175,10 +175,14 @@ export default function QuestionInfo(){
         <div id = "snackbar"></div>
             <div>
             <label htmlFor="title" id = "title">Title</label>
-            <ThemeProvider tokens={tokens} components={components}>
+            <div className="report">
+                <ThemeProvider tokens={tokens} components={components}>
                     <Switch id= "liked_btn" onChange={()=>handleLike()} />
                 </ThemeProvider>
-            <input type={"button"} value = "Report" onClick={()=>handleReport()}/>
+            </div>
+            
+            <div className="report"><input type={"button"} value = "Report" class="rep1" onClick={()=>handleReport()}/></div>
+            
             </div>
 
 
@@ -189,7 +193,7 @@ export default function QuestionInfo(){
             </div>
 
             <div className="q-group">
-            <div>
+            <div className= "image_div">
                 <img id = "image" name = "image" src = ""  />
             </div>
                 <label htmlFor="description">Post Answer</label>

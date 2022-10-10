@@ -92,7 +92,7 @@ body{
 .response_card-footer {
     display: flex;
     font-size: .85rem;
-    opacity: 0.6;
+    opacity: 1;
     gap: 30px;
     justify-content: flex-end;
     align-items: center;
@@ -124,4 +124,10 @@ body{
     min-width: 100%;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
     width: 100px;
+}
+
+.rep {
+    width: 100%;
+    background: #4e54c8 !important;
+
 }
