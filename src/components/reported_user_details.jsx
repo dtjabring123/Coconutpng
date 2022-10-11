@@ -81,26 +81,28 @@ export default class ReportedUserDetails extends React.Component{
                         <label>
                             Could not fetch details of user 
                         </label>
-                    </div>
+                     </div>
                 )
             }else{ //have a seleceted user and their details from the database
                 return(
-                    <div>
-                        <div name = "snackbar" id = "snackbar"/>
-                        <label>
-                            User details here:
-                         Date:   {this.state.details.date};
-                         Reason 1:   {this.state.details.reasons[0]};
-                         Reason 2:   {this.state.details.reasons[1]};
-                         Reason 3 :   {this.state.details.reasons[2]};
-                         Username :    {this.state.details.user}
-                        </label>
+                    <div className="right-box">
+                    <div className="ban-box1">
+                        
+                        <div className="ban-info">
+                          <p><b>User details:</b></p>
+                        <p><b>Date:</b>  {this.state.details.date};</p>
+                        <p><b>Reason 1:</b>    {this.state.details.reasons[0]}; </p>
+                        <p><b>Reason 2:</b>    {this.state.details.reasons[1]}; </p>
+                        <p><b>Reason 3:</b>    {this.state.details.reasons[2]}; </p>
+                        <p><b>Username:</b>    {this.state.details.user} </p>
+                        </div>
 
-                        <label>
-                            Reason for ban
-                        </label>
-                        <input id="reason" name = "reason"  onChange={evt=>this.handleInput(evt)}/>
-                        <input value = "ban user" type = "button" onClick={this.handleBan}/>
+                        </div>
+                        <div className="report_box1">
+                            <input className="input_report" id="reason" name = "reason" placeholder="Input reason for banning user..."  onChange={evt=>this.handleInput(evt)}/>
+                            <input className="btn" value = "Ban User" type = "button" onClick={this.handleBan}/>
+                        </div>
+                        
                     </div>
                 )
         }

@@ -9,15 +9,29 @@ export default class Report extends React.Component{
 
     render(){
         return(
-            <div onClick={this.handleClick}>
-                <div  className="row">
-                    <label>
-                        {this.props.data.date};
-                    </label>
-                    <label>
+            <div  className="tester" onClick={this.handleClick}>
+                {/* <table className = "table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {this.props.data.date}
+                                </td>
+                                <td>
+                                {this.props.data.offence}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> */}
+                  
+
+                    <div className="grid-container">
+                        <div className="grid-item">
+                        {this.props.data.date}
+                        </div>
+                        <div className="grid-item">
                         {this.props.data.offence}
-                    </label>
-                </div>
+                        </div>
+                    </div>
             </div>
         )
     }
