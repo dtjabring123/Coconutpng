@@ -3,7 +3,7 @@ import React from "react";
 export default class DisplayReview extends React.Component{
 
     render(){
-        if(this.props.response_data == "" | this.props.response_data == null){ //question is reported ,so display question details
+        if(this.props.response_data === "" | this.props.response_data === null){ //question is reported ,so display question details
             return(
                 <div>
                     <label name = "title">
@@ -21,7 +21,7 @@ export default class DisplayReview extends React.Component{
         else{ //response is reported, display both the response details and the question the response is in
             return(
                 <div>
-  Reported response
+                    Reported response
                     <label name= "question_title">
                       Title:    {this.props.question_data.title}
                     </label>

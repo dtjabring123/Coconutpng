@@ -11,7 +11,6 @@ export default class ReportUserListManage extends React.Component{
                             <UserReport data = {row} method = {this.props.method} key = {row.ban_id}/>
                         )
                     } )}
-                   
                 </div>
             ) 
         } catch (error) {
