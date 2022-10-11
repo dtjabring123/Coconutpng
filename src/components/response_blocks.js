@@ -6,7 +6,7 @@ export default class ResponseBlocks extends React.Component{
     render(){
         let array = this.props.props;
         const questioner = this.props.data;
-        if(array.length != 0){
+        if(array.length != 0){ // list of responses is not empty
             return (
                 <div>
                 {
@@ -16,7 +16,7 @@ export default class ResponseBlocks extends React.Component{
                 }
                </div>
            )
-        }else{
+        }else{ // no responses to display
             return(
                 <div>
                     <label>

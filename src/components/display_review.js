@@ -1,7 +1,8 @@
 import React from "react";
 
 export default class DisplayReview extends React.Component{
-
+    //displays the report's details, if a question is reported : display only the question's details
+    // if a response is reported: display both the response and the question containing the response details
     render(){
         if(this.props.response_data == "" | this.props.response_data == null){ //question is reported ,so display question details
             return(
