@@ -91,20 +91,19 @@ export default function QuestionInfo(){
                         responseblock_lbl.props = ret[1];
                     }
                  }
-        }))   
-    }
+            }))   
+        }
     }
     
     //handle userinput
     const handleChange = e => { //updates response_data to match user input
         setResponse_data(e.target.value)
-      }
-      //handle adding user adding a response
-      function handleResponseAdd(){
-        //check response is not empty
+    }
+      
+      function handleResponseAdd(){//handle user adding a response
+        //check response given is not empty
         if((response_data != null) && (response_data.length > 0)){
             //call db method to add response
-            
             let succ = giveResponse_or_Comment(0,location.state.name,response_data);
             Promise.resolve(succ).then((ret)=>{
                 if((ret[0] == "success") | (ret == "success")){
@@ -115,11 +114,9 @@ export default function QuestionInfo(){
                     setChangeResponseList(false);
                     displayResponses();
                 }else{
-
+                    output("Failed to add response");
                 }
-
             })
-
         }else{
            output("Your comment cannot be empty");
         }
@@ -142,7 +139,7 @@ export default function QuestionInfo(){
 			x.className = x.className.replace("show", "");
 		}, 3000);
 	}
-        function handleLike(){
+        function handleLike(){ //handles user liking question
             //get like status
             var liked_lbl = document.getElementById("liked_btn");
             var option = liked_lbl.checked;
@@ -184,8 +181,6 @@ export default function QuestionInfo(){
             <div className="report"><input type={"button"} value = "Report" class="rep1" onClick={()=>handleReport()}/></div>
             
             </div>
-
-
 
             <div className="q-group">
                 <label htmlFor="description">Description</label>

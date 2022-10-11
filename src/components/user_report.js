@@ -1,8 +1,8 @@
 import React from "react";
 
 export default class UserReport extends React.Component{
-
-    handleClick = () =>{
+    //displays the details about a specific user under review
+    handleClick = () =>{ //user is selected so update selected user variable from parent parent class
         this.props.method(this.props.data);
     }
     render(){

@@ -9,8 +9,9 @@ export default class ReportsPage extends React.Component{
         return(
             <div >
                 <div className="coloumn">
-                {/* displaythe lefthand side of the page */}
+                {/* handles admin reviewing reported questions/responses */}
                 <ReportsBlock key={"reporting here"}/>
+                {/*handles admin banning users under review */}
                 <ReportedUsersBlock key={"users to ban"}/>
                 <Link to="/homepage">
                         <button className='buttonstyle'
