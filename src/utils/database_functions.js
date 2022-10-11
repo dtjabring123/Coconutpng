@@ -57,7 +57,8 @@ async function register(first_name, last_name, dob, id_number, mobile_number, ro
         user_email: email,
         user_phone: mobile_number,
         user_role: role,
-        user_likes: [],
+        user_likes_questions: [],
+        user_likes_responses: [],
         user_titles: [],
         user_questions: [],
         user_strikes: [],
@@ -420,7 +421,7 @@ async function likeQuestion(value, question_id) {
 
     var liked = -3.1415; //arbitrary value that will be used for comparison
     await getDoc(userRef).then(ret => {
-      liked = ret.data().user_likes;
+      liked = ret.data().user_likes_questions;
       liked = hasLiked(question_id, liked);
     })
       .catch(/* istanbul ignore next */e => {
@@ -457,7 +458,7 @@ async function likeQuestion(value, question_id) {
 
         //Removing the like from the user's list
         updateDoc(userRef, {
-          user_likes: arrayRemove(concated)
+          user_likes_questions: arrayRemove(concated)
         })
           .catch(/* istanbul ignore next */e => {
             pass = "failed";
@@ -492,7 +493,7 @@ async function likeQuestion(value, question_id) {
         //Updating the user's likes
         var concated = (question_id.concat(",", value)).toString();
         updateDoc(userRef, {
-          user_likes: arrayUnion(concated)
+          user_likes_questions: arrayUnion(concated)
         })
           .catch(/* istanbul ignore next */e => {
             console.log(e);
@@ -558,7 +559,7 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
   }
 
   //Will use the following to see if the user liked the response
-  var user_likes;
+  var user_likes = [];
 
 
   try {
@@ -570,9 +571,6 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
   catch (e) /* istanbul ignore next */{
     return ["failed", "Auth token expired"]
   }
-
-
-
 
   await getDocs(q)
     .then((snapshot) => {
