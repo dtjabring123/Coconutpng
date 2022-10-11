@@ -37,12 +37,10 @@ body{
 }
 
 .container1 {
-    height : 60vh;
     width: 100%;
     background: #53565A;  
     background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
     padding: 10px;
-    overflow-y: scroll;
 }
 .container2 {
     height : 20vh;

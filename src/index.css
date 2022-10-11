@@ -12,7 +12,7 @@ input, button {
 }
 
 .App {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,6 +43,7 @@ input, button {
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }
 form {
+    margin: 4rem 0;
     display: block;
     position: relative;
 }
