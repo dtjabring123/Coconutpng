@@ -7,12 +7,14 @@ export default class UserReport extends React.Component{
     }
     render(){
         return(
-            <div onClick={this.handleClick}>
-                <label>
-              Ban ID :       {this.props.data.ban_id} ; 
-              Date striked :     {this.props.data.date} ;
-               User :      {this.props.data.user}
-                </label>
+            <div className="right-box" onClick={this.handleClick}>
+                <div className="ban-box1">
+                    <div className="ban-info">
+             <p><b>Ban ID:</b>  {this.props.data.ban_id}</p>
+             <p><b>Date striked:</b>  {this.props.data.date}</p>
+             <p><b>User:</b>   {this.props.data.user}</p> 
+                </div>
+                </div>
             </div>
         )
     }

@@ -1,0 +1,265 @@
+
+
+.coloumn{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    min-width: 90vw;
+    min-height: 80vh;
+    margin:  5rem 0;
+}
+.leftside {
+    width: 40vw;
+    height: auto;
+    border: 1px dashed rgb(196, 195, 195);
+    box-shadow: rgb(20, 19, 19) 15px 15px;
+    border-radius: 4px;
+}
+.rightside {
+    width: 40vw;
+    height: auto;
+    border: 1px dashed rgb(196, 195, 195);
+    box-shadow: rgb(20, 19, 19) 15px 15px;
+    border-radius: 4px;
+}
+
+.buttonstyle{
+float: right;
+margin: 2.6rem;
+}
+.grid-item-header{
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    background-color: rgb(213, 116, 37);
+    width: 100%;
+    min-height: 5vh;
+    font-size: 20px;
+  border: 1px solid #fff;
+  justify-content: center;
+  align-items: center;
+ 
+}
+.container-table{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+     min-height: 5vh;
+    background-color: rgb(213, 116, 37);
+    color: #ffffff;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    font-size: 15px;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    background-color: darkblue;
+    color: #ffffff;
+    align-items: center;
+    text-align: center;
+    
+    
+}
+.grid-item{ 
+  display: grid;
+  height: 7vh;
+  font-size: 10px;
+  border: 1px solid #fff;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.report_header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 10vh;
+    color: #f5f5f5;
+}
+
+/* here go the right box */
+.right-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    
+}
+
+.right-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+
+}
+
+.ban-box1{
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 30vh;
+    box-shadow: rgb(20, 19, 19) 5px 5px;
+    border-radius: 5px;
+}
+
+.ban-info{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: auto;
+    justify-content: center;
+    line-height: 1.6rem;
+    height: 100%;
+
+}
+
+
+
+.table tbody tr:nth-child(even)
+{
+    background-color: #f5f5f5;
+}
+
+/* responsive table */
+
+@media(max-width:806px )
+{
+    .coloumn{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 80vw;
+    }
+    .rightside,
+    .leftside{
+        width: 90vw;
+    }
+   
+    .table thead{
+        display: none;
+    }
+    .table, .table tbody, .table tr, .table td{
+        display: block;
+        width: 100%;
+    }
+    .table tr {
+        margin-bottom: 15px;
+    }
+    .table td{
+        text-align: right;
+        padding-left: 50%;
+        text-align: right;
+        position: relative;
+    }
+    .table td::before {
+        content:attr(data-label) ;
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: left;
+
+    }
+}
+
+.report_card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    min-width: 100%;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    width: 100px;
+    margin-bottom: 1.3vw;
+    line-height: 1.5rem ;
+}
+.report_card h3{
+    display: flex;
+    margin: 0 0 1rem 0 ;
+    justify-content: center;
+}
+
+.report_card-footer {
+    display: flex;
+    font-size: .85rem;
+    opacity: 1;
+    gap: 30px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.btn{
+    padding: 12px 60px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color: #FFF;
+    font-weight: 700;
+    cursor: pointer;
+}
+.btn:hover{
+    background-position : 100% 0%;
+
+}
+.report_box{
+    height:20vh;
+    display: flex;
+    width: 100%;
+   justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.report_box1{
+    height:20vh;
+    display: flex;
+    width: 100%;
+    margin: 5rem 0;
+   justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.input_report{
+    border: 1px solid #a9a9a9;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    width: 40vw;
+    margin: 0 8rem;
+    min-height: 10vh;
+    padding: 10px;
+}
+
+.report2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    height: 8vh;
+    color: #f5f5f5;
+}
+
+.report3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    height: 8vh;
+    color: #f5f5f5;
+}
+

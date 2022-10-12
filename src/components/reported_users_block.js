@@ -28,14 +28,14 @@ export default class ReportedUsersBlock extends React.Component{
         if(this.state.selected_user == ""  | this.state.selected_user == null){
             return(
                 <div>
-                    User list here
+                    <h1 className="report3">Under Review</h1>
                     <ReportUserListManage data = {this.state.user_list} method = {this.updateSelectedUser}/>
                 </div>
             )
         }else{
             return(
                 <div>
-                    User list here
+                    <h1 className="report3">Under Review</h1>
                     <ReportUserListManage data = {this.state.user_list} method = {this.updateSelectedUser}/>
                     <ReportedUserDetails data = {this.state.selected_user} method = {this.updateSelectedUser} />
                 </div>
