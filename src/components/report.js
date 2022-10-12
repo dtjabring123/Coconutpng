@@ -4,20 +4,35 @@ export default class Report extends React.Component{
 
     //displays information about a specific report
     handleClick = () =>{
+        //if clicked, set the selected report to this report's information
         this.props.method(this.props.data);
     }
 
     render(){
         return(
-            <div onClick={this.handleClick}>
-                <div  className="row">
-                    <label>
-                        {this.props.data.date};
-                    </label>
-                    <label>
+            <div  className="tester" onClick={this.handleClick}>
+                {/* <table className = "table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {this.props.data.date}
+                                </td>
+                                <td>
+                                {this.props.data.offence}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> */}
+                  
+
+                    <div className="grid-container">
+                        <div className="grid-item">
+                        {this.props.data.date}
+                        </div>
+                        <div className="grid-item">
                         {this.props.data.offence}
-                    </label>
-                </div>
+                        </div>
+                    </div>
             </div>
         )
     }

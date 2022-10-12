@@ -1,6 +1,7 @@
 import React from "react";
 import ReviewBlock from "./review_block";
 import { changeReportStatus,changePostReportValue } from "../utils/database_functions";
+import "../stylesheets/questiondetails.css"
 export default class ReportReview extends React.Component{
     //handles a report being selected by the admin to view the full details of said report
     //handles user removing the selected question/response , admin must give a reason for removing question/response
@@ -27,9 +28,7 @@ export default class ReportReview extends React.Component{
     }
 
     handleRemove = () =>{
-        //this.props.reportJSON ={
-        //  date,id,offence,question_id,response_id
-       // }
+        //remove the selected reported question/report, the question/response will not appear any more for users
         if(this.state.reason == null | this.state.reason == ""){
             this.output("Please provide a reason for removal");
             return ;
@@ -79,11 +78,6 @@ export default class ReportReview extends React.Component{
             
         }
        })
-        //changePostReportValue(table, post, value, JSONuser, report_id) 
-        //if question : table = 0 else if response :  table = 1
-        ///value = 1 post= question/response id 
-        //set selected report back to null
-        //this.props.method("")
     }
     handleIgnore = ()=>{ //used for ignoring selected report
         let succ = changeReportStatus(this.props.reportJSON.id,1,"")
@@ -107,14 +101,18 @@ export default class ReportReview extends React.Component{
             return(
                 <div>
                     <div name = "snackbar" id = "snackbar"/>
-                    <label>
-                        Here is the report info
+                    <div>
+                        <h1 className="report2">Reported Question/Response</h1>
                        <ReviewBlock data = {this.props.reportJSON}/>
-                    </label>
-                    <input name = "reason" id = "reason" type = "text" onChange={evt=>this.handleInput(evt)}/>
-                    <input id = "remove" type = "button" value = "Remove" onClick={this.handleRemove}/>
-                    <input id = "ignore" type = "button" value = "Ignore" onClick={this.handleIgnore}/>
+                    </div>
+                    <div className="report_box">
+                    <input  className="input_report" name = "reason" id = "reason" type = "text" placeholder="Input reason for removing user..." onChange={evt=>this.handleInput(evt)}/>
+                    <input className="btn" id = "remove" type='submit' value = "Remove" onClick={this.handleRemove}/>
+                    <input className="btn" id = "ignore" type = "button" value = "Ignore" onClick={this.handleIgnore}/>
+                    </div>
                 </div>
+                   
+
             )
         }else{ // no report is selected
             return(

@@ -2,10 +2,13 @@ import React from "react";
 import { getBan,banUser } from "../utils/database_functions";
 
 export default class ReportedUserDetails extends React.Component{
+    //handles displaying the list of users under review for a ban
+    // handles displaying the reasons why a user is under review
+    //handles admin banning  a user
     state = {
-        prev_user : "",
-        details : "",
-        reason : ""
+        prev_user : "", // used to check if the selected user has changed
+        details : "", // used to store the details of the selected user
+        reason : "" // used to store the reason why a user will be banned
     }
     componentDidMount(){
         if(this.props.data == null | this.props.data == ""){
@@ -13,7 +16,6 @@ export default class ReportedUserDetails extends React.Component{
         }
         let succ = getBan(this.props.data.ban_id);
         Promise.resolve(succ).then((ret)=>{
-            console.log(ret);
             if(ret[0] == "success"){
                 this.setState({details : ret[1]})
                 this.setState({prev_user : this.props.data})
@@ -31,8 +33,6 @@ export default class ReportedUserDetails extends React.Component{
 		})
 	}
     handleBan=()=>{
-        console.log("ban user");
-        console.log(this.state);
         let ban_id = this.props.data.ban_id;
         let user_id = this.state.details.user;
         let reason = this.state.reason;
@@ -81,26 +81,28 @@ export default class ReportedUserDetails extends React.Component{
                         <label>
                             Could not fetch details of user 
                         </label>
-                    </div>
+                     </div>
                 )
             }else{ //have a seleceted user and their details from the database
                 return(
-                    <div>
-                        <div name = "snackbar" id = "snackbar"/>
-                        <label>
-                            User details here:
-                         Date:   {this.state.details.date};
-                         Reason 1:   {this.state.details.reasons[0]};
-                         Reason 2:   {this.state.details.reasons[1]};
-                         Reason 3 :   {this.state.details.reasons[2]};
-                         Username :    {this.state.details.user}
-                        </label>
+                    <div className="right-box">
+                    <div className="ban-box1">
+                        
+                        <div className="ban-info">
+                          <p><b>User details:</b></p>
+                        <p><b>Date:</b>  {this.state.details.date};</p>
+                        <p><b>Reason 1:</b>    {this.state.details.reasons[0]}; </p>
+                        <p><b>Reason 2:</b>    {this.state.details.reasons[1]}; </p>
+                        <p><b>Reason 3:</b>    {this.state.details.reasons[2]}; </p>
+                        <p><b>Username:</b>    {this.state.details.user} </p>
+                        </div>
 
-                        <label>
-                            Reason for ban
-                        </label>
-                        <input id="reason" name = "reason"  onChange={evt=>this.handleInput(evt)}/>
-                        <input value = "ban user" type = "button" onClick={this.handleBan}/>
+                        </div>
+                        <div className="report_box1">
+                            <input className="input_report" id="reason" name = "reason" placeholder="Input reason for banning user..."  onChange={evt=>this.handleInput(evt)}/>
+                            <input className="btn" value = "Ban User" type = "button" onClick={this.handleBan}/>
+                        </div>
+                        
                     </div>
                 )
         }

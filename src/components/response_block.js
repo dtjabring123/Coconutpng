@@ -6,8 +6,9 @@ import { likeResponse,changeMark,createReport } from "../utils/database_function
 import { user } from "../utils/userDetails";
 
 export default class ResponseBlock extends React.Component{
-
-    state = {
+    //shows details about a specific response
+    //handles user interactions with the response
+    state = { //store response's details
         id : "",
         likes : 0,
         author : "",
@@ -74,7 +75,7 @@ export default class ResponseBlock extends React.Component{
             }
         })
     }
-    handleReport = () =>{
+    handleReport = () =>{ //handles user reporting the response
         let succ = createReport(this.state.question,this.state.id);
         Promise.resolve(succ).then((ret)=>{
             if(ret == "success"){
@@ -84,7 +85,7 @@ export default class ResponseBlock extends React.Component{
             }
         })
     }
-     output = (message)=>{ //output is given a message and displays a toast message of the input
+     output = (message)=>{ //used to give a toast message
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;

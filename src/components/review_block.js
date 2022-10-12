@@ -26,7 +26,6 @@ export default class ReviewBlock extends React.Component{
     }
 
     processDisplayVals = (array) =>{
-     console.log(array);
         this.setState({question_info : array[0]})
         this.setState({response_info : array[1]});
     }

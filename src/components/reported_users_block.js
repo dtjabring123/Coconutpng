@@ -13,7 +13,6 @@ export default class ReportedUsersBlock extends React.Component{
         let succ = getAllBans();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == "success"){
-                console.log(ret[1]);
                 this.setState({user_list : ret[1]})
             }else{
                 console.log("could not get reported users list");
@@ -29,14 +28,14 @@ export default class ReportedUsersBlock extends React.Component{
         if(this.state.selected_user == ""  | this.state.selected_user == null){
             return(
                 <div>
-                    User list here
+                    <h1 className="report3">Under Review</h1>
                     <ReportUserListManage data = {this.state.user_list} method = {this.updateSelectedUser}/>
                 </div>
             )
         }else{
             return(
                 <div>
-                    User list here
+                    <h1 className="report3">Under Review</h1>
                     <ReportUserListManage data = {this.state.user_list} method = {this.updateSelectedUser}/>
                     <ReportedUserDetails data = {this.state.selected_user} method = {this.updateSelectedUser} />
                 </div>
