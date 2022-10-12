@@ -60,7 +60,7 @@ render(){
             this.setState({prev_user : user});
             this.componentDidMount();
         }
-        if(user.role == 1){
+        if(user.role == 1){ //user is an admin so display view reports button
             return (
                 <div class="area" >
                     <ul class="circles">

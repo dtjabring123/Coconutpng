@@ -10,10 +10,11 @@ export default class ReportsPage extends React.Component{
         return(
             <div >
                 <div className="coloumn">
-                {/* displaythe lefthand side of the page */}
+                {/* handles admin reviewing reported questions/responses */}
                 <div className="leftside">
                     <ReportsBlock key={"reporting here"}/>
                 </div>
+                {/*handles admin banning users under review */}
                 <div className="rightside">
                     <ReportedUsersBlock key={"users to ban"}/>
                 </div>

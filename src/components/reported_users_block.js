@@ -13,7 +13,6 @@ export default class ReportedUsersBlock extends React.Component{
         let succ = getAllBans();
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == "success"){
-                console.log(ret[1]);
                 this.setState({user_list : ret[1]})
             }else{
                 console.log("could not get reported users list");

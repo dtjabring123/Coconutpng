@@ -2,10 +2,13 @@ import React from "react";
 import { getBan,banUser } from "../utils/database_functions";
 
 export default class ReportedUserDetails extends React.Component{
+    //handles displaying the list of users under review for a ban
+    // handles displaying the reasons why a user is under review
+    //handles admin banning  a user
     state = {
-        prev_user : "",
-        details : "",
-        reason : ""
+        prev_user : "", // used to check if the selected user has changed
+        details : "", // used to store the details of the selected user
+        reason : "" // used to store the reason why a user will be banned
     }
     componentDidMount(){
         if(this.props.data == null | this.props.data == ""){
@@ -13,7 +16,6 @@ export default class ReportedUserDetails extends React.Component{
         }
         let succ = getBan(this.props.data.ban_id);
         Promise.resolve(succ).then((ret)=>{
-            console.log(ret);
             if(ret[0] == "success"){
                 this.setState({details : ret[1]})
                 this.setState({prev_user : this.props.data})
@@ -31,8 +33,6 @@ export default class ReportedUserDetails extends React.Component{
 		})
 	}
     handleBan=()=>{
-        console.log("ban user");
-        console.log(this.state);
         let ban_id = this.props.data.ban_id;
         let user_id = this.state.details.user;
         let reason = this.state.reason;

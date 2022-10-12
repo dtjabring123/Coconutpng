@@ -28,9 +28,7 @@ export default class ReportReview extends React.Component{
     }
 
     handleRemove = () =>{
-        //this.props.reportJSON ={
-        //  date,id,offence,question_id,response_id
-       // }
+        //remove the selected reported question/report, the question/response will not appear any more for users
         if(this.state.reason == null | this.state.reason == ""){
             this.output("Please provide a reason for removal");
             return ;
@@ -80,11 +78,6 @@ export default class ReportReview extends React.Component{
             
         }
        })
-        //changePostReportValue(table, post, value, JSONuser, report_id) 
-        //if question : table = 0 else if response :  table = 1
-        ///value = 1 post= question/response id 
-        //set selected report back to null
-        //this.props.method("")
     }
     handleIgnore = ()=>{ //used for ignoring selected report
         let succ = changeReportStatus(this.props.reportJSON.id,1,"")
