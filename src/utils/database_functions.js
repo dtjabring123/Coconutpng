@@ -327,6 +327,7 @@ async function getAllQuestions(userJSON) {
 
           }
           else {
+            //Returned an incorrect document therefore it must fail 
             return ['failed', []];
           }
 
@@ -337,6 +338,44 @@ async function getAllQuestions(userJSON) {
     pass = 'success';
     JSONarr.push("User is banned");
   }
+
+  return [pass, JSONarr];
+}
+
+//Function that will allow the user to search for a question
+async function searchForQuestion(title){
+  const colRef = collection(db, 'Questions');
+  var pass = 'success';
+  let JSONarr = [];
+
+  //Query to get any documents that match the title that was provided
+  var q = query(colRef, where("question_title", ">=", title),where("question_title", "<=", title+ '\uf8ff'));
+
+  await getDocs(q)
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        //Check that it didnt fetch an incorrect document
+        if(doc.data() != null) {
+          if (doc.data().question_reported == 0) {
+            //Then the question was not reported and should be displayed
+            var Question = {
+              "title": doc.data().question_title,
+              "likes": doc.data().question_likes,
+              "author": doc.data().question_user,
+              "question_id": doc.id
+            }
+            JSONarr.push(Question);
+          }
+        }
+        else{
+          //Fetched an incorrect document and thus should auto fail
+          return ['failed',[]]
+        }
+      })
+    })
+    .catch(/* istanbul ignore next */e => {
+      console.log(e);
+    })
 
   return [pass, JSONarr];
 }
@@ -524,11 +563,16 @@ async function getComments(response_id) {
 
         if (doc.data() != null) {
           pass = 'success'
+          var date = doc.data().comment_date.toDate();
+          var month = date.getUTCMonth() + 1; //months from 1-12
+          var day = date.getUTCDate();
+          var year = date.getUTCFullYear();
+          
           if (doc.data().comment_reported == 0) {
             //Then the comment was not reported and thus should be seen
             var comment = {
               "id": doc.id,
-              "date": doc.data().comment_date.toDate().toString(),
+              "date": day + "/" + month + "/" + year,
               "description": doc.data().comment_desc,
               "response": doc.data().comment_response,
               "user": doc.data().comment_user
@@ -579,9 +623,13 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
           pass = 'success';
           if (doc.data().response_reported == 0) {
             //Then the response was not reported and should be displayed
+            var date = doc.data().response_date.toDate();
+            var month = date.getUTCMonth() + 1; //months from 1-12
+            var day = date.getUTCDate();
+            var year = date.getUTCFullYear();
             var response = {
               "id": doc.id,
-              "date": doc.data().response_date.toDate().toString(),
+              "date": day + "/" + month + "/" + year,
               "description": doc.data().response_desc,
               "likes": doc.data().response_likes,
               "question": doc.data().response_question,
@@ -622,8 +670,12 @@ async function getQuestionInfo(question_id) {
   await getDoc(questionRef).then(ret => {
     pass = 'success'
     //Set the JSON for the question
+    var date = ret.data().question_date.toDate();
+    var month = date.getUTCMonth() + 1; //months from 1-12
+    var day = date.getUTCDate();
+    var year = date.getUTCFullYear();
     JSON = {
-      "date": ret.data().question_date.toDate().toString(),
+      "date": day + "/" + month + "/" + year,
       "desc": ret.data().question_desc,
       "likes": ret.data().question_likes,
       "title": ret.data().question_title,
@@ -1075,8 +1127,12 @@ async function displayReport(reportJSON) {
   await getDoc(questionRef).then(ret => {
     pass = 'success';
     //Set the JSON for the question
+    var date = doc.data().question_date.toDate();
+    var month = date.getUTCMonth() + 1; //months from 1-12
+    var day = date.getUTCDate();
+    var year = date.getUTCFullYear();
     JSON = {
-      "date": ret.data().question_date.toDate().toString(),
+      "date": day + "/" + month + "/" + year,
       "desc": ret.data().question_desc,
       "title": ret.data().question_title,
       "user_id": ret.data().question_user,
@@ -1096,8 +1152,12 @@ async function displayReport(reportJSON) {
     await getDoc(responseRef).then(ret => {
       pass = 'success';
       //Set the JSON for the response
+      var date = doc.data().response_date.toDate();
+      var month = date.getUTCMonth() + 1; //months from 1-12
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear();
       var JSON = {
-        "date": ret.data().response_date.toDate().toString(),
+        "date": day + "/" + month + "/" + year,
         "desc": ret.data().response_desc,
         "user_id": ret.data().response_user,
         "user_reference": ret.data().response_reference
@@ -1169,9 +1229,13 @@ async function getAllBans() {
           if (doc.data().ban_confirmed == 0) {
             //Then the ban has not been considered and should be visible
             //Create the JSON representing the ban
+            var date = doc.data().ban_date.toDate();
+            var month = date.getUTCMonth() + 1; //months from 1-12
+            var day = date.getUTCDate();
+            var year = date.getUTCFullYear();
             var Ban = {
               "user": doc.data().ban_user,
-              "date": doc.data().ban_date.toDate().toString(),
+              "date": day + "/" + month + "/" + year,
               "ban_id": doc.id
             }
             JSONarr.push(Ban);
@@ -1260,7 +1324,7 @@ onAuthStateChanged(auth, (user) => {
 //Exports all the functions
 export {
   register, logIn, logOut, getUserDetails, CompareUserID, changePassword, updateUserDetails,
-  getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,
+  getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,searchForQuestion,
   giveResponse_or_Comment, getResponses, getComments, changeMark, likeResponse,
   changePostReportValue, createReport, getAllReports, displayReport, changeReportStatus,
   banUser, getAllBans, getBan,resetPassword
