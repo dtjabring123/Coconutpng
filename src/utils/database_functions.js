@@ -341,6 +341,44 @@ async function getAllQuestions(userJSON) {
   return [pass, JSONarr];
 }
 
+//Function that will allow the user to search for a question
+async function searchForQuestion(title){
+  const colRef = collection(db, 'Questions');
+  var pass = 'success';
+  let JSONarr = [];
+
+  //Query to get any documents that match the title that was provided
+  var q = query(colRef, where("question_title", ">=", title),where("question_title", "<=", title+ '\uf8ff'));
+
+  await getDocs(q)
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        //Check that it didnt fetch an incorrect document
+        if(doc.data() != null) {
+          if (doc.data().question_reported == 0) {
+            //Then the question was not reported and should be displayed
+            var Question = {
+              "title": doc.data().question_title,
+              "likes": doc.data().question_likes,
+              "author": doc.data().question_user,
+              "question_id": doc.id
+            }
+            JSONarr.push(Question);
+          }
+        }
+        else{
+          //Fetched an incorrect document and thus should auto fail
+          return ['failed',[]]
+        }
+      })
+    })
+    .catch(/* istanbul ignore next */e => {
+      console.log(e);
+    })
+
+  return [pass, JSONarr];
+}
+
 //Function to create a question
 async function askQuestion(title, desc, image) {
   const questionsRef = collection(db, "Questions");
@@ -1285,7 +1323,7 @@ onAuthStateChanged(auth, (user) => {
 //Exports all the functions
 export {
   register, logIn, logOut, getUserDetails, CompareUserID, changePassword, updateUserDetails,
-  getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,
+  getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,searchForQuestion,
   giveResponse_or_Comment, getResponses, getComments, changeMark, likeResponse,
   changePostReportValue, createReport, getAllReports, displayReport, changeReportStatus,
   banUser, getAllBans, getBan,resetPassword
