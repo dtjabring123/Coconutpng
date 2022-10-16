@@ -586,7 +586,8 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
               "likes": doc.data().response_likes,
               "question": doc.data().response_question,
               "mark": doc.data().response_mark,
-              "user": doc.data().response_user
+              "user": doc.data().response_user,
+              "hasComments": doc.data().response_hasComment
             }
             response.liked = hasLiked(doc.id, user_likes);
             if (doc.data().response_mark != 0) {
@@ -670,7 +671,8 @@ async function giveResponse_or_Comment(check, id, desc) {
       "response_likes": 0,
       "response_question": id,
       "response_mark": 0,
-      "response_reported": 0
+      "response_reported": 0,
+      "response_hasComment": 0
     })
       .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the response failed.
@@ -692,6 +694,13 @@ async function giveResponse_or_Comment(check, id, desc) {
       .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
       })
+    
+    //Updating the response to indicate that it now has a comment
+    if(pass=="success"){
+      updateDoc(doc(db, "Responses", id), {
+        response_hasComment: 1
+      })
+    }
     return pass;
   }
 
@@ -1224,13 +1233,16 @@ async function resetPassword(email){
   var pass = 'failed';
   await sendPasswordResetEmail(auth, email)
   .then(() => {
-    //Password reset email sent
+    // Password reset email sent!
+    // ..
     pass="success";
   })
   .catch((error) => {
-    //Something went wrong
-    console.log(error);
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
   });
+  console.log(email);
   return pass;
 }
 
