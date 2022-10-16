@@ -4,11 +4,11 @@ import { initializeApp } from 'firebase/app'
 
 import {
   getFirestore, collection, getDocs, doc, query, where, onSnapshot, addDoc, getDoc, startAt, startAfter, endAt, endBefore, orderBy, limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-  deleteDoc, sendPasswordResetEmail, toDate
+  deleteDoc, toDate
 } from 'firebase/firestore'
 
 import {
-  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, updatePassword, updateEmail
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, updatePassword, updateEmail, sendPasswordResetEmail
 } from 'firebase/auth'
 
 import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage'
@@ -1219,6 +1219,21 @@ async function getBan(ban_id) {
   return [pass, JSON];
 }
 
+//Function that will send the user a password reset email
+async function resetPassword(email){
+  var pass = 'failed';
+  await sendPasswordResetEmail(auth, email)
+  .then(() => {
+    //Password reset email sent
+    pass="success";
+  })
+  .catch((error) => {
+    //Something went wrong
+    console.log(error);
+  });
+  return pass;
+}
+
 //subscribing to auth changes
 onAuthStateChanged(auth, (user) => {
   console.log('user status changed: ', user)
@@ -1236,5 +1251,5 @@ export {
   getAllQuestions, askQuestion, likeQuestion, getQuestionInfo,
   giveResponse_or_Comment, getResponses, getComments, changeMark, likeResponse,
   changePostReportValue, createReport, getAllReports, displayReport, changeReportStatus,
-  banUser, getAllBans, getBan
+  banUser, getAllBans, getBan,resetPassword
 }
