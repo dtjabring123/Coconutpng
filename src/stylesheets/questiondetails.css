@@ -1,3 +1,4 @@
+
 form .q-inner {
     position: relative;
     display: block;
@@ -80,4 +81,13 @@ form .q-inner input[type="button"]:hover {
     min-height: 10vh;
     padding: 10px;
     pointer-events: none;
+}
+
+.report {
+    display: inline-block;
+    padding: 10px 15px;
+}
+
+.rep1 {
+    background: red !important;
 }

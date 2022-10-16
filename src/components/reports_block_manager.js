@@ -6,12 +6,14 @@ export default class ReportsBlockManager extends React.Component{
 
     render(){
         let arr=  this.props.list;
-        if(arr.length != 0){ //generate list of reports if the array is not empty
+        if(arr.length != 0){ //display list of reports if the array is not empty
             return(
                 <div>
-                    <label>
-                        Date ; Offence ; Question ID ; Response ID
-                    </label>
+                <div className="container-table">
+                            <div className="grid-item-header" >Date</div >
+                            <div className="grid-item-header" >Offence</div >
+                        </div>
+
                     {this.props.list.map((report)=>{
                         return( <Report data = {report} key={report.id} method = {this.props.method}/> )
                     } )}

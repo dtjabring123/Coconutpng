@@ -2,6 +2,7 @@ import React from "react";
 import "../stylesheets/comments.css";
 import{Link,useNavigate} from 'react-router-dom';
 export default function QuestionBlock(props){
+    //used in the homepage to display a single question
     let title = props.props.title;
     let id = props.props.question_id;
     let likes = props.props.likes;

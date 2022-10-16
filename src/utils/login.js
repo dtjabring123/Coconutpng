@@ -11,6 +11,6 @@ export function validLogin(user_details){ //validates email and password , outpu
         flag = false;
         error = error + "Passwords must be at least 6 characters long and not longer than 15 characters \n";
     }
-    return [flag,error];
+    return [flag,error]; 
 }
 

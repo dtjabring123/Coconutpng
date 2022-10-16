@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { validLogin } from '../utils/login.js'
 import { logIn } from '../utils/database_functions'
 import { setUser } from '../utils/userDetails.js'
-import '../index.css';
+import '../index.css'; 
 export default class LoginPage extends React.Component {
 	state = { //store email and password to be used to login 
 		email : "",

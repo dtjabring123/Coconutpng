@@ -37,18 +37,15 @@ body{
 }
 
 .container1 {
-    height : 60vh;
     width: 100%;
     background: #53565A;  
     background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
     padding: 10px;
-    overflow-y: scroll;
 }
 .container2 {
-    height : 20vh;
+    height :auto;
     width: min(80%, 800px);
     padding: 10px;
-    overflow-y: scroll;
     margin-left: 3rem auto;
     border-radius: 10px;
 }
@@ -92,7 +89,7 @@ body{
 .response_card-footer {
     display: flex;
     font-size: .85rem;
-    opacity: 0.6;
+    opacity: 1;
     gap: 30px;
     justify-content: flex-end;
     align-items: center;
@@ -124,4 +121,10 @@ body{
     min-width: 100%;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
     width: 100px;
+}
+
+.rep {
+    width: 100%;
+    background: #4e54c8 !important;
+
 }
