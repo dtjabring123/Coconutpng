@@ -327,6 +327,7 @@ async function getAllQuestions(userJSON) {
 
           }
           else {
+            //Returned an incorrect document therefore it must fail 
             return ['failed', []];
           }
 
