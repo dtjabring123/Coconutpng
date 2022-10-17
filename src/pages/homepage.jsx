@@ -27,7 +27,6 @@ export default class HomePage extends React.Component {
         var userdetails = {
             role : 0
         }
-        this.setState({prev_user : userdetails})
         if(user != null){
             userdetails = user;
         }
@@ -52,13 +51,19 @@ export default class HomePage extends React.Component {
 			x.className = x.className.replace("show", "");
 		}, 5000);
 	}
+    componentDidUpdate(prevProps,prevState){ //executes when the saved user is updated
+        if(prevState.prev_user != this.state.prev_user){ // saved user has changed
+            if(!(this.state.prev_user.role > -1)){ // if saved user is a banned user update list of questions 
+                this.componentDidMount();
+            }
+        }
+    }
 
 render(){
 
     try {
         if(this.state.prev_user.emailAddress != user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
             this.setState({prev_user : user});
-            this.componentDidMount();
         }
         if(user.role == 1){ //user is an admin so display view reports button
             return (
