@@ -320,14 +320,14 @@ async function getAllQuestions(userJSON) {
                 "title": doc.data().question_title,
                 "likes": doc.data().question_likes,
                 "author": doc.data().question_user,
-                "question_id": doc.id
+                "question_id": doc.id,
+                "desc": doc.data().question_desc
               }
               JSONarr.push(Question);
             }
 
           }
           else {
-            //Returned an incorrect document therefore it must fail 
             return ['failed', []];
           }
 
