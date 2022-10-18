@@ -381,7 +381,7 @@ async function searchForQuestion(title){
 }
 
 //Function to create a question
-async function askQuestion(title, desc, image) {
+async function askQuestion(title, desc, image, code) {
   const questionsRef = collection(db, "Questions");
   var pass = "success";
 
@@ -394,7 +394,8 @@ async function askQuestion(title, desc, image) {
     "question_likes": 0,
     "question_reported": 0,
     "question_reference": auth.currentUser.email,
-    "question_images": []
+    "question_images": [],
+    "question_code": code
   })
     .then((docRef) => {
 
@@ -682,7 +683,8 @@ async function getQuestionInfo(question_id) {
       "user_id": ret.data().question_user,
       "isQuestioner": ret.data().question_reference == auth.currentUser.email, //returns if they asked the question
       "liked": 0, //default value means that the user did not like.
-      "images": ret.data().question_images
+      "images": ret.data().question_images,
+      "code": ret.data().question_code
     }
   })
 
@@ -1137,7 +1139,8 @@ async function displayReport(reportJSON) {
       "title": ret.data().question_title,
       "user_id": ret.data().question_user,
       "images": ret.data().question_images,
-      "user_reference": ret.data().question_reference
+      "user_reference": ret.data().question_reference,
+      "code":ret.data().question_code
     }
     JSONarr.push(JSON);
   })
