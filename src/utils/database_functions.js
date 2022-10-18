@@ -320,14 +320,14 @@ async function getAllQuestions(userJSON) {
                 "title": doc.data().question_title,
                 "likes": doc.data().question_likes,
                 "author": doc.data().question_user,
-                "question_id": doc.id
+                "question_id": doc.id,
+                "desc": doc.data().question_desc
               }
               JSONarr.push(Question);
             }
 
           }
           else {
-            //Returned an incorrect document therefore it must fail 
             return ['failed', []];
           }
 
@@ -381,7 +381,7 @@ async function searchForQuestion(title){
 }
 
 //Function to create a question
-async function askQuestion(title, desc, image) {
+async function askQuestion(title, desc, image, code) {
   const questionsRef = collection(db, "Questions");
   var pass = "success";
 
@@ -394,7 +394,8 @@ async function askQuestion(title, desc, image) {
     "question_likes": 0,
     "question_reported": 0,
     "question_reference": auth.currentUser.email,
-    "question_images": []
+    "question_images": [],
+    "question_code": code
   })
     .then((docRef) => {
 
@@ -575,7 +576,8 @@ async function getComments(response_id) {
               "date": day + "/" + month + "/" + year,
               "description": doc.data().comment_desc,
               "response": doc.data().comment_response,
-              "user": doc.data().comment_user
+              "user": doc.data().comment_user,
+              "code":doc.data().comment_code
             }
             JSONarr.push(comment);
           }
@@ -635,7 +637,8 @@ async function getResponses(question_id, sorting_attribute, sorting_direction, s
               "question": doc.data().response_question,
               "mark": doc.data().response_mark,
               "user": doc.data().response_user,
-              "hasComments": doc.data().response_hasComment
+              "hasComments": doc.data().response_hasComment,
+              "code":doc.data().response_code
             }
             response.liked = hasLiked(doc.id, user_likes);
             if (doc.data().response_mark != 0) {
@@ -682,7 +685,8 @@ async function getQuestionInfo(question_id) {
       "user_id": ret.data().question_user,
       "isQuestioner": ret.data().question_reference == auth.currentUser.email, //returns if they asked the question
       "liked": 0, //default value means that the user did not like.
-      "images": ret.data().question_images
+      "images": ret.data().question_images,
+      "code": ret.data().question_code
     }
   })
 
@@ -708,7 +712,7 @@ async function getQuestionInfo(question_id) {
 }
 
 //Function that will create a response to a question
-async function giveResponse_or_Comment(check, id, desc) {
+async function giveResponse_or_Comment(check, id, desc,code) {
   //If check = 0 then we are making a response else we are giving a comment
   var pass = "success";
   if (check == 0) {
@@ -724,7 +728,8 @@ async function giveResponse_or_Comment(check, id, desc) {
       "response_question": id,
       "response_mark": 0,
       "response_reported": 0,
-      "response_hasComment": 0
+      "response_hasComment": 0,
+      "response_code":code
     })
       .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the response failed.
@@ -741,7 +746,8 @@ async function giveResponse_or_Comment(check, id, desc) {
       "comment_desc": desc,
       "comment_date": serverTimestamp(),
       "comment_response": id,
-      "comment_reported": 0
+      "comment_reported": 0,
+      "comment_code":code
     })
       .catch(/* istanbul ignore next */(e) => {
         pass = "failed"; //Used to symbolise that the creation of the comment failed.
@@ -1137,7 +1143,8 @@ async function displayReport(reportJSON) {
       "title": ret.data().question_title,
       "user_id": ret.data().question_user,
       "images": ret.data().question_images,
-      "user_reference": ret.data().question_reference
+      "user_reference": ret.data().question_reference,
+      "code":ret.data().question_code
     }
     JSONarr.push(JSON);
   })
@@ -1160,7 +1167,8 @@ async function displayReport(reportJSON) {
         "date": day + "/" + month + "/" + year,
         "desc": ret.data().response_desc,
         "user_id": ret.data().response_user,
-        "user_reference": ret.data().response_reference
+        "user_reference": ret.data().response_reference,
+        "code":ret.data().response_code
       }
       JSONarr.push(JSON);
     })
@@ -1318,7 +1326,6 @@ onAuthStateChanged(auth, (user) => {
   } else {
     setUser(null);
   }
-
 })
 
 //Exports all the functions
