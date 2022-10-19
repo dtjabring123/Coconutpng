@@ -1133,8 +1133,8 @@ async function displayReport(reportJSON) {
   await getDoc(questionRef).then(ret => {
     pass = 'success';
     //Set the JSON for the question
-    var date = doc.data().question_date.toDate();
-    var month = date.getUTCMonth() + 1; //months from 1-12
+    var date = ret.data().question_date.toDate();
+    var month = date.getUTCMonth() +ret //months from 1-12
     var day = date.getUTCDate();
     var year = date.getUTCFullYear();
     JSON = {
@@ -1159,7 +1159,7 @@ async function displayReport(reportJSON) {
     await getDoc(responseRef).then(ret => {
       pass = 'success';
       //Set the JSON for the response
-      var date = doc.data().response_date.toDate();
+      var date = ret.data().response_date.toDate();
       var month = date.getUTCMonth() + 1; //months from 1-12
       var day = date.getUTCDate();
       var year = date.getUTCFullYear();
