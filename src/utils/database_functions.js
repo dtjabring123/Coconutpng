@@ -1134,7 +1134,7 @@ async function displayReport(reportJSON) {
     pass = 'success';
     //Set the JSON for the question
     var date = ret.data().question_date.toDate();
-    var month = date.getUTCMonth() +ret //months from 1-12
+    var month = date.getUTCMonth() + 1; //months from 1-12
     var day = date.getUTCDate();
     var year = date.getUTCFullYear();
     JSON = {
