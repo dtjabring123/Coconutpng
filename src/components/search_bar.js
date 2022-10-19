@@ -15,7 +15,11 @@ export default class SearchBar extends React.Component{
         var search_val = this.state.criteria.toUpperCase();
         for (let index = 0; index < input_array.length; index++) {
             let question = input_array[index];
-            if(question.title.toUpperCase().includes(search_val) | (question.desc.toUpperCase().includes(search_val))){
+            let title = question.title.toUpperCase();
+            let description = question.desc.toUpperCase();
+            let author = question.author.toUpperCase();
+
+            if(title.includes(search_val) | (description.includes(search_val)) | (author.includes(search_val))){
             // entry contains the substring criteria
                 list.push(question);
             }

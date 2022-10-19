@@ -39,7 +39,6 @@ export default class HomePage extends React.Component {
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == 'success'){
                 this.processPosts(ret[1]);
-                console.log("fetched questions");
             }else{
                 this.output("Unable to get posts from database");
             }
