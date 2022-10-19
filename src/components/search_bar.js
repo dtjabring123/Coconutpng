@@ -1,5 +1,7 @@
 import React from "react";
 import QuestionBlockManager from "./question_block_manager";
+import "../stylesheets/default.css";
+import "../index.css";
 export default class SearchBar extends React.Component{
     //holds the search bar and handles user searching for a question
     state = {
@@ -8,14 +10,17 @@ export default class SearchBar extends React.Component{
     }
 
     updateList = ()=>{
-        //edit this.props.list here
-        console.log("edit list here according to search criteria");
-        var list = [];
-        let input_array = this.props.list;
-        let title = input_array[0].toUpperCase(); // does not change the value of input_array()
-        if(input_array[0].title.includes(this.state.criteria)){
+        var list = []; //holds list of questions to display
+        let input_array = this.props.list; // original list of questions
+        var search_val = this.state.criteria.toUpperCase();
+        for (let index = 0; index < input_array.length; index++) {
+            let question = input_array[index];
+            if(question.title.toUpperCase().includes(search_val) | (question.desc.toUpperCase().includes(search_val))){
             // entry contains the substring criteria
+                list.push(question);
+            }
         }
+        this.setState({question_list : list});
     }
     handleInput = (event) =>{ //updates search criteria
 		const target = event.target;
@@ -26,21 +31,20 @@ export default class SearchBar extends React.Component{
 		})
 	}
 
-    render(){
-        if(criteria != "" | criteria != null | criteria != " "){
-            console.log("display search results");
-        }
-        if((this.state.question_list == []) | (this.state.question_list == "") | (this.state.question_list == null)){
-            //saved copy of list of questions was empty
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps != this.props){
+            //update question list
             this.setState({question_list : this.props.list});
         }
+    }
+    render(){
         return(
             <div>
-                <div className="coloumn">
-                
                 <input type="text" name = "criteria" id = "criteria" onChange={evt=>this.handleInput(evt)}/>
-                <QuestionBlockManager list = {this.props.list}/>
-                </div>
+                <button onClick={()=>this.updateList()}>
+                    Search
+                </button>
+                 <QuestionBlockManager list = {this.state.question_list}/>{/**displays list of questions that match criteria */}
             </div>
         )
     }

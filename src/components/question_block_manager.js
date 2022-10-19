@@ -1,4 +1,5 @@
 import React from "react";
+import "../stylesheets/default.css";
 import Question_Block from "./question_block";
 export default class QuestionBlockManager extends React.Component{
     //handles displaying a given list of questions or a user that is banned
@@ -19,12 +20,18 @@ export default class QuestionBlockManager extends React.Component{
                 </div>
             )
         }
+        else if(this.props == "you are banned"){
+            return(<div>
+                <label>
+                    You are banned
+                </label>
+            </div>)
+        }
         else{
             return(
                 <div>
                     <label>
                         No Questions to display
-                        You may be banned
                     </label>
                 </div>
             )
