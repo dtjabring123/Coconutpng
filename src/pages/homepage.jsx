@@ -4,6 +4,7 @@ import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
 import Question_Block from '../components/question_block.js';
 import {user,setUser} from '../utils/userDetails.js';
+import SearchBar from '../components/search_bar';
 
 export default class HomePage extends React.Component {
     state = {
@@ -23,6 +24,10 @@ export default class HomePage extends React.Component {
     }
 
     componentDidMount(){ //executes on page load to display posts
+        this.getList();
+    }
+
+    getList = ()=>{
         // get posts from database to display
         var userdetails = {
             role : 0
@@ -39,6 +44,7 @@ export default class HomePage extends React.Component {
             }
         });
     }
+
     processPosts = (data) =>{//updates list of questions to display
         this.setState({questions:data});
     }
@@ -54,13 +60,12 @@ export default class HomePage extends React.Component {
     componentDidUpdate(prevProps,prevState){ //executes when the saved user is updated
         if(prevState.prev_user != this.state.prev_user){ // saved user has changed
             if(!(this.state.prev_user.role > -1)){ // if saved user is a banned user update list of questions 
-                this.componentDidMount();
+                this.setState({questions : "you are banned"})
             }
         }
     }
 
 render(){
-
     try {
         if(this.state.prev_user.emailAddress != user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
             this.setState({prev_user : user});
@@ -112,13 +117,7 @@ render(){
                             </div>
                             <div className='container1'>
                                 {/*displaying questions here*/}
-                                {
-                                this.state.questions.map((question) =>{
-                                        if((question.title != null) && (question.title != "")){
-                                            return(<Question_Block props = {question} key = {question.question_id} />)
-                                        }
-                                    })  
-                                } 
+                                <SearchBar list = {this.state.questions}/>
                             </div>
                         </div>
                 </div>);
@@ -161,16 +160,8 @@ render(){
                                 </Link>
                             
                             </div>
-                            <div className='container1'>
                                 {/*displaying questions here*/}
-                                {
-                                this.state.questions.map((question) =>{
-                                        if((question.title != null) && (question.title != "")){
-                                            return(<Question_Block props = {question} key = {question.question_id} />)
-                                        }
-                                    })  
-                                } 
-                            </div>
+                                <SearchBar list = {this.state.questions}/>
                         </div>
                 </div>);
         }
@@ -213,75 +204,10 @@ render(){
                             </Link>
                         
                         </div>
-                        <div className='container1'>
                             {/*displaying questions here*/}
-                            {
-                            this.state.questions.map((question) =>{
-                                    if((question.title != null) && (question.title != "")){
-                                        return(<Question_Block props = {question} key = {question.question_id} />)
-                                    }
-                                })  
-                            } 
-                        </div>
+                            <SearchBar list = {this.state.questions}/>
                     </div>
             </div>);
-    }
-
-    return (
-    <div class="area" >
-        <ul class="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-        </ul>
-            <div className='homestyle'>
-                <h1 className='questions'>Questions</h1>
-                <div class="row_questions">
-                    <div id = "snackbar"></div>
-                    <Link to="/">      
-                        <button className='buttonstyle' onClick={this.handleLogout}
-                            style={{marginTop:10, marginBottom:30}}>
-                            Logout
-                        </button>
-                    </Link>
-                    <Link to="/profiles">      
-                        <button className='buttonstyle'
-                            style={{marginTop:10, marginBottom:30}}>
-                            Change Profile
-                        </button>
-                    </Link>
-                    <Link to="/createQuestion">
-                        <button className='buttonstyle'
-                            style={{marginTop:10,marginBottom:30}}>
-                                Ask a Question
-                            </button>
-                    </Link>
-                    <Link to="/reportsPage">
-                        <button className='buttonstyle' id="reports_btn"
-                            style={{marginTop:10,marginBottom:30}}>
-                                View Reports
-                            </button>
-                    </Link>
-                
-                </div>
-                <div className='container1'>
-                    {/*displaying questions here*/}
-                    {
-                    this.state.questions.map((question) =>{
-                            if((question.title != null) && (question.title != "")){
-                                return(<Question_Block props = {question} key = {question.question_id} />)
-                            }
-                        })  
-                    } 
-                </div>
-            </div>
-    </div>);
+        }
 	}
 }

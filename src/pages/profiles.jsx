@@ -25,7 +25,6 @@ export default class ProfilePage extends React.Component {
 	componentDidMount(){ // executes once page is loaded
 		//change text fields to user info
 		var user_details;
-		var flag = false;
 		//call database method to get user details
 		let succ = getUserDetails();
 	 	Promise.resolve(succ).then((ret)=>{

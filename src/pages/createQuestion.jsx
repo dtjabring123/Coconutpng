@@ -8,7 +8,8 @@ export default class createQuestion extends React.Component{
 	state = { //store question title and question description for creating a question 
 		title : "",
 		description : "",
-		file : null
+		file : null,
+		code : ""
 	}
 	handleInput = (event) =>{ //updates email and password variables when user inputs
 		const target = event.target;
@@ -25,7 +26,7 @@ export default class createQuestion extends React.Component{
     handleQuestion = ()=>{
 		if(validQuestion(this.state) == true){
 			//call database method
-			let succ = askQuestion(this.state.title,this.state.description,this.state.file);
+			let succ = askQuestion(this.state.title,this.state.description,this.state.file,this.state.code);
 			Promise.resolve(succ).then((ret)=>{
 				if(ret== "success"){
 					this.output("Question Posted");
@@ -70,6 +71,10 @@ export default class createQuestion extends React.Component{
 						<div className="form-group">
 							<label htmlFor="title">Title</label>
 							<input id="title" type="text" name="title" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter} />
+						</div>
+						<div className="form-group">
+							<label htmlFor="code">Add some code</label>
+							
 						</div>
 						<div className="form-group">
 							<label htmlFor="images">Add an image</label>
