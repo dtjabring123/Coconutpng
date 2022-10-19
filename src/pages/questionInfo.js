@@ -49,11 +49,28 @@ export default function QuestionInfo(){
     }
     //set values to match data
     function displayDetails(details){
+        console.log(details);
         setQuestioner(details.isQuestioner);
         var title_lbl = document.getElementById("title");
         title_lbl.textContent = details.title;
         var description_lbl = document.getElementById("description");
         description_lbl.value = details.desc;
+        var code_lbl  = document.getElementById("code");
+        try {
+            if(details.code != ""){
+                code_lbl.value = details.code;
+            }
+            else{
+                code_lbl.visibility = false;
+                let code_label = document.getElementById("code_lbl");
+                code_label.visibility = false;
+            }  
+        } catch (error) {
+            console.log(error);
+        }
+
+        
+
         var liked_lbl = document.getElementById("liked_btn");
         if(details.liked != 0 ){
             liked_lbl.checked = true;
@@ -186,7 +203,10 @@ export default function QuestionInfo(){
                 <label htmlFor="description">Description</label>
                 <textarea className="textab" id = "description" readOnly/>
             </div>
-
+            <div className="q-group">
+                <label htmlFor="description">Code</label>
+                <textarea  id = "code" readOnly/> 
+            </div>
             <div className="q-group">
             <div className= "image_div">
                 <img id = "image" name = "image" src = ""  />
