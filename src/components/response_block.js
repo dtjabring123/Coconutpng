@@ -19,7 +19,6 @@ export default class ResponseBlock extends React.Component{
         liked : 0
     }
     componentDidMount(){ //initialize components according to data given
-        console.log(this.props);
          this.setState({description : this.props.props.description,
             author : this.props.props.user,
             likes : this.props.props.likes,
@@ -52,7 +51,11 @@ export default class ResponseBlock extends React.Component{
                 }else{
                     num = num + 1;
                 }
-                console.log("voted");
+                if(vote == "0"){
+                    this.output("unliked response")
+                }else{
+                    this.output("liked response")
+                }
                 this.setState({likes :num,liked : vote });
             }
         })
@@ -107,7 +110,6 @@ render(){
         visible_val = "visible"
     }
     //make liked button match user's liked status
-    console.log(this.state);
     var flag = false;
     if(this.state.liked == 1){
         flag = true;

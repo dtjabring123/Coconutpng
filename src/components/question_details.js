@@ -25,7 +25,6 @@ export default class QuestionDetails extends React.Component{
             this.setState({details : this.props.list, question_id : this.props.q_id,liked: this.props.list.liked});
         }
         if(prevState.question_id != this.state.question_id){
-            console.log(this.state);
             this.displayResponses();
         }
     }
