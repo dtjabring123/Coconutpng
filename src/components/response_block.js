@@ -19,7 +19,6 @@ export default class ResponseBlock extends React.Component{
         liked : 0
     }
     componentDidMount(){ //initialize components according to data given
-        console.log(this.props);
          this.setState({description : this.props.props.description,
             author : this.props.props.user,
             likes : this.props.props.likes,
@@ -65,13 +64,22 @@ export default class ResponseBlock extends React.Component{
             isQuestioner : this.props.data ,
             role : user.role
         }
-        let succ = changeMark(1,this.state.id,userObj);
+        var val = 1;
+        if(this.state.marked == 1){
+            val = 0;
+        }
+        let succ = changeMark(val,this.state.id,userObj);
         Promise.resolve(succ).then((ret)=>{
             if(ret == "success"){
-                this.output("marked as answer");
+                if(val == 1){
+                    this.output("marked as answer");
+                }else{
+                    this.output("unmarked as answer");
+                }
+                
             }
             else{
-                this.output("could not mark answer");
+                this.output("could not change mark");
             }
         })
     }
@@ -105,13 +113,17 @@ render(){
     if(this.state.liked == 1){
         flag = true;
     }
+    var marked = "Mark as Correct"
+    if(this.state.marked == 1){
+     marked = "Remove marked as Correct";
+    }
     return(
                <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
                     <h3 className="head2">Response by: {this.state.author}  
                         <div className="report">
-                            <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value="Mark as Correct" style= {{ visibility : visible_val}}/>
+                            <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value={marked} style= {{ visibility : visible_val}}/>
                         </div> 
                         </h3>
                     <p className="par">
