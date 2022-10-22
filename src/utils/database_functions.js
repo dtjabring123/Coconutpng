@@ -1273,7 +1273,7 @@ async function getBan(ban_id) {
   //Get the ban doc
   await getDoc(banRef).then((doc) => {
     ban_user = doc.data().ban_user;
-    ban_date = doc.data().ban_date.toDate().toString();
+    ban_date = doc.data().ban_date.toDate();
     ban_reports = doc.data().ban_reports;
     pass = 'success';
   })
@@ -1292,9 +1292,14 @@ async function getBan(ban_id) {
       })
   }
   //Create the JSON of the ban
+
+  var month = ban_date.getUTCMonth() + 1; //months from 1-12
+  var day = ban_date.getUTCDate();
+  var year = ban_date.getUTCFullYear();
+
   JSON = {
     user: ban_user,
-    date: ban_date,
+    date: day + "/" + month + "/" + year,
     reasons: ban_reports
   }
   return [pass, JSON];
