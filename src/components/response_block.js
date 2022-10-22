@@ -19,6 +19,7 @@ export default class ResponseBlock extends React.Component{
         liked : 0
     }
     componentDidMount(){ //initialize components according to data given
+        console.log(this.props);
          this.setState({description : this.props.props.description,
             author : this.props.props.user,
             likes : this.props.props.likes,
@@ -26,7 +27,8 @@ export default class ResponseBlock extends React.Component{
             marked : this.props.props.mark,
             question : this.props.props.question,
             date : this.props.props.date,
-            liked : this.props.liked
+            liked : this.props.liked,
+            code : this.props.props.code
            });
     //update like button to reflect database value
     components.Switch = {
@@ -129,7 +131,10 @@ render(){
                     <p className="par">
                         {this.state.description}
                     </p>
-
+                    <div className="q-group">
+                    <label htmlFor="description">Code</label>
+                    <textarea  id = "code"  value = {this.state.code} readOnly/> 
+                    </div>
                     <div className='response_card-footer'>
                         <div><input type={"button"} value={"Report"} class="rep1" onClick={()=>this.handleReport()}/></div>
                         <div> Answered on: {this.state.date}  </div>

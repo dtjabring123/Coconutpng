@@ -20,7 +20,6 @@ export default class QuestionDetails extends React.Component{
         if(prevProps.list != this.props.list){
             //update list
             this.setState({details : this.props.list, question_id : this.props.q_id});
-            console.log(this.props);
         }
     }
      handleLike=()=>{ //handles user liking question
@@ -76,13 +75,15 @@ export default class QuestionDetails extends React.Component{
             //check response given is not empty
             if((this.state.answer != null) && (this.state.answer.length > 0)){
                 //call db method to add response
-                let succ = giveResponse_or_Comment(0,this.state.question_id,this.state.answer,"");
+                let succ = giveResponse_or_Comment(0,this.state.question_id,this.state.answer,this.state.code);
                 Promise.resolve(succ).then((ret)=>{
                     if((ret[0] == "success") | (ret == "success")){
-                        this.output("Comment added successfully");
-                        //setChangeResponseList(false);
+                        this.output("Response added successfully");
                         var text_lbl = document.getElementById("answer");
                         text_lbl.value = "";
+                        text_lbl = document.getElementById("code");
+                        text_lbl.value = "";
+                        //setChangeResponseList(false);
 
                     }else{
                         this.output("Failed to add response");
@@ -92,8 +93,6 @@ export default class QuestionDetails extends React.Component{
                this.output("Your comment cannot be empty");
             }
           }
-
-
 
     render(){
         if(this.state.details == ""){
@@ -134,7 +133,12 @@ export default class QuestionDetails extends React.Component{
                     </div>
                 </div>
                 <label htmlFor="description">Post Answer</label>
+               
+                <div className="row">
                 <textarea id="answer" name = "answer" className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} />
+				<label htmlFor="code">Add some code</label>
+				<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
+				</div>
                 <input id = "answer_btn" type = "button" value = "Submit" onClick={()=>this.handleResponseAdd()}/>
                 <Link to="/homepage">      
                     <button type="submit" value="Submit" id = "home_button"/>
@@ -168,8 +172,11 @@ export default class QuestionDetails extends React.Component{
                     </div>
                 </div>
                 <label htmlFor="description">Post Answer</label>
-                <textarea id="input_field" className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} />
-                <input id = "answer" type = "button" value = "Submit" onClick={()=>this.handleResponseAdd()}/>
+                <div className="row">
+                <textarea id="answer" name = "answer" className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} />
+				<label htmlFor="code">Add some code</label>
+				<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
+				</div> <input id = "answer_btn" type = "button" value = "Submit" onClick={()=>this.handleResponseAdd()}/>
                 <Link to="/homepage">      
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
