@@ -27,7 +27,7 @@ export default class ResponseBlock extends React.Component{
             marked : this.props.props.mark,
             question : this.props.props.question,
             date : this.props.props.date,
-            liked : this.props.liked,
+            liked : this.props.props.liked,
             code : this.props.props.code
            });
     //update like button to reflect database value
