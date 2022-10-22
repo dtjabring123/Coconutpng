@@ -6,25 +6,35 @@ export default class ResponseBlocks extends React.Component{
     render(){
         let array = this.props.props;
         const questioner = this.props.data;
-        if(array.length != 0){ // list of responses is not empty
-            return (
-                <div>
-                {
-                    this.props.props.map((response)=>{
-                        return(<ResponseBlock props = {response} data = {questioner} key = {response.id}/>)   
-                       })
-                }
-               </div>
-           )
-        }else{ // no responses to display
+        try {
+            if(array.length != 0){ // list of responses is not empty
+                return (
+                    <div>
+                    {
+                        this.props.props.map((response)=>{
+                            return(<ResponseBlock props = {response} data = {questioner} key = {response.id}/>)   
+                           })
+                    }
+                   </div>
+               )
+            }else{ // no responses to display
+                return(
+                    <div>
+                        <label>
+                            No Responses Given Yet
+                        </label>
+                    </div>
+                )
+            }     
+        } catch (error) {
             return(
-                <div>
-                    <label>
-                        No Responses Given Yet
-                    </label>
-                </div>
-            )
+            <div>
+                <label>
+                 No Responses Given Yet
+                </label>
+            </div>)
         }
+
 
 
     }

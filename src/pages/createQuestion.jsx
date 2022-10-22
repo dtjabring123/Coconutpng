@@ -74,7 +74,7 @@ export default class createQuestion extends React.Component{
 						</div>
 						<div className="form-group">
 							<label htmlFor="code">Add some code</label>
-							
+							<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="images">Add an image</label>
@@ -82,7 +82,7 @@ export default class createQuestion extends React.Component{
 						</div>
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
-							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} />
 						</div>
 
 						<input id = "question" type = "button" value = "Submit" onClick={this.handleQuestion}/>

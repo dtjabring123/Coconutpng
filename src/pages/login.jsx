@@ -50,6 +50,7 @@ export default class LoginPage extends React.Component {
 	handleEnter = (event)=>{  // do nothing if enter key is pressed
         if(event.key == "Enter"){
             event.preventDefault();
+			this.handleLogin();
         }
     }
 

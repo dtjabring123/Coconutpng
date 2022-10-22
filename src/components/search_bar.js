@@ -41,10 +41,16 @@ export default class SearchBar extends React.Component{
             this.setState({question_list : this.props.list});
         }
     }
+    handleEnter = (event)=>{  // if enter key is pressed, search list
+        if(event.key == "Enter"){
+            event.preventDefault();
+            this.updateList();
+        }
+    }
     render(){
         return(
             <div>
-                <input type="text" name = "criteria" id = "criteria" onChange={evt=>this.handleInput(evt)}/>
+                <input type="text" name = "criteria" id = "criteria" onChange={evt=>this.handleInput(evt)} onKeyPress={(evt)=>this.handleEnter(evt)}/>
                 <button onClick={()=>this.updateList()}>
                     Search
                 </button>

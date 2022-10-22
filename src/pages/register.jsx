@@ -22,11 +22,6 @@ export default class RegisterPage extends React.Component {
 			[name] : value,
 		})
 	}
-	handleEnter = (event)=>{  // do nothing if enter key is pressed
-        if(event.key == "Enter"){
-            event.preventDefault();
-        }
-    }
 
 	output = (message) =>{ // method displays given message as a toast message
 		var x = document.getElementById("snackbar");
@@ -66,6 +61,13 @@ export default class RegisterPage extends React.Component {
 			});
 		}
 	}
+
+	handleEnter = (event)=>{  // when enter is pressed, attempt to register
+        if(event.key == "Enter"){
+            event.preventDefault();
+			this.handleRegister();
+        }
+    }
 	render(){
 		return (
 			<React.Fragment>

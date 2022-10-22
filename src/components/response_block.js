@@ -4,7 +4,7 @@ import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
 import { likeResponse,changeMark,createReport } from "../utils/database_functions";
 import { user } from "../utils/userDetails";
-
+import CodeSegment from "./code_segment";
 export default class ResponseBlock extends React.Component{
     //shows details about a specific response
     //handles user interactions with the response
@@ -27,7 +27,8 @@ export default class ResponseBlock extends React.Component{
             marked : this.props.props.mark,
             question : this.props.props.question,
             date : this.props.props.date,
-            liked : this.props.liked
+            liked : this.props.liked,
+            code : this.props.props.code
            });
     //update like button to reflect database value
     components.Switch = {
@@ -65,13 +66,22 @@ export default class ResponseBlock extends React.Component{
             isQuestioner : this.props.data ,
             role : user.role
         }
-        let succ = changeMark(1,this.state.id,userObj);
+        var val = 1;
+        if(this.state.marked == 1){
+            val = 0;
+        }
+        let succ = changeMark(val,this.state.id,userObj);
         Promise.resolve(succ).then((ret)=>{
             if(ret == "success"){
-                this.output("marked as answer");
+                if(val == 1){
+                    this.output("marked as answer");
+                }else{
+                    this.output("unmarked as answer");
+                }
+                
             }
             else{
-                this.output("could not mark answer");
+                this.output("could not change mark");
             }
         })
     }
@@ -105,19 +115,23 @@ render(){
     if(this.state.liked == 1){
         flag = true;
     }
+    var marked = "Mark as Correct"
+    if(this.state.marked == 1){
+     marked = "Remove marked as Correct";
+    }
     return(
-               <div class="response_container">
+        <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
                     <h3 className="head2">Response by: {this.state.author}  
                         <div className="report">
-                            <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value="Mark as Correct" style= {{ visibility : visible_val}}/>
+                            <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value={marked} style= {{ visibility : visible_val}}/>
                         </div> 
                         </h3>
                     <p className="par">
                         {this.state.description}
                     </p>
-
+                    <CodeSegment code = {this.state.code}/>
                     <div className='response_card-footer'>
                         <div><input type={"button"} value={"Report"} class="rep1" onClick={()=>this.handleReport()}/></div>
                         <div> Answered on: {this.state.date}  </div>
