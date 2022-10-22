@@ -4,7 +4,7 @@ import { tokens, components } from 'react-ui/themes/base'
 import { ThemeProvider, Switch } from 'react-ui'
 import { likeResponse,changeMark,createReport } from "../utils/database_functions";
 import { user } from "../utils/userDetails";
-
+import CodeSegment from "./code_segment";
 export default class ResponseBlock extends React.Component{
     //shows details about a specific response
     //handles user interactions with the response
@@ -120,7 +120,7 @@ render(){
      marked = "Remove marked as Correct";
     }
     return(
-               <div class="response_container">
+        <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
                     <h3 className="head2">Response by: {this.state.author}  
@@ -131,10 +131,7 @@ render(){
                     <p className="par">
                         {this.state.description}
                     </p>
-                    <div className="q-group">
-                    <label htmlFor="description">Code</label>
-                    <textarea  id = "code"  value = {this.state.code} readOnly/> 
-                    </div>
+                    <CodeSegment code = {this.state.code}/>
                     <div className='response_card-footer'>
                         <div><input type={"button"} value={"Report"} class="rep1" onClick={()=>this.handleReport()}/></div>
                         <div> Answered on: {this.state.date}  </div>

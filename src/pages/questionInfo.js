@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
-import { tokens, components } from 'react-ui/themes/base';
-import { ThemeProvider, Switch } from 'react-ui'
 import { useEffect } from "react";
 import { getQuestionInfo,getResponses,giveResponse_or_Comment,likeQuestion,createReport } from "../utils/database_functions";
 import ResponseBlocks from "../components/response_blocks";

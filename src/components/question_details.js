@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { createReport,likeQuestion,giveResponse_or_Comment } from "../utils/database_functions";
 import { tokens, components } from 'react-ui/themes/base';
 import { ThemeProvider, Switch } from 'react-ui'
+import ResponseBlocks from "../components/response_blocks";
+import CodeSegment from "./code_segment";
 export default class QuestionDetails extends React.Component{
 
     //displays a question's details in QuestionInfo.js page
@@ -109,12 +111,11 @@ export default class QuestionDetails extends React.Component{
             }
         }
 
-        if(this.state.details.code == ""){
             return(
                 <div>
-                   
                     <label htmlFor="title" id = "title">{this.state.details.title}</label>
                 <div className="report">
+                
                     <ThemeProvider tokens={tokens} components={components}>
                         <Switch id= "liked_btn" onChange={()=>this.handleLike()} />
                     </ThemeProvider>
@@ -126,46 +127,7 @@ export default class QuestionDetails extends React.Component{
                     <label htmlFor="description">Description</label>
                     <textarea className="textab" id = "description" value={this.state.details.desc} readOnly/>
                 </div>
-
-                  <div className="q-group">
-                  <div className= "image_div">
-                    <img id = "image" name = "image" src = {this.state.details.images[0]}  />
-                    </div>
-                </div>
-                <label htmlFor="description">Post Answer</label>
-               
-                <div className="row">
-                <textarea id="answer" name = "answer" className="texta" placeholder="Type your answer here" onChange={evt=>this.handleInput(evt)} />
-				<label htmlFor="code">Add some code</label>
-				<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
-				</div>
-                <input id = "answer_btn" type = "button" value = "Submit" onClick={()=>this.handleResponseAdd()}/>
-                <Link to="/homepage">      
-                    <button type="submit" value="Submit" id = "home_button"/>
-               </Link>
-                </div>)
-        }
-            return(
-                <div>
-                    <label htmlFor="title" id = "title">{this.state.details.title}</label>
-                <div className="report">
-                
-                    <ThemeProvider tokens={tokens} components={components}>
-                        <Switch id= "liked_btn" onChange={()=>this.handleLike()} />
-                    </ThemeProvider>
-                </div>
-                
-                <div className="report"><input type={"button"} value = "Report" class="rep1" onClick={()=>this.handleReport()}/></div>
-                
-    
-                <div className="q-group">
-                    <label htmlFor="description">Description</label>
-                    <textarea className="textab" id = "description" value={this.state.details.desc} readOnly/>
-                </div>
-                <div className="q-group">
-                    <label htmlFor="description">Code</label>
-                    <textarea  id = "code"  value = {this.state.details.code} readOnly/> 
-                </div>
+                    <CodeSegment code  = {this.state.details.code} />
                   <div className="q-group">
                   <div className= "image_div">
                     <img id = "image" name = "image" src = {this.state.details.images[0]}  />
@@ -177,6 +139,12 @@ export default class QuestionDetails extends React.Component{
 				<label htmlFor="code">Add some code</label>
 				<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
 				</div> <input id = "answer_btn" type = "button" value = "Submit" onClick={()=>this.handleResponseAdd()}/>
+                
+                <div className="container2">
+            {/*render responses here */}
+            <ResponseBlocks props = {this.state.response_list} data = {this.state.questioner} id = "response_container" />
+            </div>
+                
                 <Link to="/homepage">      
                     <button type="submit" value="Submit" id = "home_button"/>
                </Link>
