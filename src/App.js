@@ -8,6 +8,7 @@ import ProfilePage from './pages/profiles';
 import CreateQuestion from './pages/createQuestion';
 import QuestionInfo from './pages/questionInfo';
 import ReportsPage from './pages/reportsPage';
+import ForgotPassword from './pages/forgotPassword';
 class App extends Component {
 	render() {
 		return (
@@ -22,6 +23,7 @@ class App extends Component {
 				<Route path = "/createQuestion" element={<CreateQuestion/>}/>
 				<Route path = "questionInfo" element={<QuestionInfo/>}/>
 				<Route path = "/ReportsPage" element={<ReportsPage/>}/>
+				<Route path = "/forgotPassword" element={<ForgotPassword/>}/>
 			</Routes>
 			
 		</Router>

@@ -42,7 +42,7 @@ export default class LoginPage extends React.Component {
 				}
 			} )
 		}else{
-			 this.output(valid[1]); // database error
+			this.output(valid[1]); // database error
 		}
 	}
 	
@@ -79,6 +79,13 @@ export default class LoginPage extends React.Component {
 						</div>
 
 						<input id = "login" type = "button" value = "LOGIN" onClick={this.handleLogin}/>
+						<Link to="/register">      
+                            <input type="submit" value="Register"/>
+   						</Link>
+						<Link to="/forgotPassword">      
+                            <input type="submit" value="Forgot Password"/>
+   						</Link>
+
 						<Link to="/homepage">      
 							<button type="submit" value="LOGIN" id = "home_button"/>
    						</Link>
