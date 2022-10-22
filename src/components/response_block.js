@@ -39,15 +39,10 @@ export default class ResponseBlock extends React.Component{
       }
     }
     handleLike = () =>{ //handles user liking response
-        var like_lbl = document.getElementById(this.state.id + "like_btn");
-        var option = like_lbl.checked;
-        var vote;
-        if(option == false){
+        var vote = 1;
+        if(this.state.liked == 1){
             vote = 0;
-        }else{
-            vote = 1;
         }
-        this.setState({liked : vote});
         let succ = likeResponse(vote,this.state.id);
         Promise.resolve(succ).then((ret) =>{
             if(ret[0] == "success"){
@@ -57,7 +52,8 @@ export default class ResponseBlock extends React.Component{
                 }else{
                     num = num + 1;
                 }
-                this.setState({likes :num });
+                console.log("voted");
+                this.setState({likes :num,liked : vote });
             }
         })
     }
@@ -111,6 +107,7 @@ render(){
         visible_val = "visible"
     }
     //make liked button match user's liked status
+    console.log(this.state);
     var flag = false;
     if(this.state.liked == 1){
         flag = true;
