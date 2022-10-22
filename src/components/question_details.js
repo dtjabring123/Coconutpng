@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { createReport,likeQuestion,giveResponse_or_Comment } from "../utils/database_functions";
+import { createReport,likeQuestion,giveResponse_or_Comment,getResponses } from "../utils/database_functions";
 import { tokens, components } from 'react-ui/themes/base';
 import { ThemeProvider, Switch } from 'react-ui'
 import ResponseBlocks from "../components/response_blocks";
@@ -12,16 +12,20 @@ export default class QuestionDetails extends React.Component{
         details : "",
         question_id : "",
         answer : "",
-        code : ""
+        code : "",
+        liked : false,
+        response_list : []
     }
     componentDidMount(){
         this.setState({details : this.props.list})
-
     }
     componentDidUpdate(prevProps,prevState){
         if(prevProps.list != this.props.list){
             //update list
-            this.setState({details : this.props.list, question_id : this.props.q_id});
+            this.setState({details : this.props.list, question_id : this.props.q_id,liked: this.props.list.liked});
+        }
+        if(prevState.question_id != this.state.question_id){
+            this.displayResponses();
         }
     }
      handleLike=()=>{ //handles user liking question
@@ -40,6 +44,7 @@ export default class QuestionDetails extends React.Component{
         Promise.resolve(succ).then((ret)=>{
             if(ret[0] == "success"){
                 //call method again to change like value
+                this.setState({liked : option});
             }
         })
     }
@@ -85,7 +90,7 @@ export default class QuestionDetails extends React.Component{
                         text_lbl.value = "";
                         text_lbl = document.getElementById("code");
                         text_lbl.value = "";
-                        //setChangeResponseList(false);
+                        this.displayResponses();
 
                     }else{
                         this.output("Failed to add response");
@@ -96,11 +101,22 @@ export default class QuestionDetails extends React.Component{
             }
           }
 
+
+    displayResponses = ()=>{
+        let succ = getResponses(this.state.question_id,'response_date','desc',null,50);
+        Promise.resolve(succ).then((ret=>{  
+                 //save response array
+                 if(ret[0] == "success"){
+                    this.setState({response_list : ret[1]});
+                 }
+            })) 
+    }
+
     render(){
         if(this.state.details == ""){
             return(<div>
                 <label>
-                    Loading Details
+                    Loading Question
                 </label>
             </div>)
         }else{
@@ -110,14 +126,18 @@ export default class QuestionDetails extends React.Component{
               backgroundOff: '#000'
             }
         }
-
+        //make liked button match user's liked status
+         var flag = false;
+         if(this.state.liked == 1){
+             flag = true;
+             }
             return(
                 <div>
                     <label htmlFor="title" id = "title">{this.state.details.title}</label>
                 <div className="report">
                 
                     <ThemeProvider tokens={tokens} components={components}>
-                        <Switch id= "liked_btn" onChange={()=>this.handleLike()} />
+                        <Switch id= "liked_btn" onChange={()=>this.handleLike()} checked={flag} />
                     </ThemeProvider>
                 </div>
                 
@@ -142,7 +162,7 @@ export default class QuestionDetails extends React.Component{
                 
                 <div className="container2">
             {/*render responses here */}
-            <ResponseBlocks props = {this.state.response_list} data = {this.state.questioner} id = "response_container" />
+            <ResponseBlocks props = {this.state.response_list} data = {this.state.details.isQuestioner} id = "response_container" />
             </div>
                 
                 <Link to="/homepage">      

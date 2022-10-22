@@ -19,7 +19,6 @@ export default class ResponseBlock extends React.Component{
         liked : 0
     }
     componentDidMount(){ //initialize components according to data given
-        console.log(this.props);
          this.setState({description : this.props.props.description,
             author : this.props.props.user,
             likes : this.props.props.likes,
@@ -27,7 +26,7 @@ export default class ResponseBlock extends React.Component{
             marked : this.props.props.mark,
             question : this.props.props.question,
             date : this.props.props.date,
-            liked : this.props.liked,
+            liked : this.props.props.liked,
             code : this.props.props.code
            });
     //update like button to reflect database value
@@ -39,15 +38,10 @@ export default class ResponseBlock extends React.Component{
       }
     }
     handleLike = () =>{ //handles user liking response
-        var like_lbl = document.getElementById(this.state.id + "like_btn");
-        var option = like_lbl.checked;
-        var vote;
-        if(option == false){
+        var vote = 1;
+        if(this.state.liked == 1){
             vote = 0;
-        }else{
-            vote = 1;
         }
-        this.setState({liked : vote});
         let succ = likeResponse(vote,this.state.id);
         Promise.resolve(succ).then((ret) =>{
             if(ret[0] == "success"){
@@ -57,7 +51,12 @@ export default class ResponseBlock extends React.Component{
                 }else{
                     num = num + 1;
                 }
-                this.setState({likes :num });
+                if(vote == "0"){
+                    this.output("unliked response")
+                }else{
+                    this.output("liked response")
+                }
+                this.setState({likes :num,liked : vote });
             }
         })
     }
