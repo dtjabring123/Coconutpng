@@ -701,7 +701,7 @@ async function getQuestionInfo(question_id) {
       })
     }
   }
-  catch /* istanbul ignore next */(e) {
+  catch (/* istanbul ignore next */e) {
     //Setting the liked value to an unnecessarily obtuse and specific value so that it can be known that the user has not logged in and thus cannot like the question
     JSON.liked = 3.1415;
     console.log(e);

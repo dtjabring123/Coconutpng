@@ -4,7 +4,7 @@ import {
     changePassword, updateUserDetails, getAllQuestions, askQuestion, likeQuestion,
     getComments, getResponses, getQuestionInfo, giveResponse_or_Comment, likeResponse,
     changeMark, changePostReportValue, createReport, getAllReports, displayReport,
-    changeReportStatus, banUser, getAllBans, getBan
+    changeReportStatus, banUser, getAllBans, getBan, searchForQuestion
 } from "../utils/database_functions";
 
 //user details used for testing
@@ -139,6 +139,20 @@ describe("getAllQuestions test", () => {
     test("invalid details", () => {
         return getAllQuestions({ role: -1 }).then(output => {
             expect(output[0]).toBe("success");
+        })
+    })
+})
+
+//tests for searchForQuestion, test for valid and invalid
+describe("searchForQuestion test", () => {
+    test("valid details", () => {
+        return searchForQuestion("test").then(output => {
+            expect(output[0]).toBe("success");
+        })
+    })
+    test("invalid details", () => {
+        return searchForQuestion("inquisition").then(output => {
+            expect(output).toStrictEqual(["success",[]]);
         })
     })
 })
