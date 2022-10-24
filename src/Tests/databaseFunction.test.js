@@ -18,9 +18,9 @@ const testDetails = {
     email: "maintester@gmail.com",
     password: "dontworryBout1t"
 }
-const questionID = "YcUzPowLL2B5Oh8GbWnF";
-const responseID = "4PQZyvIGGHqnCRWrdhfo";
-const commentID = "7pcHJHZpEHyfsNbRuIe4";
+const questionID = "AXiuOJLiWGrUK7EUauKL";
+const responseID = "bH0TriMm9P2a2B4VolZi";
+const commentID = "m5Pl3z3TPxNN4WC98rxg";
 const reportQuestionID = "ny9HbIhzZUgVZOsRkHgT";
 const reportResponseID = "ZHe1NGrqwsWRTEPuL1iI";
 
@@ -36,7 +36,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -146,12 +146,12 @@ describe("getAllQuestions test", () => {
 //test for askQuestion, test for valid
 describe("askQuestion test", () => {
     test("valid details picture", () => {
-        return askQuestion("test", "test", "test").then(output => {
+        return askQuestion("test", "test", "test", "test").then(output => {
             expect(output).toBe("failed");
         })
     })
     test("valid details", () => {
-        return askQuestion("test", "test", null).then(output => {
+        return askQuestion("test", "test", null, "test").then(output => {
             expect(output).toBe("success");
         })
     })
@@ -216,12 +216,12 @@ describe("getQuestionInfo test", () => {
 //tests for giveResponse_or_Comment, tests for valid
 describe("giveResponse_or_Comment test", () => {
     test("valid details response", () => {
-        return giveResponse_or_Comment(0, questionID, "please work").then(output => {
+        return giveResponse_or_Comment(0, questionID, "please work","test code").then(output => {
             expect(output).toBe("success");
         })
     })
     test("valid details comment", () => {
-        return giveResponse_or_Comment(1, responseID, "please work").then(output => {
+        return giveResponse_or_Comment(1, responseID, "please work", "test code").then(output => {
             expect(output).toBe("success");
         })
     })
