@@ -106,8 +106,8 @@ export default class QuestionDetails extends React.Component {
           this.output("Response added successfully");
           var text_lbl = document.getElementById("answer");
           text_lbl.value = "";
-          text_lbl = document.getElementById("code");
-          text_lbl.value = "";
+          var code_lbl = document.getElementById("code_block");
+          code_lbl.value = "";
           this.displayResponses();
         } else {
           this.output("Failed to add response");
@@ -189,7 +189,7 @@ export default class QuestionDetails extends React.Component {
               readOnly
             />
           </div>
-          <CodeSegment code={this.state.details.code} />
+          <CodeSegment code={this.state.details.code} id = "code_segment" />
           <div className="q-group">
             <div className="image_div">
               <img id="image" name="image" src={this.state.details.images[0]} />
@@ -212,7 +212,7 @@ export default class QuestionDetails extends React.Component {
                   Add some code
                 </label>
                 <textarea
-                  id="code"
+                  id="code_block"
                   name="code"
                   className="texta"
                   placeholder="Add your code here"
