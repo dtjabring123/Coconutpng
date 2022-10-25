@@ -95,9 +95,9 @@ export default class LoginPage extends React.Component {
 																												className='text-[#8A8989] text-lg cursor-pointer py-5'/>
    						</Link>
 
-						{/* <Link to="/homepage">      
+						{ <Link to="/homepage">      
 							<button type="submit" value="LOGIN" id = "home_button"/>
-   						</Link> */}
+   						</Link>}
 						<Link to="/">      
                             <input type="submit" value="BACK" className=' text-slate-50 cursor-pointer bg-[#505760] px-6 py-3 rounded-md'/>
    						</Link>
