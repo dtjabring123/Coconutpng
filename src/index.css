@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   
+}
+html{
+    background-color: #232331;
+}
+
+input, button {
+    /* appearance: none;
+    background: none; */
+    border: none;
+    outline: none;
+}
+
+.App {
+     height: 100vh;
+     display: flex;
+     /* width: 100%; */
+    /* align-items: center; */
+     /* justify-content: center;  */
+    background-color: #232331; 
+}
+textarea {
+resize: both;
+ border: 1px solid #a9a9a9;
+border-radius: 5px;
+width: 20rem;
+height: 15vh;
+padding: 10px;
+}
+
+/*Here is the stuff for the snackbar(toast message) */
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  /*animations for the snackbar*/
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+form {
+    margin: 4rem 0;
+    display: block;
+    position: relative;
+}
+
+/* form::after {
+    content: '';
+    display: block;
+    position: absolute; 
+    top: -5px;
+    left: -5px;
+    right: -5px; 
+    bottom: -5px;
+    z-index: 1;
+    background-image: linear-gradient(to bottom right, #FFCE00, #FE4880 );
+} */
+
+form .form-inner {
+    /* position: relative;
+    display: block;
+    background-color: #FFF;
+    padding: 30px;
+    z-index: 2; */
+    width: 100%;
+}
+
+form .form-inner h2 {
+    color: rgb(238, 238, 238);
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+form .form-inner .form-group {
+    display: block;
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+.form-inner .form-group label{
+    display: block;
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 5px;
+    transition: 0.4s;
+}
+
+.form-inner .form-group:focus-within label {
+    color: #FE4880
+}
+
+form .form-inner .form-group input {
+    display: block;
+    width: 80%;
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    transition: 0.4s;
+}
+
+form .fomr-inner .form-group input:focus {
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
+}
+
+
+form .form-inner input[type="submit"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 120px;
+}
+
+form .form-inner input[type="button"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+
+.buttonstyle {
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    padding: 10px 15px;
+    transition: 0.4s;
+    color:#fbfafa;
+    font-weight: 700;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+form .form-inner input[type="submit"]:hover {
+    background-position : 100% 0%;
+}
+
+form .form-inner input[type="button"]:hover {
+    background-position : 100% 0%;
+}
+
+.buttonstyle:hover {
+    background-position : 100% 0%;
+}
+
+.texta {
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    width: 20rem;
+    min-height: 10vh;
+    padding: 10px;
+    
+}
+
+
+/* 
+form .form-inner .form-group {
+    display: block;
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+*/
+
+@media only screen and (max-width: 769px) {
+    form .form-inner .form-group {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}

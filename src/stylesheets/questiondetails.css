@@ -1,0 +1,143 @@
+
+form .q-inner {
+    position: relative;
+    display: block;
+    z-index: 2;
+}
+
+form .q-inner h2 {
+    color: #888;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+form .q-inner .q-group {
+    display: block;
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+.q-inner .q-group label{
+    display: block;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    transition: 0.4s;
+}
+
+.q-inner .q-group:focus-within label {
+    color: #FE4880
+}
+
+form .fomr-inner .q-group input:focus {
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
+}
+
+
+form .q-inner input[type="submit"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+    margin: auto 2rem;
+    margin-top: 2rem;
+   
+}
+
+form .q-inner input[type="button"] {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+.submit-q{
+    display: inline-block;
+    width: 20rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.forgot-p{
+    display: inline-block;
+    width: 15rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+}
+.forgot-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin: auto 0;
+    height: 100vh;
+    width: 80%;
+}
+
+form .q-inner input[type="submit"]:hover {
+    background-position : 100% 0%;
+}
+
+form .q-inner input[type="button"]:hover {
+    background-position : 100% 0%;
+}
+
+.textab {
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    width: 47vh;
+    min-height: 10vh;
+    padding: 10px;
+    pointer-events: none;
+}
+
+.report {
+    display: inline-block;
+    padding: 10px 15px;
+}
+
+.rep1 {
+    background: red !important;
+}
+
+/* form .q-inner .q-group */
+
+@media only screen and (max-width: 769px) {
+    form .q-inner .q-group {
+        display: flex;
+        width: auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        margin: auto;
+    }
+  }

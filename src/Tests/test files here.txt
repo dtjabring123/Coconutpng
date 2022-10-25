@@ -1,0 +1,16 @@
+import {validation} from '../utils/validation.js'
+
+describe("test name",() =>{
+	test("test case",() =>{
+		expect(validation.method('input')).toBe('output');
+	})
+});
+
+//test for , test for valid
+describe(" test", () => {
+    test.only("valid details", () => {
+        return ().then(output => {
+            expect(output).toBe("failed");
+        })
+    })
+})

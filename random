@@ -1,0 +1,39 @@
+<li>
+    <Link to="/">Home</Link>
+</li>
+<li>
+    <Link to="/about">About Us</Link>
+</li>
+<li>
+    <Link to="/contact">Contact Us</Link>
+</li>
+
+////
+first name
+last name
+dob
+phone
+Role
+////
+
+
+<div>
+      
+
+    <h1>Welcome to Coconut Overflow!</h1>
+<div className="row">
+<Link to="/login">      
+<button className='buttonstyle'
+    style={{marginTop:10, marginBottom:30}}>
+    Login
+</button>
+</Link>
+<Link to="/Register">      
+<button className='buttonstyle'
+    style={{marginTop:10, marginBottom:30}}>
+    Register
+</button>
+</Link>
+</div>
+
+</div>

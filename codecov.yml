@@ -1,0 +1,6 @@
+ignore:
+  -"pages"
+  -"stylesheets"
+  -"App.js"
+  -"index.css"
+  -"index.js"
