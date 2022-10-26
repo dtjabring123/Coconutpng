@@ -60,6 +60,14 @@ export default class ReportedUserDetails extends React.Component{
 			x.className = x.className.replace("show", "");
 		}, 3000);
 	}
+
+    
+    handleEnter = (event)=>{  // call handleBan if enter key is pressed
+        if(event.key == "Enter"){
+            event.preventDefault();
+			this.handleBan();
+        }
+    }
     render(){
         if(this.props.data.ban_id != this.state.prev_user.ban_id){
             this.componentDidMount();
@@ -99,7 +107,7 @@ export default class ReportedUserDetails extends React.Component{
 
                         </div>
                         <div className="report_box1">
-                            <input className="input_report" id="reason" name = "reason" placeholder="Input reason for banning user..."  onChange={evt=>this.handleInput(evt)}/>
+                            <input className="input_report" id="reason" name = "reason" placeholder="Input reason for banning user..."  onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
                             <input className="btn" value = "Ban User" type = "button" onClick={this.handleBan}/>
                         </div>
                         

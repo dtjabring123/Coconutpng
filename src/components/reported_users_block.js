@@ -1,5 +1,5 @@
 import React from "react";
-import { banUser,getAllBans,getBan } from "../utils/database_functions";
+import {getAllBans} from "../utils/database_functions";
 import ReportUserListManage from "./report_user_list_manager";
 import ReportedUserDetails from "./reported_user_details";
 export default class ReportedUsersBlock extends React.Component{
