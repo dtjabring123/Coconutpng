@@ -132,7 +132,7 @@ export default class ProfilePage extends React.Component {
 	render(){
 		return (
 			<React.Fragment>
-				<form>
+				<form className='flex justify-center mx-auto  flex-wrap w-80'>
 					<div className="form-inner">
 					<div id = "snackbar"></div>
 						<h2>Profile</h2>
@@ -175,6 +175,7 @@ export default class ProfilePage extends React.Component {
 						<Link to="/HomePage">      
                             <input type="submit" value="BACK"/>
    						</Link>
+						<div></div>
 					</div>
 				</form>
 			</React.Fragment>);

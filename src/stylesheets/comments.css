@@ -9,17 +9,17 @@ html{
     min-height: 100%;
 }
 
-.questions {
+/* .questions {
     text-align: center;
     color: #fff;
     font-size: 50px;
-}
+} */
 
-.row_questions {
+/* .row_questions {
     display: flex;
     justify-content: center;
     margin: 2rem auto;
-}
+} */
 
 body{
     min-height: 50vh;
@@ -28,7 +28,7 @@ body{
 
 .homestyle {
     width: 100%;
-    position: absolute;
+   
 }
 
 .container{
@@ -38,7 +38,7 @@ body{
 
 .container1 {
     width: 100%;
-    background: #53565A;  
+    background: #232333;  
     background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
     padding: 10px;
 }
@@ -65,16 +65,16 @@ body{
 
 .comment_card {
     padding: 20px;
-    background-color: white;
+    background-color: #ebebeb;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 0.5rem;
-    min-width: 100%;
+    width: 90%;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
 }
 
 .head, .par {
     margin-bottom: 0.4rem;
-    font-size: 11px;
+    font-size: 1rem;
     display: inline-block;
 }
 
@@ -88,6 +88,7 @@ body{
 }
 .response_card-footer {
     display: flex;
+    flex-wrap: wrap;
     font-size: .85rem;
     opacity: 1;
     gap: 30px;
@@ -121,6 +122,7 @@ body{
     min-width: 100%;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
     width: 100px;
+    margin-top: 1.5rem;
 }
 
 .rep {
@@ -128,3 +130,14 @@ body{
     background: #4e54c8 !important;
 
 }
+
+@media only screen and (max-width: 769px) {
+    .container2{
+        width: 85%;
+        margin: auto;
+    }
+    .comment_card{
+        justify-content: center;
+        width: 90%;
+    }
+  }

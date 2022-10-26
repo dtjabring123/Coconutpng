@@ -2,8 +2,6 @@
 form .q-inner {
     position: relative;
     display: block;
-    background-color: #FFF;
-    padding: 30px;
     z-index: 2;
 }
 
@@ -22,10 +20,15 @@ form .q-inner .q-group {
 
 .q-inner .q-group label{
     display: block;
-    color: #666;
-    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
     margin-bottom: 5px;
     transition: 0.4s;
+}
+
+.qtitle {
+    color: rgb(255, 255, 255);
+    font-size: 1.5rem;
 }
 
 .q-inner .q-group:focus-within label {
@@ -48,8 +51,9 @@ form .q-inner input[type="submit"] {
     color:#FFF;
     font-weight: 700;
     cursor: pointer;
+    margin: auto 2rem;
     margin-top: 2rem;
-    margin-left: 780px;
+   
 }
 
 form .q-inner input[type="button"] {
@@ -64,6 +68,43 @@ form .q-inner input[type="button"] {
     font-weight: 700;
     cursor: pointer;
 
+}
+.submit-q{
+    display: inline-block;
+    width: 20rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.forgot-p{
+    display: inline-block;
+    width: 15rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
+    background-size: 200%;
+    background-position: 0%;
+    transition: 0.4s;
+    color:#FFF;
+    font-weight: 700;
+    cursor: pointer;
+}
+.forgot-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin: auto 0;
+    height: 100vh;
+    width: 80%;
 }
 
 form .q-inner input[type="submit"]:hover {
@@ -91,3 +132,17 @@ form .q-inner input[type="button"]:hover {
 .rep1 {
     background: red !important;
 }
+
+/* form .q-inner .q-group */
+
+@media only screen and (max-width: 769px) {
+    form .q-inner .q-group {
+        display: flex;
+        width: auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        margin: auto;
+    }
+  }

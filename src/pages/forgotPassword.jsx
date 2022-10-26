@@ -1,6 +1,7 @@
 import React from "react";
 import { resetPassword } from "../utils/database_functions";
 import { Link } from "react-router-dom";
+import "../stylesheets/questiondetails.css"
 export default class ForgotPassword extends React.Component{
 
     state = {
@@ -60,23 +61,30 @@ export default class ForgotPassword extends React.Component{
 
     render(){
         return(
-            <div>
-                <div id  = "snackbar"></div>
-                <label>
+            
+            <div className="forgot-box">
+                <div className=" h-96  w-96  my-auto md:my-auto sm:my-auto xs:my-auto flex p-7 text-white flex-wrap justify-center  items-center  sm:w-80 bg-[#15161D] rounded-xl shadow-lg flex-col border-2 border-[#e7e7e77c]">
+
+
+                <div id= "snackbar"></div>
+                <label className="flex mx-auto py-3 text-lg md:text-base">
                     Enter your email address here
                 </label>
-                <input type = "text" name = "email" id = "email" onChange={(evt)=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
-                <button onClick={()=>this.handlePassword()}>
+                <input type = "text" name = "email" id = "email" onChange={(evt)=>this.handleInput(evt)} onKeyPress={this.handleEnter}
+                className="flex mx-auto my-3 py-2"/>
+                <button onClick={()=>this.handlePassword()}
+                className="forgot-p">
                     Forgot Password
                 </button>
                 <Link to="/login">      
-                    <input type="submit" value="BACK"/>
+                    <input type="submit" value="BACK" className="mt-5 text-slate-50 cursor-pointer bg-[#505760] px-6 py-3 rounded-md"/>
    				</Link>
 
                 <Link to="/">      
 					<button type="submit" value="LOGIN" id = "login_button"/>
    				</Link>
             </div>
+                </div>
         )
     }
 }

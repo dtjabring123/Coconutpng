@@ -72,8 +72,9 @@ export default class RegisterPage extends React.Component {
 		return (
 			<React.Fragment>
 				<form>
+					<div className='flex  justify-center mx-auto  flex-wrap w-80 overflow-x-hidden'>
 					<div className="form-inner">
-						<h2>Register</h2>
+						<h2 className="text-[#ebebebd8]">Register</h2>
 						{/* ERRROR */}
                         <div className="form-group">
 							<label htmlFor="name">Name</label>
@@ -122,6 +123,7 @@ export default class RegisterPage extends React.Component {
 						<Link to="/">      
                             <input type="submit" value="BACK"/>
    						</Link>
+					</div>
 					</div>
 				</form>
 			</React.Fragment>);
