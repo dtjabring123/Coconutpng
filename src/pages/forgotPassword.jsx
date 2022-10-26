@@ -68,10 +68,10 @@ export default class ForgotPassword extends React.Component{
 
                 <div id= "snackbar"></div>
                 <label className="flex mx-auto py-3 text-lg md:text-base">
-                    Enter your email address here
+                    Enter your email address below:
                 </label>
                 <input type = "text" name = "email" id = "email" onChange={(evt)=>this.handleInput(evt)} onKeyPress={this.handleEnter}
-                className="flex mx-auto my-3 py-2"/>
+                className="flex mx-auto my-3 py-2 text-black pl-2"/>
                 <button onClick={()=>this.handlePassword()}
                 className="forgot-p">
                     Forgot Password
