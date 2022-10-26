@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { logOut,getAllQuestions } from '../utils/database_functions';
 import "../stylesheets/default.css";
-import Question_Block from '../components/question_block.js';
+// import Question_Block from '../components/question_block.js';
 import {user,setUser} from '../utils/userDetails.js';
 import SearchBar from '../components/search_bar';
 
@@ -37,7 +37,7 @@ export default class HomePage extends React.Component {
         }
         var succ = getAllQuestions(userdetails);
         Promise.resolve(succ).then((ret)=>{
-            if(ret[0] == 'success'){
+            if(ret[0] === 'success'){
                 this.processPosts(ret[1]);
             }else{
                 this.output("Unable to get posts from database");
@@ -58,7 +58,7 @@ export default class HomePage extends React.Component {
 		}, 5000);
 	}
     componentDidUpdate(prevProps,prevState){ //executes when the saved user is updated
-        if(prevState.prev_user != this.state.prev_user){ // saved user has changed
+        if(prevState.prev_user !== this.state.prev_user){ // saved user has changed
             if(!(this.state.prev_user.role > -1)){ // if saved user is a banned user update list of questions 
                 this.setState({questions : "you are banned"})
             }
@@ -67,13 +67,13 @@ export default class HomePage extends React.Component {
 
 render(){
     try {
-        if(this.state.prev_user.emailAddress != user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
+        if(this.state.prev_user.emailAddress !== user.emailAddress){ //if the user was not set yet, update to user that database_functions is using
             this.setState({prev_user : user});
         }
-        if(user.role == 1){ //user is an admin so display view reports button
+        if(user.role === 1){ //user is an admin so display view reports button
             return (
-                <div class="area" >
-                    <ul class="circles">
+                <div className="area" >
+                    <ul className="circles">
                             <li></li>
                             <li></li>
                             <li></li>
@@ -85,46 +85,46 @@ render(){
                             <li></li>
                             <li></li>
                     </ul>
-                        <div className='homestyle'>
-                            <h1 className='questions'>Questions</h1>
-                            <div class="row_questions">
-                                <div id = "snackbar"></div>
+                        <div className='bg-[#15161D] overflow-x-hidden'>
+                            <h1 className=' flex p-6 text-center md:text-center sm:text-center text-[#ebebebd8] bg-[#2A2B40] drop-shadow-md text-6xl h-28 a justify-center font-bold'
+                            >Questions</h1>
+                            <div id = "snackbar"></div>
+                            <div className="flex my-9  justify-evenly sm:flex-col sm:justify-evenly sm:items-center sm:mx-auto sm:h-60">
                                 <Link to="/">      
-                                    <button className='buttonstyle' onClick={this.handleLogout}
-                                        style={{marginTop:10, marginBottom:30}}>
-                                        Logout
+                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg"
+                                     onClick={this.handleLogout}
+                                        >Logout
                                     </button>
                                 </Link>
                                 <Link to="/profiles">      
-                                    <button className='buttonstyle'
-                                        style={{marginTop:10, marginBottom:30}}>
-                                        Change Profile
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        >Change Profile
                                     </button>
                                 </Link>
                                 <Link to="/createQuestion">
-                                    <button className='buttonstyle'
-                                        style={{marginTop:10,marginBottom:30}}>
-                                            Ask a Question
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        
+                                            >Ask a Question
                                         </button>
                                 </Link>
                                 <Link to="/reportsPage">
-                                    <button className='buttonstyle' id="reports_btn"
-                                        style={{marginTop:10,marginBottom:30}}>
-                                            View Reports
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        
+                                            >View Reports
                                         </button>
                                 </Link>
-                            
                             </div>
-                            <div className='container1'>
+                            <div className=''>
                                 {/*displaying questions here*/}
-                                <SearchBar list = {this.state.questions}/>
+                                <SearchBar list = {this.state.questions}
+                                className="flex justify-center"/>
                             </div>
                         </div>
                 </div>);
         }else{
             return (
-                <div class="area" >
-                    <ul class="circles">
+                <div className="area" >
+                    <ul className="circles">
                             <li></li>
                             <li></li>
                             <li></li>
@@ -136,39 +136,13 @@ render(){
                             <li></li>
                             <li></li>
                     </ul>
-                        <div className='homestyle'>
-                            <h1 className='questions'>Questions</h1>
-                            <div class="row_questions">
-                                <div id = "snackbar"></div>
-                                <Link to="/">      
-                                    <button className='buttonstyle' onClick={this.handleLogout}
-                                        style={{marginTop:10, marginBottom:30}}>
-                                        Logout
-                                    </button>
-                                </Link>
-                                <Link to="/profiles">      
-                                    <button className='buttonstyle'
-                                        style={{marginTop:10, marginBottom:30}}>
-                                        Change Profile
-                                    </button>
-                                </Link>
-                                <Link to="/createQuestion">
-                                    <button className='buttonstyle'
-                                        style={{marginTop:10,marginBottom:30}}>
-                                            Ask a Question
-                                        </button>
-                                </Link>
-                            
-                            </div>
-                                {/*displaying questions here*/}
-                                <SearchBar list = {this.state.questions}/>
-                        </div>
+                        
                 </div>);
         }
     } catch (error) {
         return (
-            <div class="area" >
-                <ul class="circles">
+            <div className="area" >
+                <ul className="circles">
                         <li></li>
                         <li></li>
                         <li></li>
@@ -180,33 +154,41 @@ render(){
                         <li></li>
                         <li></li>
                 </ul>
-                    <div className='homestyle'>
-                        <h1 className='questions'>Questions</h1>
-                        <div class="row_questions">
+                    <div className='bg-[#15161D] overflow-x-hidden'>
+                            <h1 className=' flex p-6 text-center md:text-center sm:text-center text-[#ebebebd8] bg-[#2A2B40] drop-shadow-md text-6xl h-28 a justify-center font-bold'
+                            >Questions</h1>
                             <div id = "snackbar"></div>
-                            <Link to="/">      
-                                <button className='buttonstyle' onClick={this.handleLogout}
-                                    style={{marginTop:10, marginBottom:30}}>
-                                    Logout
-                                </button>
-                            </Link>
-                            <Link to="/profiles">      
-                                <button className='buttonstyle'
-                                    style={{marginTop:10, marginBottom:30}}>
-                                    Change Profile
-                                </button>
-                            </Link>
-                            <Link to="/createQuestion">
-                                <button className='buttonstyle'
-                                    style={{marginTop:10,marginBottom:30}}>
-                                        Ask a Question
+                            <div className="flex my-9  justify-evenly sm:flex-col sm:justify-evenly sm:items-center sm:mx-auto sm:h-60">
+                                <Link to="/">      
+                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg"
+                                     onClick={this.handleLogout}
+                                        >Logout
                                     </button>
-                            </Link>
-                        
+                                </Link>
+                                <Link to="/profiles">      
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        >Change Profile
+                                    </button>
+                                </Link>
+                                <Link to="/createQuestion">
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        
+                                            >Ask a Question
+                                        </button>
+                                </Link>
+                                <Link to="/reportsPage">
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        
+                                            >View Reports
+                                        </button>
+                                </Link>
+                            </div>
+                            <div className=''>
+                                {/*displaying questions here*/}
+                                <SearchBar list = {this.state.questions}
+                                className="flex justify-center"/>
+                            </div>
                         </div>
-                            {/*displaying questions here*/}
-                            <SearchBar list = {this.state.questions}/>
-                    </div>
             </div>);
         }
 	}

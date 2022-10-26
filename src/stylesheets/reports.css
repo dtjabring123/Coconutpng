@@ -23,14 +23,14 @@
     border-radius: 4px;
 }
 
-.buttonstyle{
+/* .buttonstyle{
 float: right;
 margin: 2.6rem;
-}
+} */
 .grid-item-header{
     display: flex;
     grid-template-columns: 1fr 1fr;
-    background-color: rgb(213, 116, 37);
+    background-color: rgb(148, 95, 127);
     width: 100%;
     min-height: 5vh;
     font-size: 20px;
@@ -44,7 +44,7 @@ margin: 2.6rem;
     grid-template-columns: 1fr 1fr;
     width: 100%;
      min-height: 5vh;
-    background-color: rgb(213, 116, 37);
+    /*background-color: rgb(213, 116, 37);*/
     color: #ffffff;
     align-items: center;
     text-align: center;
@@ -55,7 +55,7 @@ margin: 2.6rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
-    background-color: darkblue;
+    background-color: rgb(35 35 49 / var(--tw-bg-opacity));
     color: #ffffff;
     align-items: center;
     text-align: center;
@@ -262,4 +262,3 @@ margin: 2.6rem;
     height: 8vh;
     color: #f5f5f5;
 }
-
