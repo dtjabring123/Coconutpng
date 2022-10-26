@@ -11,7 +11,7 @@ export default function QuestionBlock(props){
 
   function handleClick(){} //create initial local onclick handler
     return(
-        <div className="container" onClick={handleClick=()=>{ //onClick for transfering page
+        <div className="container" onClick={handleClick=()=>{ //onClick for transfering from homepage to questionDetails page, will show details of question clicked
             navigate('/questionInfo',{state:{id:1,name:id}});
             
             console.log(props.props.title);

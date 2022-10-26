@@ -12,6 +12,7 @@ import ResponseBlocks from "../components/response_blocks";
 import CodeSegment from "./code_segment";
 export default class QuestionDetails extends React.Component {
   //displays a question's details in QuestionInfo.js page
+  //handles updating the list of responses when a user has added a response
   state = {
     details: "",
     question_id: "",
@@ -25,7 +26,7 @@ export default class QuestionDetails extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.list != this.props.list) {
-      //update list
+      //update question details
       this.setState({
         details: this.props.list,
         question_id: this.props.q_id,
@@ -33,7 +34,7 @@ export default class QuestionDetails extends React.Component {
       });
     }
     if (prevState.question_id != this.state.question_id) {
-      this.displayResponses();
+      this.displayResponses(); // update responses displayed
     }
   }
   handleLike = () => {
@@ -119,6 +120,7 @@ export default class QuestionDetails extends React.Component {
   };
 
   displayResponses = () => {
+    //fetches the list of responses from the database
     let succ = getResponses(
       this.state.question_id,
       "response_date",

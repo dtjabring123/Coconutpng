@@ -66,7 +66,7 @@ export default class createQuestion extends React.Component{
             <React.Fragment>
                 <form>
                     <div id = "snackbar"></div>
-																				<div className="flex flex-wrap w-full h-full justify-center mx-auto  sm:w-80 overflow-x-hidden">
+					<div className="flex flex-wrap w-full h-full justify-center mx-auto  sm:w-80 overflow-x-hidden">
                     <div className="form-inner">
 						<h2>Ask a Question</h2>
 						<div className="form-group">

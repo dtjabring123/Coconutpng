@@ -1,6 +1,8 @@
 import React from "react";
 
 export default class CodeSegment extends React.Component{
+    //handles displaying a segment of code 
+    // will display nothing if there is no code to display
     render(){
         if(this.props.code == ""){
             return(<div>
