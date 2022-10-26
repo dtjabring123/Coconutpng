@@ -12,7 +12,6 @@ export default function QuestionInfo(){
     useEffect(()=>{
         //runs when page is loaded
         initialiseValues(location.state.name); //start loading details about the question
-       // displayResponses(location.state.name);
     })
 
     //get data from db about particular question
@@ -33,7 +32,7 @@ export default function QuestionInfo(){
     }
 
 
-      function output(message){ //output is given a message and displays a toast message of the input
+    function output(message){ //output is given a message and displays a toast message of the input
 		var x = document.getElementById("snackbar");
 		x.className = "show";
 		x.innerHTML = message;
@@ -47,12 +46,11 @@ export default function QuestionInfo(){
         <form>
         <div className="q-inner">
         <div id = "snackbar"></div>
-        <QuestionDetails list = {questionData} q_id={location.state.name} />
-
+            <QuestionDetails list = {questionData} q_id={location.state.name} />
             <Link to="/homepage">      
                 <input type="submit" value="BACK"/>
-               </Link>
-            </div>
+            </Link>
+        </div>
     </form>
     )
 }

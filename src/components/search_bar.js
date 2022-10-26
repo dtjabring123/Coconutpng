@@ -9,7 +9,7 @@ export default class SearchBar extends React.Component {
     question_list: [], //holds edited version of list
   };
 
-  updateList = () => {
+  updateList = () => { // searches for questions that contain the user's criteria
     var list = []; //holds list of questions to display
     let input_array = this.props.list; // original list of questions
     var search_val = this.state.criteria.toUpperCase();
