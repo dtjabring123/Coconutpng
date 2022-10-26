@@ -93,6 +93,11 @@ export default class ReportReview extends React.Component{
             }
         })
     }
+    handleEnter = (event)=>{  // do nothing if enter key is pressed
+        if(event.key == "Enter"){
+            event.preventDefault();
+        }
+    }
 
 
     //else call db method, store values and then display returned vals inside if ret == success statement
@@ -106,7 +111,7 @@ export default class ReportReview extends React.Component{
                        <ReviewBlock data = {this.props.reportJSON}/>
                     </div>
                     <div className="report_box">
-                    <input  className="input_report" name = "reason" id = "reason" type = "text" placeholder="Input reason for removing user..." onChange={evt=>this.handleInput(evt)}/>
+                    <input  className="input_report" name = "reason" id = "reason" type = "text" placeholder="Input reason for removing user..." onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
                     <input className="btn" id = "remove" type='submit' value = "Remove" onClick={this.handleRemove}/>
                     <input className="btn" id = "ignore" type = "button" value = "Ignore" onClick={this.handleIgnore}/>
                     </div>
