@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app'
 
 import {
   getFirestore, collection, getDocs, doc, query, where, onSnapshot, addDoc, getDoc, startAt, startAfter, endAt, endBefore, orderBy, limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-  deleteDoc, toDate,
+  deleteDoc, toDate
 } from 'firebase/firestore'
 
 import {
