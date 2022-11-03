@@ -155,10 +155,20 @@ async function getUserDetails() {
     //Try catch to make sure that the user has logged in
     
     //Used to make sure we wait for the email in case the user refreshes the page
+    let timeout = {
+      time:0
+    };
+
     while(true){
       if(auth.currentUser.email!=null){
         break;
       }
+      if(timeout.time>0){
+        return [pass,JSONobj]; //In the case that we timed out then we should fail
+      }
+      setTimeout(function(timeout){
+        timeout.time++;
+      },1000);
     }
     const userRef = doc(db, "Users", auth.currentUser.email);
 
