@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app'
 
 import {
   getFirestore, collection, getDocs, doc, query, where, onSnapshot, addDoc, getDoc, startAt, startAfter, endAt, endBefore, orderBy, limit, updateDoc, increment, arrayRemove, arrayUnion, setDoc, serverTimestamp,
-  deleteDoc, toDate
+  deleteDoc, toDate,
 } from 'firebase/firestore'
 
 import {
@@ -153,6 +153,13 @@ async function getUserDetails() {
 
   try {
     //Try catch to make sure that the user has logged in
+    
+    //Used to make sure we wait for the email in case the user refreshes the page
+    while(true){
+      if(auth.currentUser.email!=null){
+        break;
+      }
+    }
     const userRef = doc(db, "Users", auth.currentUser.email);
 
     await getDoc(userRef)
