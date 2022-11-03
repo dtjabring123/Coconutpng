@@ -32,7 +32,8 @@ Note, that these restrictions apply for registered users that are logged in and 
 ## Documentation
 Most documentation can be found within the Wiki of this repository. Unfortunately, due to picture size and compression, some of the UML diagrams have become distorted and thus reduced their readability. To remedy this, the diagrams in their full factor were submitted (alongside all other documentation not included in the Wiki) to Moodle.
 
-##Badges
+## Badges
+
 [![Coconutpng](https://circleci.com/gh/dtjabring123/Coconutpng.svg?style=shield)](https://app.circleci.com/pipelines/github/dtjabring123/Coconutpng)
 [![codecov](https://codecov.io/gh/dtjabring123/Coconutpng/branch/main/graph/badge.svg?token=JXHN6KRQH0)](https://codecov.io/gh/dtjabring123/Coconutpng)
 
