@@ -316,12 +316,17 @@ async function getAllQuestions(userJSON) {
             if (doc.data().question_reported == 0) {
               //Then the question has not been 'removed' and should be visible
               //Create the JSON representing the question
+              var date = doc.data().question_date.toDate();
+              var month = date.getUTCMonth() + 1; //months from 1-12
+              var day = date.getUTCDate();
+              var year = date.getUTCFullYear();
               var Question = {
                 "title": doc.data().question_title,
                 "likes": doc.data().question_likes,
                 "author": doc.data().question_user,
                 "question_id": doc.id,
-                "desc": doc.data().question_desc
+                "desc": doc.data().question_desc,
+                "date": day + "/" + month + "/" + year,
               }
               JSONarr.push(Question);
             }
