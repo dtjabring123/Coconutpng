@@ -150,7 +150,6 @@ async function getUserDetails() {
   //Get a user reference
   var pass = 'failed';
   var JSONobj = null;
-
   try {
     //Try catch to make sure that the user has logged in
     const userRef = doc(db, "Users", auth.currentUser.email);

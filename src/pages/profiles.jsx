@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { updateUserDetails, getUserDetails,changePassword} from '../utils/database_functions';
+import { updateUserDetails, getUserDetails,changePassword, CompareUserID} from '../utils/database_functions';
 import { validation } from '../utils/validation';
 export default class ProfilePage extends React.Component {
 	state = { // store values that can be edited by the user
@@ -8,6 +8,8 @@ export default class ProfilePage extends React.Component {
 		lastname : null,
 		phone : null,
 		password : null,
+		id : null,
+		admincode : null
 	}
 	handleInput = (event) =>{ // updates state values to reflect user input
 		const target = event.target;
@@ -20,31 +22,37 @@ export default class ProfilePage extends React.Component {
     handleEnter = (event)=>{  // do nothing if enter key is pressed
         if(event.key == "Enter"){
             event.preventDefault();
+			this.handleChanges();
         }
     }
+
+	updateValues = (user_details) =>{
+		var name_lbl = document.getElementById("name");
+		name_lbl.value = user_details.firstName;
+		var lname_lbl = document.getElementById("lastname");
+		lname_lbl.value = user_details.lastName;
+		var dob_lbl = document.getElementById("dob_field");
+		dob_lbl.value = user_details.DoB;
+		var phonenum_lbl = document.getElementById("phone");
+		phonenum_lbl.value = user_details.phoneNumber;
+		if(user_details.role == 1){ 
+		   var admin_lbl = document.getElementById("admin");
+		   admin_lbl.value = "admin";
+		}
+		var email_lbl = document.getElementById("email");
+		email_lbl.value = user_details.emailAddress;
+	}
+
 	componentDidMount(){ // executes once page is loaded
 		//change text fields to user info
 		var user_details;
+		this.output("Loading details");
 		//call database method to get user details
 		let succ = getUserDetails();
 	 	Promise.resolve(succ).then((ret)=>{
 		 		if(ret[0] == "success"){ // user details received
-					user_details = ret[1];
 					//update fields
-					var name_lbl = document.getElementById("name");
-					name_lbl.value = user_details.firstName;
-					var lname_lbl = document.getElementById("lastname");
-					lname_lbl.value = user_details.lastName;
-					var dob_lbl = document.getElementById("dob_field");
-					dob_lbl.value = user_details.DoB;
-					var phonenum_lbl = document.getElementById("phone");
-					phonenum_lbl.value = user_details.phoneNumber;
-					if(user_details.role == 1){ 
-					   var admin_lbl = document.getElementById("admin");
-					   admin_lbl.value = "admin";
-					}
-					var email_lbl = document.getElementById("email");
-					email_lbl.value = user_details.emailAddress;
+					this.updateValues(ret[1]);
 		 		}
 		 		else{
 		 			this.output("Log in credentials have expired. Please log in again");
@@ -52,6 +60,8 @@ export default class ProfilePage extends React.Component {
 		 	} )
 	}
 	handleChanges=()=>{ // method updates user info given that the input is valid 
+		console.log(this.state);
+		//let var = CompareUserID(email,id);
 		//change password
 		if(this.state.password != null && this.state.password.length > 0){
 			//validate password
@@ -163,13 +173,18 @@ export default class ProfilePage extends React.Component {
 						</div>
 
 						<div className="form-group">
+							<label htmlFor="id">ID Number</label>
+							<input id="id" type="email" name="id"  onKeyPress={this.handleEnter}/>
+						</div>
+
+						<div className="form-group">
 							<label htmlFor="password">Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}/>
 						</div>
 
 						<div className="form-group">
 							<label htmlFor="admin">Admin Code</label>
-							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} readOnly={true}  onKeyPress={this.handleEnter}/>
+							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}/>
 						</div>
                         <input type="button" value="SAVE" onClick={this.handleChanges} />
 						<Link to="/HomePage">      

@@ -7,6 +7,7 @@ export default function QuestionBlock(props){
     let id = props.props.question_id;
     let likes = props.props.likes;
     let author = props.props.author;
+    let date = props.props.date;
     const navigate = useNavigate();
 
   function handleClick(){} //create initial local onclick handler
@@ -22,6 +23,7 @@ export default function QuestionBlock(props){
                     <div className='comment_card-footer'>
                         <div> Written by: {author}</div>
                         <div> Likes = {likes}</div>
+                        <div> Date: {date}</div>
                     </div>
                 </div>
 
