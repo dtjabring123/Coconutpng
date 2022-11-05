@@ -136,7 +136,35 @@ render(){
                             <li></li>
                             <li></li>
                     </ul>
-                        
+                    <div className='bg-[#15161D] overflow-x-hidden'>
+                            <h1 className=' flex p-6 text-center md:text-center sm:text-center text-[#ebebebd8] bg-[#2A2B40] drop-shadow-md text-6xl h-28 a justify-center font-bold'
+                            >Questions</h1>
+                            <div id = "snackbar"></div>
+                            <div className="flex my-9  justify-evenly sm:flex-col sm:justify-evenly sm:items-center sm:mx-auto sm:h-60">
+                                <Link to="/">      
+                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg"
+                                     onClick={this.handleLogout}
+                                        >Logout
+                                    </button>
+                                </Link>
+                                <Link to="/profiles">      
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        >Change Profile
+                                    </button>
+                                </Link>
+                                <Link to="/createQuestion">
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                        
+                                            >Ask a Question
+                                        </button>
+                                </Link>
+                            </div>
+                            <div className=''>
+                                {/*displaying questions here*/}
+                                <SearchBar list = {this.state.questions}
+                                className="flex justify-center"/>
+                            </div>
+                        </div>
                 </div>);
         }
     } catch (error) {
