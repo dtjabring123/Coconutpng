@@ -99,8 +99,12 @@ body{
 }
 
 .head2 {
-    font-size: 1rem;
-    text-align: center;
+    display: flex;
+    /* font-size: 1rem; */
+    /* text-align: center; */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .response_container {

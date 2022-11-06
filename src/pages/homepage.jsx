@@ -91,7 +91,7 @@ render(){
                             <div id = "snackbar"></div>
                             <div className="flex my-9  justify-evenly sm:flex-col sm:justify-evenly sm:items-center sm:mx-auto sm:h-60">
                                 <Link to="/">      
-                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg"
+                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg sm:px-10"
                                      onClick={this.handleLogout}
                                         >Logout
                                     </button>
@@ -108,7 +108,7 @@ render(){
                                         </button>
                                 </Link>
                                 <Link to="/reportsPage">
-                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg'
+                                    <button className='p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg sm:px-5'
                                         
                                             >View Reports
                                         </button>
@@ -188,7 +188,7 @@ render(){
                             <div id = "snackbar"></div>
                             <div className="flex my-9  justify-evenly sm:flex-col sm:justify-evenly sm:items-center sm:mx-auto sm:h-60">
                                 <Link to="/">      
-                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg"
+                                    <button className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-lg font-larg sm:p-4"
                                      onClick={this.handleLogout}
                                         >Logout
                                     </button>

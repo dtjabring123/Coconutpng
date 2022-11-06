@@ -62,13 +62,13 @@ export default class SearchBar extends React.Component {
             type="text"
             name="criteria"
             id="criteria"
-            className="rounded-sm"
+            className="rounded-sm pl-2"
             onChange={(evt) => this.handleInput(evt)}
             onKeyPress={(evt) => this.handleEnter(evt)}
           />
           <button
             onClick={() => this.updateList()}
-            className="p-3 text-[#f5f5f5e5] cursor-pointer bg-[#35365F] hover:bg-[#696cffda] rounded-sm font-larg"
+            className="p-3 text-[#f5f5f5e5] cursor-pointer  bg-[#35365F] hover:bg-[#696cffda] rounded-sm font-larg"
           >
             Search
           </button>

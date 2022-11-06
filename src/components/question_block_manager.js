@@ -7,7 +7,7 @@ export default class QuestionBlockManager extends React.Component{
         if(this.props.list == "you are banned"){
             //user is banned so give relevant message
             return(<div>
-                <label>
+                <label className="text-white">
                     You are banned
                 </label>
             </div>)

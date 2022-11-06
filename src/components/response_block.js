@@ -5,6 +5,11 @@ import { ThemeProvider, Switch } from 'react-ui'
 import { likeResponse,changeMark,createReport } from "../utils/database_functions";
 import { user } from "../utils/userDetails";
 import CodeSegment from "./code_segment";
+import markIcon from "../img/mark.png"
+const tech={
+    color:'green',
+    backGroundImage: markIcon
+}
 export default class ResponseBlock extends React.Component{
     //shows details about a specific response
     //handles user interactions with the response
@@ -18,6 +23,7 @@ export default class ResponseBlock extends React.Component{
         date : "",
         liked : 0
     }
+    
     componentDidMount(){ //initialize components according to data given
          this.setState({description : this.props.props.description,
             author : this.props.props.user,
@@ -37,6 +43,8 @@ export default class ResponseBlock extends React.Component{
         }
       }
     }
+
+
     handleLike = () =>{ //handles user liking response
         var vote = 1;
         if(this.state.liked == 1){
@@ -117,16 +125,21 @@ render(){
     var marked = "Mark as Correct"
     if(this.state.marked == 1){
      marked = "Remove marked as Correct";
+        
     }
     return(
         <div class="response_container">
            <div id = "snackbar" />
                 <div className='response_card'>
-                    <h3 className="head2">Response by: {this.state.author}  
+                    <div className="mark-box">
+
+                    <h3 className="head2" >Response by: {this.state.author}  { this.state.marked ==1 ? <img src={markIcon}
+                   className="mark-icon" ></img>:""}
+                        </h3>
                         <div className="report">
                             <input type = "button" id = "mark_btn" class="rep" onClick={() =>this.handleMarkResponse()} value={marked} style= {{ visibility : visible_val}}/>
                         </div> 
-                        </h3>
+                    </div>
                     <p className="par">
                         {this.state.description}
                     </p>

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+img{
+    margin: 1.5rem 0;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -19,6 +23,15 @@ input, button {
     outline: none;
 }
 
+.mark-icon{
+   height: 1.2rem;
+   margin-left: 5px;
+}
+.mark-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .App {
      height: 100vh;
      display: flex;

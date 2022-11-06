@@ -20,7 +20,7 @@ export default class ResponseBlocks extends React.Component{
             }else{ // no responses to display
                 return(
                     <div>
-                        <label>
+                        <label className="text-white">
                             No Responses Given Yet
                         </label>
                     </div>
@@ -29,7 +29,7 @@ export default class ResponseBlocks extends React.Component{
         } catch (error) {
             return(
             <div>
-                <label>
+                <label className="text-white">
                  No Responses Given Yet
                 </label>
             </div>)

@@ -140,7 +140,7 @@ export default class QuestionDetails extends React.Component {
     if (this.state.details == "") {
       return (
         <div>
-          <label>Loading Question</label>
+          <label className="text-white">Loading Question</label>
         </div>
       );
     } else {
