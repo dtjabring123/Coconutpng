@@ -274,11 +274,13 @@ export default class ProfilePage extends React.Component {
                 onChange={(evt) => this.handleInput(evt)}
               />
             </div>
+            <div className="btns">
 
             <input type="button" value="SAVE" onClick={this.handleChanges} />
             <Link to="/HomePage">
               <input type="submit" value="BACK" />
             </Link>
+            </div>
             <div></div>
           </div>
         </form>

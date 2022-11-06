@@ -66,7 +66,7 @@ export default class createQuestion extends React.Component{
             <React.Fragment>
                 <form>
                     <div id = "snackbar"></div>
-					<div className="flex flex-wrap w-full h-full justify-center mx-auto  sm:w-80 overflow-x-hidden">
+					<div className="flex flex-wrap w-[80%] h-full justify-center mx-auto  sm:w-80 ">
                     <div className="form-inner">
 						<h2>Ask a Question</h2>
 						<div className="form-group">
@@ -85,14 +85,16 @@ export default class createQuestion extends React.Component{
 							<label htmlFor="description">Description</label>
 							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} />
 						</div>
-
+						<div className="btns">
 						<input id = "question" type = "button" value = "Submit" onClick={this.handleQuestion}/>
-						<Link to="/homepage">      
-							<button type="submit" value="Submit" id = "home_button"/>
-   						</Link>
-						<Link to="/homepage">      
-                            <input type="submit" value="BACK"/>
-   						</Link>
+
+							<Link to="/homepage">      
+								<button type="submit" value="Submit" id = "home_button"/>
+							</Link>
+							<Link to="/homepage">      
+								<input type="submit" value="BACK"/>
+							</Link>
+						</div>
                         </div>
 																								</div>
                 </form>

@@ -111,7 +111,7 @@ export default class ReportReview extends React.Component{
                        <ReviewBlock data = {this.props.reportJSON}/>
                     </div>
                     <div className="report_box">
-                    <input  className="input_report" name = "reason" id = "reason" type = "text" placeholder="Input reason for removing user..." onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
+                    <input className="input_report" name = "reason" id = "reason" type = "text" placeholder="Input reason for removing user..." onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
                     <input className="btn" id = "remove" type='submit' value = "Remove" onClick={this.handleRemove}/>
                     <input className="btn" id = "ignore" type = "button" value = "Ignore" onClick={this.handleIgnore}/>
                     </div>
@@ -122,7 +122,7 @@ export default class ReportReview extends React.Component{
         }else{ // no report is selected
             return(
                 <div>
-                <label>
+                <label className="text-white" >
                     No report selected
                 </label>
                 </div>

@@ -74,13 +74,13 @@ export default class LoginPage extends React.Component {
 						<div className=" flex justify-between w-[100%]">
 							<label htmlFor="email" className=' text-[#ebebeb] justify-self-end text-lg mx-3'>Email</label>
 							<input id="email" type="email" name="email" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}
-							className="bg-[#e0e0e0] w-auto  justify-self-center "/>
+							className="bg-[#e0e0e0] w-auto pl-2 justify-self-center "/>
 						</div>
 
 						<div className="flex justify-between  w-[100%]">
 							<label htmlFor="password" className=' text-[#ebebeb] text-lg mx-3'>Password</label>
 							<input id="password" type="password" name="password" onChange={evt=>this.handleInput(evt)}  onKeyPress={this.handleEnter}
-							className="bg-[#e0e0e0] w-auto  justify-self-center"/>
+							className="bg-[#e0e0e0] w-auto pl-2 justify-self-center"/>
 						</div>
 						</div>
 

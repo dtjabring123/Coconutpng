@@ -72,7 +72,7 @@ export default class RegisterPage extends React.Component {
 		return (
 			<React.Fragment>
 				<form>
-					<div className='flex  justify-center mx-auto  flex-wrap w-80 overflow-x-hidden'>
+					<div className='flex  justify-center mx-auto  flex-wrap w-80 overflow-x-hidden '>
 					<div className="form-inner">
 						<h2 className="text-[#ebebebd8]">Register</h2>
 						{/* ERRROR */}
@@ -115,6 +115,7 @@ export default class RegisterPage extends React.Component {
 							<label htmlFor="admin">Admin Code</label>
 							<input id="admin" type="string" name="admin" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter}/>
 						</div>
+						<div className="btns">
 
 						<input id = "register" type = "button" value = "REGISTER" onClick={this.handleRegister}/>
 						<Link to="/homepage">      
@@ -123,6 +124,7 @@ export default class RegisterPage extends React.Component {
 						<Link to="/">      
                             <input type="submit" value="BACK"/>
    						</Link>
+						</div>
 					</div>
 					</div>
 				</form>

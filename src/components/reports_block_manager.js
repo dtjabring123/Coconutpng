@@ -22,7 +22,7 @@ export default class ReportsBlockManager extends React.Component{
         }else{ // list of reports is empty 
             return(
                 <div>
-                    <label>
+                    <label className="text-white">
                         No reports
                     </label>
                 </div>

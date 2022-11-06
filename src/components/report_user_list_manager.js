@@ -17,7 +17,7 @@ export default class ReportUserListManage extends React.Component{
         } catch (error) {
             return(
                 <div>
-                    <label>
+                    <label className="text-white">
                         No reported users
                     </label>
                 </div>

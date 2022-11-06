@@ -86,7 +86,7 @@ export default class ReportedUserDetails extends React.Component{
                 return(
                     <div>
                         <div name = "snackbar" id = "snackbar"/>
-                        <label>
+                        <label className="text-white">
                             Could not fetch details of user 
                         </label>
                      </div>

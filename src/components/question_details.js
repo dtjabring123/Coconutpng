@@ -156,7 +156,9 @@ export default class QuestionDetails extends React.Component {
         flag = true;
       }
       return (
-        <div className=" min-w-full xl:w-screen lg:w-screen ml-8  md:w-screen  sm:mx-auto md:justify-center sm:justify-center  sm:w-96">
+        <div className=" 	w-auto overflow-x-hidden lg:justify-center	 ml-8   sm:mx-auto md:justify-center sm:justify-center  sm:w-96">
+          <div className="header-x">
+
           <label htmlFor="title" id="title" className="qtitle">
             {this.state.details.title}
           </label>
@@ -177,6 +179,8 @@ export default class QuestionDetails extends React.Component {
               class="rep1"
               onClick={() => this.handleReport()}
             />
+          </div>
+            {/* here */}
           </div>
 
           <div className="q-group">

@@ -32,7 +32,7 @@ export default class QuestionBlockManager extends React.Component{
             //no questions have been received yet
             return(
                 <div>
-                    <label>
+                    <label className="text-white">
                         No Questions to display
                     </label>
                 </div>

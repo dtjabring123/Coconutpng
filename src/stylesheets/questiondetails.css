@@ -29,6 +29,7 @@ form .q-inner .q-group {
 .qtitle {
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
+    
 }
 
 .q-inner .q-group:focus-within label {
@@ -86,7 +87,7 @@ form .q-inner input[type="button"] {
 
 .forgot-p{
     display: inline-block;
-    width: 15rem;
+    width: 16rem;
     padding: 10px 15px;
     border-radius: 8px;
     background-image: linear-gradient(to right, #ffce00 50%, #FFCE00 50%, #FE4880 );
@@ -97,6 +98,10 @@ form .q-inner input[type="button"] {
     font-weight: 700;
     cursor: pointer;
 }
+.forgot-p:hover{
+    background-position : 100% 0%;
+}
+
 .forgot-box{
     display: flex;
     justify-content: center;

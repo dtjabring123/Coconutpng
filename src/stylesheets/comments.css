@@ -51,16 +51,19 @@ body{
 
 .comment_container {
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.comment_container::before {
+/* .comment_container::before {
     content: "";
     background-color: rgb(173, 172, 172);
     position: absolute;
     min-height: 100%;
     width:1px;
-    left: -10px;
-}
+    left: 23px;
+} */
 
 .comment_card {
     padding: 20px;
@@ -139,4 +142,5 @@ body{
         justify-content: center;
         width: 90%;
     }
+    .btns{}
   }

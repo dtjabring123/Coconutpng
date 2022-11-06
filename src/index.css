@@ -31,7 +31,7 @@ textarea {
 resize: both;
  border: 1px solid #a9a9a9;
 border-radius: 5px;
-width: 100%;
+width: 90%;
 height: 15vh;
 padding: 10px;
 margin-bottom: 1.2rem;
@@ -124,7 +124,11 @@ form .form-inner .form-group input {
 form .fomr-inner .form-group input:focus {
     box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
 }
-
+.btns{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+}
 
 form .form-inner input[type="submit"] {
     display: inline-block;
@@ -137,7 +141,7 @@ form .form-inner input[type="submit"] {
     color:#FFF;
     font-weight: 700;
     cursor: pointer;
-    margin-left: 120px;
+    
 }
 
 form .form-inner input[type="button"] {
@@ -201,11 +205,37 @@ form .form-inner .form-group {
     margin-bottom: 15px;
 }
 */
+.q-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #666;
+    width: 80vw;
+}
 
 @media only screen and (max-width: 769px) {
     form .form-inner .form-group {
         display: block;
         width: 100%;
         margin-bottom: 15px;
+    }
+    .btns{
+        width: 80%;
+    }
+    .report_box {
+        height: auto;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .header-x{
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
     }
 }
