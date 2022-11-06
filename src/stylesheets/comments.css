@@ -38,8 +38,7 @@ body{
 
 .container1 {
     width: 100%;
-    background: #232333;  
-    background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+    background: #232333;
     padding: 10px;
 }
 .container2 {
