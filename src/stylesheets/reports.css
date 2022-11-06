@@ -66,6 +66,7 @@ margin: 2.6rem;
   display: grid;
   height: 20vh;
   border: 1px solid #fff;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
 }
@@ -101,6 +102,7 @@ margin: 2.6rem;
 
 .ban-box1{
     background-color: #f5f5f5;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

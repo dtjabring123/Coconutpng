@@ -44,7 +44,7 @@ textarea {
 resize: both;
  border: 1px solid #a9a9a9;
 border-radius: 5px;
-width: 90%;
+width: 60vw;
 height: 15vh;
 padding: 10px;
 margin-bottom: 1.2rem;
@@ -204,7 +204,7 @@ form .form-inner input[type="button"]:hover {
 .texta {
     border: 1px solid #a9a9a9;
     border-radius: 5px;
-    width: 20rem;
+    /* width: 20rem; */
     min-height: 10vh;
     padding: 10px;
     
@@ -250,5 +250,14 @@ form .form-inner .form-group {
         flex-direction: column;
         align-items: center;
 
+    }
+    textarea {
+        resize: both;
+        border: 1px solid #a9a9a9;
+        border-radius: 5px;
+        width: 100%;
+        height: 15vh;
+        padding: 10px;
+        margin-bottom: 1.2rem;
     }
 }

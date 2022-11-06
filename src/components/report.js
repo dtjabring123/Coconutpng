@@ -11,8 +11,9 @@ export default class Report extends React.Component{
     render(){
         return(
             <div  className="tester" onClick={this.handleClick}>
-                    <div className="grid-container">
-                        <div className="grid-item">
+                    <div className="grid-container cursor-pointer">
+                        <div className="grid-item cursor-pointer">
+                           
                         {this.props.data.date}
                         </div>
                         <div className="grid-item">

@@ -156,8 +156,9 @@ export default class QuestionDetails extends React.Component {
         flag = true;
       }
       return (
-        <div className=" 	w-auto overflow-x-hidden lg:justify-center	 ml-8   sm:mx-auto md:justify-center sm:justify-center  sm:w-96">
+        <div className=" w-auto overflow-x-hidden lg:justify-center	 ml-8   sm:mx-auto md:justify-center sm:justify-center ">
           <div className="header-x">
+          <div>
 
           <label htmlFor="title" id="title" className="qtitle">
             {this.state.details.title}
@@ -170,6 +171,7 @@ export default class QuestionDetails extends React.Component {
                 checked={flag}
               />
             </ThemeProvider>
+          </div>
           </div>
 
           <div className="report">
@@ -187,7 +189,7 @@ export default class QuestionDetails extends React.Component {
             <label htmlFor="description" className="text-white">
               Description
             </label>
-            {/* here */}
+            
             <textarea
               className="texta"
               id="description"
@@ -201,11 +203,11 @@ export default class QuestionDetails extends React.Component {
               <img id="image" name="image" src={this.state.details.images[0]} />
             </div>
           </div>
-          <div className="flex flex-col sm:items-center xs:items-center ">
+          <div className="flex flex-col xl:items-center lg:items-center  sm:items-center xs:items-center ">
             <label htmlFor="description" className="text-white">
               Post Answer
             </label>
-            <div className="">
+            
               <textarea
                 id="answer"
                 name="answer"
@@ -225,7 +227,7 @@ export default class QuestionDetails extends React.Component {
                   onChange={(evt) => this.handleInput(evt)}
                 />
               </div>{" "}
-            </div>
+           
             <input
               id="answer_btn"
               type="button"

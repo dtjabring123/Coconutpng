@@ -1,7 +1,13 @@
 
 form .q-inner {
     position: relative;
-    display: block;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 80vw;
+    margin-bottom: 1rem;
     z-index: 2;
 }
 
@@ -13,8 +19,11 @@ form .q-inner h2 {
 }
 
 form .q-inner .q-group {
-    display: block;
-    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 60vw; */
     margin-bottom: 15px;
 }
 
@@ -66,7 +75,7 @@ form .q-inner input[type="button"] {
     background-position: 0%;
     transition: 0.4s;
     color:#FFF;
-    font-weight: 700;
+    font-size:1.3;
     cursor: pointer;
 
 }
@@ -130,8 +139,15 @@ form .q-inner input[type="button"]:hover {
 }
 
 .report {
-    display: inline-block;
-    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+   
+}
+.header-x{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .rep1 {
