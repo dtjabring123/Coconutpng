@@ -36,7 +36,7 @@ describe("register test", () => {
 
 //test for logOut, test for valid
 describe("logOut test", () => {
-    test.only("valid log out", () => {
+    test("valid log out", () => {
         expect(logOut()).toBe("success");
     })
 })
@@ -111,7 +111,7 @@ describe("updateUserDetails test", () => {
         first_name: "main",
         last_name: "tester",
         phoneNumber: "0784039821",
-        role: 0
+        role: 1
     }
     test("valid details", () => {
         return updateUserDetails(moreTempDetails).then(output => {
