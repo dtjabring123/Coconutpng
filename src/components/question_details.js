@@ -156,7 +156,7 @@ export default class QuestionDetails extends React.Component {
         flag = true;
       }
       return (
-        <div className=" w-auto overflow-x-hidden lg:justify-center	 ml-8   sm:mx-auto md:justify-center sm:justify-center ">
+        <div className=" w-auto overflow-x-hidden lg:justify-center xl:mb-6 lg:mb-6 md:mb-6	 ml-8   sm:mx-auto md:justify-center sm:justify-center ">
           <div className="header-x">
           <div>
 

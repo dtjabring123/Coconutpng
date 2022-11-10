@@ -79,6 +79,7 @@ body{
     margin-bottom: 0.4rem;
     font-size: 1rem;
     display: inline-block;
+    margin: 1.2rem;
 }
 
 .comment_card-footer {
