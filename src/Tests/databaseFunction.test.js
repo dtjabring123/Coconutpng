@@ -18,11 +18,11 @@ const testDetails = {
     email: "maintester@gmail.com",
     password: "dontworryBout1t"
 }
-const questionID = "AXiuOJLiWGrUK7EUauKL";
-const responseID = "bH0TriMm9P2a2B4VolZi";
-const commentID = "m5Pl3z3TPxNN4WC98rxg";
-const reportQuestionID = "ny9HbIhzZUgVZOsRkHgT";
-const reportResponseID = "ZHe1NGrqwsWRTEPuL1iI";
+const questionID = "8V885Srx4K2VLV6Mtusn";
+const responseID = "apG3az1Ln1eEy5yGExSa";
+const commentID = "9LLbLuN5JbfqjVOqG9eC";
+const reportQuestionID = "HUQ8nkBY9rg7xAxyDplP";
+const reportResponseID = "lvMsjPWB0CtcW7mmOV6C";
 
 
 //test for register, test for invalid (auth/admin-restricted-operation)
@@ -371,7 +371,7 @@ describe("getAllBans test", () => {
 //test for getBan, test for valid
 describe("getBan test", () => {
     test("valid details", () => {
-        return getBan("5aatpW5UjFMVgZ8H9otx").then(output => {
+        return getBan("maintester@gmail.com").then(output => {
             expect(output[0]).toBe("success");
         })
     })
