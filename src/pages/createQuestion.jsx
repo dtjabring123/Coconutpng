@@ -66,26 +66,26 @@ export default class createQuestion extends React.Component{
             <React.Fragment>
                 <form>
                     <div id = "snackbar"></div>
-					<div className="flex flex-wrap w-[80%] h-full justify-center mx-auto  sm:w-80 ">
+					<div className="flex flex-wrap  h-full justify-center mx-auto  sm:w-80 ">
                     <div className="form-inner">
 						<h2>Ask a Question</h2>
 						<div className="form-group">
 							<label htmlFor="title">Title</label>
-							<input id="title" type="text" name="title" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter} />
+							<input className="qs-input" id="title" type="text" name="title" onChange={evt=>this.handleInput(evt)} onKeyPress={this.handleEnter} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="code">Add some code</label>
-							<textarea id= "code" name = "code" className="texta" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
+							<textarea id= "code" name = "code" className="texta1" placeholder="Add your code here" onChange={evt=>this.handleInput(evt)} />
 						</div>
 						<div className="form-group">
 							<label htmlFor="images">Add an image</label>
-							<input id = "file" name = "file" type = "file" accept="image/*" onChange={evt=>this.handleFileChange(evt)}/>
+							<input className="qs-input" id = "file" name = "file" type = "file" accept="image/*" onChange={evt=>this.handleFileChange(evt)}/>
 						</div>
 						<div className="form-group">
 							<label htmlFor="description">Description</label>
-							<textarea id= "description" name = "description" className="texta" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} />
+							<textarea id= "description" name = "description" className="texta1" placeholder="Ask your question" onChange={evt=>this.handleInput(evt)} />
 						</div>
-						<div className="btns">
+						<div className="q-btns">
 						<input id = "question" type = "button" value = "Submit" onClick={this.handleQuestion}/>
 
 							<Link to="/homepage">      

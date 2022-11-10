@@ -50,6 +50,23 @@ padding: 10px;
 margin-bottom: 1.2rem;
 }
 
+.texta1{
+    width: 100%;
+    height: 15vh;
+
+}
+
+.qs-input{
+    display: block;
+    width: 100% !important;
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    transition: 0.4s;
+
+}
+
+
 /*Here is the stuff for the snackbar(toast message) */
 #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
@@ -225,6 +242,12 @@ form .form-inner .form-group {
     background-color: #666;
     width: 80vw;
 }
+.q-btns{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+   
+}
 
 @media only screen and (max-width: 769px) {
     form .form-inner .form-group {
@@ -259,5 +282,9 @@ form .form-inner .form-group {
         height: 15vh;
         padding: 10px;
         margin-bottom: 1.2rem;
+    }
+    .q-btns{
+        display: flex;
+        justify-content: space-between;
     }
 }
